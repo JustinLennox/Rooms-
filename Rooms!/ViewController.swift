@@ -28,6 +28,8 @@ class ViewController: UIViewController {
         signUpButton.titleLabel?.textAlignment = NSTextAlignment.Center
         signUpButton.setTitle("Sign Up!", forState: UIControlState.Normal)
         signUpButton.titleLabel!.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
+        signUpButton.titleLabel!.font = UIFont(name: "Avenir Next", size: 30.0)
+
         signUpButton.backgroundColor = UIColor(red: (22.0/255.0), green: (160.0/255.0), blue: (133.0/255.0), alpha: 1.0)
         view.addSubview(signUpButton)
         

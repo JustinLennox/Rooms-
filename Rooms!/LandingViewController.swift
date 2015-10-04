@@ -1,0 +1,93 @@
+//
+//  LandingViewController.swift
+//  Rooms!
+//
+//  Created by Justin Lennox on 10/2/15.
+//  Copyright © 2015 Justin Lennox. All rights reserved.
+//
+
+import UIKit
+
+class LandingViewController: UIViewController {
+    
+    //MARK: UI Properties
+    
+    let backgroundImageView = UIImageView()
+    let titleLabel = UILabel()
+    let descriptionLabel = UILabel()
+    let signUpButton = UIButton(type: UIButtonType.System)
+    let loginButton = UIButton(type: UIButtonType.System)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = UIColor(red: (50.0/255.0), green: (50.0/255.0), blue: (50.0/255.0), alpha: 1.0)
+        
+        addUI()
+        
+    }
+    
+    //MARK: - UI Methods
+    
+    func addUI(){
+        
+        titleLabel.text = "Rooms"
+        titleLabel.frame = CGRectMake(0, view.frame.height * 0.12, view.frame.size.width, view.frame.size.height * 0.08)
+        titleLabel.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
+        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 50.0)
+        view.addSubview(titleLabel)
+        
+        descriptionLabel.text = "The location-based activities app"
+        descriptionLabel.frame = CGRectMake(0, CGRectGetMaxY(titleLabel.frame) + view.frame.height * 0.03, view.frame.size.width, view.frame.size.height * 0.05)
+        descriptionLabel.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
+        descriptionLabel.textAlignment = NSTextAlignment.Center
+        descriptionLabel.font = UIFont(name: "Avenir Next", size: 20.0)
+        view.addSubview(descriptionLabel)
+        
+        signUpButton.frame = CGRectMake(view.frame.width/2.0 - view.frame.size.width * 0.25, view.frame.height * 0.4, view.frame.size.width * 0.50, view.frame.height * 0.1)
+        signUpButton.setTitle("Sign Up", forState: UIControlState.Normal)
+        signUpButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        signUpButton.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 30.0)
+        signUpButton.layer.borderColor = UIColor.whiteColor().CGColor
+        signUpButton.layer.borderWidth = 1
+        signUpButton.layer.cornerRadius = 3
+        signUpButton.layer.masksToBounds = true
+        signUpButton.backgroundColor = UIColor.clearColor()
+        signUpButton.addTarget(self, action: "signUpPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(signUpButton)
+        
+        loginButton.frame = CGRectMake(view.frame.width/2.0 - view.frame.size.width * 0.25, view.frame.height * 0.55, view.frame.size.width * 0.50, view.frame.height * 0.1)
+        loginButton.setTitle("Login", forState: UIControlState.Normal)
+        loginButton.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 30.0)
+        loginButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        loginButton.backgroundColor = UIColor.clearColor()
+        loginButton.layer.borderColor = UIColor.whiteColor().CGColor
+        loginButton.layer.borderWidth = 1
+        loginButton.layer.cornerRadius = 3
+        loginButton.layer.masksToBounds = true
+        loginButton.addTarget(self, action: "loginPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(loginButton)
+        
+        backgroundImageView.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
+        backgroundImageView.image = UIImage(named: "LaunchBack.jpg")
+        backgroundImageView.alpha = 0.5
+        view.addSubview(backgroundImageView)
+        view.sendSubviewToBack(backgroundImageView)
+        
+    }
+    
+    //MARK: - Button Methods
+    //TODO: Add user signup logic
+    func signUpPressed(){
+        performSegueWithIdentifier("loginSegue", sender: self)
+        
+    }
+    
+    //TODO: Add user login logic
+    func loginPressed(){
+        performSegueWithIdentifier("loginSegue", sender: self)
+    }
+
+
+}

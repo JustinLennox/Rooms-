@@ -17,9 +17,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                     </view>
+                    <connections>
+                        <segue destination="naq-lS-nJQ" kind="show" identifier="loginSegue" id="fYj-oz-k7z"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="263" y="322"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="OtX-Fo-FsX">
+            <objects>
+                <viewController id="naq-lS-nJQ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Orm-4p-EkW"/>
+                        <viewControllerLayoutGuide type="bottom" id="qja-OR-fCa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Kpl-QP-ZST">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xVH-At-aaY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="959" y="322"/>
         </scene>
     </scenes>
 </document>

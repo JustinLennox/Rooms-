@@ -12,8 +12,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //This is a permanent comment.
+        var x = 3.0
+        x = 5
+        
         // Do any additional setup after loading the view, typically from a nib.
-        view.backgroundColor = UIColor(red: (231.0/255.0), green: (76.0/255.0), blue: (60.0/255.0), alpha: 1.0)
+//        view.backgroundColor = UIColor(red: (231.0/255.0), green: (76.0/255.0), blue: (60.0/255.0), alpha: 1.0)
         
         let label = UILabel()
         label.text = "Rooms!"

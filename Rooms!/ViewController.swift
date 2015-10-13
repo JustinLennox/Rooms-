@@ -16,13 +16,16 @@ class ViewController: UIViewController {
     let loginButton = UIButton(type: UIButtonType.System)
     let signUpButton = UIButton(type: UIButtonType.System)
 
+    
+    //AHHHH I CAN'T BELIEVE MY LIFE!!!!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         view.backgroundColor = UIColor(red: (50.0/255.0), green: (50.0/255.0), blue: (50.0/255.0), alpha: 1.0)
+        //MARK MARK MARK MARK MARK MARK
         
         addUI()
-        
     }
     
     func addUI(){

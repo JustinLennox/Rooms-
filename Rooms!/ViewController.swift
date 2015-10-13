@@ -31,7 +31,6 @@ class ViewController: UIViewController {
 >>>>>>> master
         
         addUI()
-        
     }
     
     

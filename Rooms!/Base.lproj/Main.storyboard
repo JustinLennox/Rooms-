@@ -18,13 +18,18 @@
                         <animations/>
                     </view>
                     <connections>
+<<<<<<< HEAD
                         <segue destination="izb-em-R4g" kind="show" identifier="loginSegue" id="OPK-jX-cjM"/>
+=======
+                        <segue destination="uHx-Ui-siD" kind="show" identifier="loginSegue" id="WKI-Zj-85u"/>
+>>>>>>> master
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="107" y="331"/>
         </scene>
+<<<<<<< HEAD
         <!--Item 2-->
         <scene sceneID="ihd-0h-6cV">
             <objects>
@@ -54,6 +59,17 @@
                         <viewControllerLayoutGuide type="bottom" id="Np5-3P-8kj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tha-GC-Rao">
+=======
+        <!--View Controller-->
+        <scene sceneID="gD2-bW-4WI">
+            <objects>
+                <viewController id="uHx-Ui-siD" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xsq-xl-dUm"/>
+                        <viewControllerLayoutGuide type="bottom" id="f0i-y1-C5U"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xfi-aq-BME">
+>>>>>>> master
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
@@ -61,6 +77,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="eiy-YK-KQB"/>
                 </viewController>
+<<<<<<< HEAD
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RlL-Rw-7W5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="448" y="1119"/>
@@ -83,6 +100,11 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pGk-pu-BPb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="872" y="331"/>
+=======
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7EB-Pn-LqR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="921" y="322"/>
+>>>>>>> master
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

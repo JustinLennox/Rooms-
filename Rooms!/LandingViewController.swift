@@ -18,8 +18,12 @@ class LandingViewController: UIViewController {
     let signUpButton = UIButton(type: UIButtonType.System)
     let loginButton = UIButton(type: UIButtonType.System)
     
+<<<<<<< HEAD
     //MARK: Methods
     
+=======
+    //MARK: - View Methods
+>>>>>>> master
     override func viewDidLoad() {
         super.viewDidLoad()
 

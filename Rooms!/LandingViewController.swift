@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class LandingViewController: UIViewController {
     
     //MARK: UI Properties
     let backgroundImage = UIImageView()

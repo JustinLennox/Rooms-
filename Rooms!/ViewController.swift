@@ -10,12 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    //MARK: UI Properties
     let backgroundImage = UIImageView()
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
     let loginButton = UIButton(type: UIButtonType.System)
     let signUpButton = UIButton(type: UIButtonType.System)
 
+    //MARK: View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -24,6 +26,11 @@ class ViewController: UIViewController {
         addUI()
     }
     
+    //MARK: UI Methods
+    
+    /**
+    *   Adds, styles, and positions all of the UI subviews in the view
+    */
     func addUI(){
         
         titleLabel.text = "Rooms"
@@ -71,12 +78,8 @@ class ViewController: UIViewController {
         view.sendSubviewToBack(backgroundImage)
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
+    //TODO: Add User Login Flow
     func loginButtonPressed(){
         performSegueWithIdentifier("loginSegue", sender: self)
     }

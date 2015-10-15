@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9ED6BCB51BCF22070044C9C1 /* UIColor+CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED6BCB41BCF22070044C9C1 /* UIColor+CustomColors.swift */; settings = {ASSET_TAGS = (); }; };
+		9ED6BCB71BCF22B30044C9C1 /* NearbyActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED6BCB61BCF22B30044C9C1 /* NearbyActivitiesViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		9ED6BCB91BCF22C60044C9C1 /* AddActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED6BCB81BCF22C60044C9C1 /* AddActivityViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		D001723B1BBF7E52005253FD /* LaunchBackground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723A1BBF7E52005253FD /* LaunchBackground.jpg */; settings = {ASSET_TAGS = (); }; };
 		D001723D1BBF82D4005253FD /* LaunchBack.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723C1BBF82D4005253FD /* LaunchBack.jpg */; settings = {ASSET_TAGS = (); }; };
 		D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */; };
@@ -36,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9ED6BCB41BCF22070044C9C1 /* UIColor+CustomColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColors.swift"; sourceTree = "<group>"; };
+		9ED6BCB61BCF22B30044C9C1 /* NearbyActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyActivitiesViewController.swift; sourceTree = "<group>"; };
+		9ED6BCB81BCF22C60044C9C1 /* AddActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityViewController.swift; sourceTree = "<group>"; };
 		D001723A1BBF7E52005253FD /* LaunchBackground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LaunchBackground.jpg; sourceTree = "<group>"; };
 		D001723C1BBF82D4005253FD /* LaunchBack.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LaunchBack.jpg; sourceTree = "<group>"; };
 		D0A1BDF91BBCA38900B510A7 /* Rooms!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rooms!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +111,9 @@
 			children = (
 				D0A1BE001BBCA38900B510A7 /* Main.storyboard */,
 				D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */,
+				9ED6BCB41BCF22070044C9C1 /* UIColor+CustomColors.swift */,
+				9ED6BCB61BCF22B30044C9C1 /* NearbyActivitiesViewController.swift */,
+				9ED6BCB81BCF22C60044C9C1 /* AddActivityViewController.swift */,
 				D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */,
 				D0A1BE031BBCA38900B510A7 /* Assets.xcassets */,
 				D0A1BE051BBCA38900B510A7 /* LaunchScreen.storyboard */,
@@ -263,7 +272,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9ED6BCB71BCF22B30044C9C1 /* NearbyActivitiesViewController.swift in Sources */,
 				D0A1BDFF1BBCA38900B510A7 /* LandingViewController.swift in Sources */,
+				9ED6BCB51BCF22070044C9C1 /* UIColor+CustomColors.swift in Sources */,
+				9ED6BCB91BCF22C60044C9C1 /* AddActivityViewController.swift in Sources */,
 				D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

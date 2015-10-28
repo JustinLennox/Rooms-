@@ -18,89 +18,31 @@
                         <animations/>
                     </view>
                     <connections>
-                        <segue destination="HXi-2a-vFf" kind="show" identifier="loginSegue" id="Ugu-h2-QFG"/>
+                        <segue destination="pJj-fA-hEl" kind="show" identifier="loginSegue" id="luG-kz-Y5v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="351" y="-798"/>
         </scene>
-        <!--Add Activity-->
-        <scene sceneID="tzI-VT-ATb">
+        <!--Chill View Controller-->
+        <scene sceneID="RiJ-rY-dup">
             <objects>
-                <viewController title="Add Activity" id="TNm-LU-vWd" customClass="AddActivityViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="pJj-fA-hEl" customClass="ChillViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xH3-Pe-EEM"/>
-                        <viewControllerLayoutGuide type="bottom" id="fPp-qf-DbL"/>
+                        <viewControllerLayoutGuide type="top" id="qzX-Ix-cEk"/>
+                        <viewControllerLayoutGuide type="bottom" id="VRc-0j-sis"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Z7s-Hu-5yR">
+                    <view key="view" contentMode="scaleToFill" id="Pyy-M4-HyN">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Add An Activity" id="jLc-WW-3cd"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BYH-C4-m2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dEH-nh-WTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1576" y="868"/>
-        </scene>
-        <!--Nearby Activities-->
-        <scene sceneID="89F-OB-DWP">
-            <objects>
-                <viewController title="Nearby Activities" id="WWy-e4-sYE" customClass="NearbyActivitiesViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lea-LM-W6I"/>
-                        <viewControllerLayoutGuide type="bottom" id="8qM-MP-X5M"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Zkz-Jb-ckx">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Nearby Activities" id="mIG-Rc-Gbo"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9og-XB-rsS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="665" y="876"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="xty-H7-apX">
-            <objects>
-                <navigationController id="HXi-2a-vFf" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="GDn-7Q-8Gd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="dUR-3l-S8m" kind="relationship" relationship="rootViewController" id="QTd-3A-5yi"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HBU-Z8-WhB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1031" y="-798"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="RqZ-PI-LXS">
-            <objects>
-                <tabBarController id="dUR-3l-S8m" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="N9z-6o-O6C"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="EUj-PV-b4P">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="WWy-e4-sYE" kind="relationship" relationship="viewControllers" id="nUi-H2-BhM"/>
-                        <segue destination="TNm-LU-vWd" kind="relationship" relationship="viewControllers" id="9Y7-sb-5vy"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ump-UP-yRq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1031" y="-100"/>
+            <point key="canvasLocation" x="981" y="-798"/>
         </scene>
     </scenes>
 </document>

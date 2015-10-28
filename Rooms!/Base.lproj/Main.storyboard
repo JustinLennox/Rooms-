@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+=======
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+>>>>>>> f503194e249e8d2323feafb52f2d43c9586fb8ba
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
@@ -18,11 +22,16 @@
                         <animations/>
                     </view>
                     <connections>
+<<<<<<< HEAD
                         <segue destination="pJj-fA-hEl" kind="show" identifier="loginSegue" id="luG-kz-Y5v"/>
+=======
+                        <segue destination="63M-aI-F17" kind="show" identifier="loginSegue" id="ZHu-A8-jg6"/>
+>>>>>>> f503194e249e8d2323feafb52f2d43c9586fb8ba
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+<<<<<<< HEAD
             <point key="canvasLocation" x="351" y="-798"/>
         </scene>
         <!--Chill View Controller-->
@@ -34,15 +43,93 @@
                         <viewControllerLayoutGuide type="bottom" id="VRc-0j-sis"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Pyy-M4-HyN">
+=======
+            <point key="canvasLocation" x="681" y="-1077"/>
+        </scene>
+        <!--Add an Activity-->
+        <scene sceneID="Faa-di-MBU">
+            <objects>
+                <viewController title="Add an Activity" id="oBY-lv-W6L" customClass="AddActivityViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tuI-5g-13H"/>
+                        <viewControllerLayoutGuide type="bottom" id="dk5-gi-BBC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ThS-Js-hBd">
+>>>>>>> f503194e249e8d2323feafb52f2d43c9586fb8ba
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+<<<<<<< HEAD
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dEH-nh-WTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="981" y="-798"/>
+=======
+                    <tabBarItem key="tabBarItem" title="Add an Activity" id="2O4-B6-amO" userLabel="Add an Activity"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="62q-cL-rbW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1213" y="487"/>
+        </scene>
+        <!--Nearby Activities-->
+        <scene sceneID="iXV-Fy-nuF">
+            <objects>
+                <viewController title="Nearby Activities" id="UVn-8J-L1c" customClass="NearbyActivitiesViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sxy-CB-r5G"/>
+                        <viewControllerLayoutGuide type="bottom" id="BG3-Kg-5sf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YWI-Tu-ZrT">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Nearby Activities" id="jQM-l6-JUt" userLabel="Nearby Activities"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lHQ-4Q-dsx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2172" y="495"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="3Qj-Eo-3kZ">
+            <objects>
+                <tabBarController id="2x9-ed-6P7" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="9do-qD-Nzm"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="coT-lH-4Lm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="UVn-8J-L1c" kind="relationship" relationship="viewControllers" id="ros-7f-moK"/>
+                        <segue destination="oBY-lv-W6L" kind="relationship" relationship="viewControllers" id="LEA-qz-tUr"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fKS-vk-AGo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1604" y="-325"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="RyL-4S-8gz">
+            <objects>
+                <navigationController id="63M-aI-F17" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eIW-9R-HHV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2x9-ed-6P7" kind="relationship" relationship="rootViewController" id="lhf-pn-JN5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bkP-io-2aw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1604" y="-1077"/>
+>>>>>>> f503194e249e8d2323feafb52f2d43c9586fb8ba
         </scene>
     </scenes>
 </document>

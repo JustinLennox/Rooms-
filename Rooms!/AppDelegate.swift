@@ -9,24 +9,39 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate
+{
 
     var window: UIWindow?
 
 
+<<<<<<< HEAD
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         UINavigationBar.appearance().barTintColor = UIColor.pBlue()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         
         UITabBar.appearance().tintColor = UIColor.pBlue()
+=======
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+    {
+
+        //nav bar color
+        UINavigationBar.appearance().barTintColor = UIColor.pBlue()
+        
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
+        UITabBar.appearance().tintColor = UIColor.pBlue()
+        
+>>>>>>> f503194e249e8d2323feafb52f2d43c9586fb8ba
         // Override point for customization after application launch.
         return true
-    }
+        
+    }//application
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
+    }//applicationWillResignActive
 
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
@@ -45,5 +60,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-}
+}//appDelegate
 

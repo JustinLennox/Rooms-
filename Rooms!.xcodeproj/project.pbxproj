@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D001723B1BBF7E52005253FD /* LaunchBackground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723A1BBF7E52005253FD /* LaunchBackground.jpg */; settings = {ASSET_TAGS = (); }; };
-		D001723D1BBF82D4005253FD /* LaunchBack.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723C1BBF82D4005253FD /* LaunchBack.jpg */; settings = {ASSET_TAGS = (); }; };
-		D0869FC91BCF267200B607FF /* UIColor+CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */; settings = {ASSET_TAGS = (); }; };
-		D0869FCB1BCF26F200B607FF /* NearbyActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FCA1BCF26F200B607FF /* NearbyActivitiesViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		D0869FCD1BCF26FF00B607FF /* AddActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FCC1BCF26FF00B607FF /* AddActivityViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		D001723B1BBF7E52005253FD /* LaunchBackground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723A1BBF7E52005253FD /* LaunchBackground.jpg */; };
+		D001723D1BBF82D4005253FD /* LaunchBack.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723C1BBF82D4005253FD /* LaunchBack.jpg */; };
+		D0869FC91BCF267200B607FF /* UIColor+CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */; };
+		D0869FCB1BCF26F200B607FF /* NearbyActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FCA1BCF26F200B607FF /* NearbyActivitiesViewController.swift */; };
+		D0869FCD1BCF26FF00B607FF /* AddActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FCC1BCF26FF00B607FF /* AddActivityViewController.swift */; };
+		D095DF5F1BE1695100CE294C /* Friends.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D095DF5E1BE1695100CE294C /* Friends.jpg */; };
 		D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */; };
 		D0A1BDFF1BBCA38900B510A7 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */; };
 		D0A1BE021BBCA38900B510A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0A1BE001BBCA38900B510A7 /* Main.storyboard */; };
@@ -44,6 +45,7 @@
 		D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColors.swift"; sourceTree = "<group>"; };
 		D0869FCA1BCF26F200B607FF /* NearbyActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyActivitiesViewController.swift; sourceTree = "<group>"; };
 		D0869FCC1BCF26FF00B607FF /* AddActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityViewController.swift; sourceTree = "<group>"; };
+		D095DF5E1BE1695100CE294C /* Friends.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Friends.jpg; sourceTree = "<group>"; };
 		D0A1BDF91BBCA38900B510A7 /* Rooms!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rooms!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				D0A1BDFA1BBCA38900B510A7 /* Products */,
 				D001723A1BBF7E52005253FD /* LaunchBackground.jpg */,
 				D001723C1BBF82D4005253FD /* LaunchBack.jpg */,
+				D095DF5E1BE1695100CE294C /* Friends.jpg */,
 			);
 			sourceTree = "<group>";
 		};
@@ -248,6 +251,7 @@
 				D001723D1BBF82D4005253FD /* LaunchBack.jpg in Resources */,
 				D0A1BE041BBCA38900B510A7 /* Assets.xcassets in Resources */,
 				D0A1BE021BBCA38900B510A7 /* Main.storyboard in Resources */,
+				D095DF5F1BE1695100CE294C /* Friends.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

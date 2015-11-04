@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Landing View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LandingViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -18,31 +18,31 @@
                         <animations/>
                     </view>
                     <connections>
-                        <segue destination="uHx-Ui-siD" kind="show" identifier="loginSegue" id="WKI-Zj-85u"/>
+                        <segue destination="pJj-fA-hEl" kind="show" identifier="loginSegue" id="luG-kz-Y5v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="263" y="322"/>
+            <point key="canvasLocation" x="351" y="-798"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="gD2-bW-4WI">
+        <!--Chill View Controller-->
+        <scene sceneID="RiJ-rY-dup">
             <objects>
-                <viewController id="uHx-Ui-siD" sceneMemberID="viewController">
+                <viewController id="pJj-fA-hEl" customClass="ChillViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xsq-xl-dUm"/>
-                        <viewControllerLayoutGuide type="bottom" id="f0i-y1-C5U"/>
+                        <viewControllerLayoutGuide type="top" id="qzX-Ix-cEk"/>
+                        <viewControllerLayoutGuide type="bottom" id="VRc-0j-sis"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="xfi-aq-BME">
+                    <view key="view" contentMode="scaleToFill" id="Pyy-M4-HyN">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7EB-Pn-LqR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dEH-nh-WTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="921" y="322"/>
+            <point key="canvasLocation" x="981" y="-798"/>
         </scene>
     </scenes>
 </document>

@@ -53,7 +53,6 @@ class LandingViewController: UIViewController {
         signUpButton.layer.borderColor = UIColor.whiteColor().CGColor
         signUpButton.layer.borderWidth = 1
         signUpButton.layer.cornerRadius = 3
-        signUpButton.layer.masksToBounds = true
         signUpButton.backgroundColor = UIColor.clearColor()
         signUpButton.addTarget(self, action: "signUpPressed", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(signUpButton)
@@ -66,7 +65,6 @@ class LandingViewController: UIViewController {
         loginButton.layer.borderColor = UIColor.whiteColor().CGColor
         loginButton.layer.borderWidth = 1
         loginButton.layer.cornerRadius = 3
-        loginButton.layer.masksToBounds = true
         loginButton.addTarget(self, action: "loginPressed", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(loginButton)
         

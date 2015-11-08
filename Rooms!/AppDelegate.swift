@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Parse
+import Bolts
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,10 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        UINavigationBar.appearance().barTintColor = UIColor.pBlue()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         
-        UITabBar.appearance().tintColor = UIColor.pBlue()
+        // Initialize Parse.
+        Parse.setApplicationId("rUVUGBIlk5RlOxnOOvzxdNp1bVIPeyo63vlk3lV4",
+            clientKey: "N2x4tjLHp4kg71rJPvV03QluyndEOMkKVcRd5BeA")
+        
+        // [Optional] Track statistics around application opens.
+        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        
+        
         // Override point for customization after application launch.
         return true
     }

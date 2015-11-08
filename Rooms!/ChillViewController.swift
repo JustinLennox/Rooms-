@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
@@ -21,12 +22,13 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
     let addChillBackground : UIView = UIView()
     let addChillView : UIView = UIView()
     let addChillTitle : UITextField = UITextField()
-    let addChillDescription : UITextView = UITextView()
+    let addChillDetails : UITextView = UITextView()
     let doneAddingChillButton : UIButton = UIButton(type: UIButtonType.System)
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = "Add an Activity"
+        getChills()
     }
     
     override func viewDidLoad() {
@@ -100,20 +102,56 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         addChillTitle.tintColor = UIColor.whiteColor()
         addChillView.addSubview(addChillTitle)
         
-        addChillDescription.frame = CGRectMake(0, addChillTitle.frame.height, addChillView.frame.width, addChillView.frame.height * 0.7)
-        addChillDescription.layer.masksToBounds = true
-        addChillDescription.backgroundColor = UIColor.whiteColor()
-        addChillDescription.textColor = UIColor.pSeafoam()
-        addChillDescription.textAlignment = NSTextAlignment.Center
-        addChillDescription.font = UIFont(name: "Helvetica", size: 20.0)
-        addChillDescription.tintColor = UIColor.pSeafoam()
-        addChillView.addSubview(addChillDescription)
+        addChillDetails.frame = CGRectMake(0, addChillTitle.frame.height, addChillView.frame.width, addChillView.frame.height * 0.7)
+        addChillDetails.layer.masksToBounds = true
+        addChillDetails.backgroundColor = UIColor.whiteColor()
+        addChillDetails.textColor = UIColor.pSeafoam()
+        addChillDetails.textAlignment = NSTextAlignment.Center
+        addChillDetails.font = UIFont(name: "Helvetica", size: 20.0)
+        addChillDetails.tintColor = UIColor.pSeafoam()
+        addChillView.addSubview(addChillDetails)
         
         doneAddingChillButton.frame = CGRectMake(view.frame.width/2 - 25, CGRectGetMaxY(addChillView.frame) + view.frame.size.height * 0.01, 50, 50)
         doneAddingChillButton.setBackgroundImage(UIImage(named: "Snowflake.png"), forState: UIControlState.Normal)
-        doneAddingChillButton.addTarget(self, action: "hideAddChillView", forControlEvents: UIControlEvents.TouchUpInside)
+        doneAddingChillButton.addTarget(self, action: "addChill", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(doneAddingChillButton)
         
+    }
+    
+    /**
+    * Downloads our chills from the backend
+    */
+    func getChills(){
+        let query = PFQuery(className:"Chill")
+        query.whereKey("host", equalTo: "Justin Lennox")
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                
+                // Do something with the found objects
+                if let objects = objects as [PFObject]! {
+                    for chill in objects {
+                        print(chill["details"])
+                    }
+                }
+            } else {
+                // Log details of the failure
+                print("Error: \(error!)")
+            }
+        }
+    }
+    
+    
+    /**
+    * Adds a new 'Chill' to the backend and then hides the Add-Chill views
+    */
+    func addChill(){
+        let chill = PFObject(className: "Chill")
+        chill["type"] = addChillTitle.text
+        chill["details"] = addChillDetails.text
+        chill.saveInBackground()
+        hideAddChillView()
     }
     
     /**
@@ -127,7 +165,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
     
     /**
      *   Hide the 'Add Chill' view by setting all of the Add Chill UI alphas to 0
-     *   Also, removes the text from the addChillTitle and addChillDescription
+     *   Also, removes the text from the addChillTitle and addChillDetails
      */
     func hideAddChillView(){
         addChillBackground.alpha = 0.0
@@ -135,7 +173,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         doneAddingChillButton.alpha = 0.0
         
         addChillTitle.text = ""
-        addChillDescription.text = ""
+        addChillDetails.text = ""
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

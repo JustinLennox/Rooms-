@@ -47,6 +47,7 @@ class LandingViewController: UIViewController {
         descriptionLabel.text = "Find Other Chill People Near You To Do Chill Things With"
         descriptionLabel.frame = CGRectMake(view.frame.size.width * 0.05, view.frame.size.height * 0.45, view.frame.size.width * 0.9, view.frame.size.height * 0.13)
         descriptionLabel.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
+        descriptionLabel.adjustsFontSizeToFitWidth = true;
         descriptionLabel.textAlignment = NSTextAlignment.Center
         descriptionLabel.numberOfLines = 2;
         descriptionLabel.font = UIFont(name: "Helvetica", size: 25.0)
@@ -85,4 +86,5 @@ class LandingViewController: UIViewController {
     }
     
 }
+
 

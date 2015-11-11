@@ -18,7 +18,7 @@
                         <animations/>
                     </view>
                     <connections>
-                        <segue destination="pJj-fA-hEl" kind="show" identifier="loginSegue" id="luG-kz-Y5v"/>
+                        <segue destination="pJj-fA-hEl" kind="show" identifier="loginSegue" id="1Lx-Us-l2l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

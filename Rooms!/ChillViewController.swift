@@ -9,21 +9,26 @@
 import UIKit
 import Parse
 
-class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    //MARK- Main UI
+    let chillArray : [Chill] = []
+    
+    //MARK: - Main UI
     let bannerBackground : UIView = UIView()
     let andLabel : UILabel = UILabel()
     let chillLabel : UILabel = UILabel()
     let blankTextField : UITextField = UITextField()
     let addChillButton : UIButton = UIButton(type: UIButtonType.System)
     
-    //MARK- Add Chill UI
+    //MARK: - Add Chill UI
     let addChillBackground : UIView = UIView()
     let addChillView : UIView = UIView()
     let addChillTitle : UITextField = UITextField()
     let addChillDetails : UITextView = UITextView()
     let doneAddingChillButton : UIButton = UIButton(type: UIButtonType.System)
+    
+    @IBOutlet var tableView: UITableView!
+    //MARK: - View Methods
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -35,7 +40,9 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         addMainUI()
         addAddChillUI()
         hideAddChillView()
+        addChillTableView()
     }
+    
     
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.12)
@@ -118,6 +125,8 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         
     }
     
+    //MARK: - Adding & Getting Chills from the Backend
+    
     /**
      * Downloads our chills from the backend
      */
@@ -141,8 +150,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
             }
         }
     }
-    
-    
+
     /**
      * Adds a new 'Chill' to the backend and then hides the Add-Chill views
      */
@@ -180,5 +188,73 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         textField.resignFirstResponder()
         return true
     }
+    
+    //MARK: - Chill Table View
+    
+    let chillTableview : UITableView = UITableView()
+    
+    func addChillTableView(){
+        chillTableview.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
+        chillTableview.delegate = self
+        chillTableview.rowHeight = 100.0
+        chillTableview.dataSource = self
+        chillTableview.registerClass(ChillTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ChillTableViewCell))
+        view.addSubview(chillTableview)
+    }
+    
+    /**
+    * Add a ui table view cell for every row in the table
+    */
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ChillTableViewCell)) as! ChillTableViewCell
+        
+        return cell
+    }
+    
+    /**
+     * Set the number of rows in the table
+     */
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    /**
+     * Set the height of each table view cell
+     */
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 100.0
+    }
+    
+}
+
+class ChillTableViewCell : UITableViewCell {
+    
+    let chillDescriptionLabel = UILabel()
+    let profileImageView = UIImageView()
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        profileImageView.image = UIImage(named: "Snowflake.png")
+        addSubview(profileImageView)
+        
+        addSubview(chillDescriptionLabel)
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    /**
+    * Set the frames of our UI
+    */
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        profileImageView.frame = CGRectMake(0, 0, 100, 100)
+        chillDescriptionLabel.frame = CGRectMake(100, 50, frame.width - 100, frame.height - 50)
+        
+    }
+
     
 }

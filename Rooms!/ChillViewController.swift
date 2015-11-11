@@ -11,7 +11,7 @@ import Parse
 
 class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    let chillArray : [Chill] = []
+    var chillArray : [Chill] = []
     
     //MARK: - Main UI
     let bannerBackground : UIView = UIView()
@@ -132,7 +132,6 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
      */
     func getChills(){
         let query = PFQuery(className:"Chill")
-        query.whereKey("host", equalTo: "Justin Lennox")
         query.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
             
@@ -140,8 +139,10 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
                 
                 // Do something with the found objects
                 if let objects = objects as [PFObject]! {
-                    for chill in objects {
-                        print(chill["details"])
+                    for chillDictionary in objects {
+                        let chill = Chill(chillType: String(chillDictionary["type"]), chillDetails: String(chillDictionary["details"]))
+                        self.chillArray.append(chill)
+                        self.chillTableview.reloadData()
                     }
                 }
             } else {
@@ -198,7 +199,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         chillTableview.delegate = self
         chillTableview.rowHeight = 100.0
         chillTableview.dataSource = self
-        chillTableview.registerClass(ChillTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ChillTableViewCell))
+        chillTableview.registerClass(ChillTableViewCell.self, forCellReuseIdentifier: "ChillCell")
         view.addSubview(chillTableview)
     }
     
@@ -206,8 +207,9 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
     * Add a ui table view cell for every row in the table
     */
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ChillTableViewCell)) as! ChillTableViewCell
-        
+        let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
+        let currentChill = chillArray[indexPath.row]
+        cell.chillDetailsLabel.text = currentChill.details
         return cell
     }
     
@@ -215,7 +217,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
      * Set the number of rows in the table
      */
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return chillArray.count
     }
     
     /**
@@ -229,16 +231,13 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
 
 class ChillTableViewCell : UITableViewCell {
     
-    let chillDescriptionLabel = UILabel()
-    let profileImageView = UIImageView()
+    let chillDetailsLabel = UILabel()
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        profileImageView.image = UIImage(named: "Snowflake.png")
-        addSubview(profileImageView)
-        
-        addSubview(chillDescriptionLabel)
+        chillDetailsLabel.text = "Let's chill!"
+        addSubview(chillDetailsLabel)
         
     }
     
@@ -251,8 +250,7 @@ class ChillTableViewCell : UITableViewCell {
     */
     override func layoutSubviews() {
         super.layoutSubviews()
-        profileImageView.frame = CGRectMake(0, 0, 100, 100)
-        chillDescriptionLabel.frame = CGRectMake(100, 50, frame.width - 100, frame.height - 50)
+        chillDetailsLabel.frame = CGRectMake(0, 0, 300, 100)
         
     }
 

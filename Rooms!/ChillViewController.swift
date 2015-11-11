@@ -9,9 +9,8 @@
 import UIKit
 import Parse
 
-class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
-    var chillArray : [Chill] = []
     
     //MARK: - Main UI
     let bannerBackground : UIView = UIView()
@@ -27,7 +26,6 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
     let addChillDetails : UITextView = UITextView()
     let doneAddingChillButton : UIButton = UIButton(type: UIButtonType.System)
     
-    @IBOutlet var tableView: UITableView!
     //MARK: - View Methods
     
     override func viewWillAppear(animated: Bool) {
@@ -40,7 +38,6 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         addMainUI()
         addAddChillUI()
         hideAddChillView()
-        addChillTableView()
     }
     
     
@@ -140,9 +137,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
                 // Do something with the found objects
                 if let objects = objects as [PFObject]! {
                     for chillDictionary in objects {
-                        let chill = Chill(chillType: String(chillDictionary["type"]), chillDetails: String(chillDictionary["details"]))
-                        self.chillArray.append(chill)
-                        self.chillTableview.reloadData()
+                        print(chillDictionary["details"])
                     }
                 }
             } else {
@@ -190,69 +185,5 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         return true
     }
     
-    //MARK: - Chill Table View
-    
-    let chillTableview : UITableView = UITableView()
-    
-    func addChillTableView(){
-        chillTableview.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
-        chillTableview.delegate = self
-        chillTableview.rowHeight = 100.0
-        chillTableview.dataSource = self
-        chillTableview.registerClass(ChillTableViewCell.self, forCellReuseIdentifier: "ChillCell")
-        view.addSubview(chillTableview)
-    }
-    
-    /**
-    * Add a ui table view cell for every row in the table
-    */
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
-        let currentChill = chillArray[indexPath.row]
-        cell.chillDetailsLabel.text = currentChill.details
-        return cell
-    }
-    
-    /**
-     * Set the number of rows in the table
-     */
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chillArray.count
-    }
-    
-    /**
-     * Set the height of each table view cell
-     */
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100.0
-    }
-    
-}
-
-class ChillTableViewCell : UITableViewCell {
-    
-    let chillDetailsLabel = UILabel()
-
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        chillDetailsLabel.text = "Let's chill!"
-        addSubview(chillDetailsLabel)
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    /**
-    * Set the frames of our UI
-    */
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        chillDetailsLabel.frame = CGRectMake(0, 0, 300, 100)
-        
-    }
-
     
 }

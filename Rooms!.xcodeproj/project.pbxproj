@@ -28,6 +28,8 @@
 		D08FE86E1BF3D39100450998 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08FE86D1BF3D39100450998 /* SystemConfiguration.framework */; };
 		D08FE8701BF3D39700450998 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D08FE86F1BF3D39700450998 /* libz.tbd */; };
 		D08FE8721BF3D3A100450998 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D08FE8711BF3D3A100450998 /* libsqlite3.tbd */; };
+		D08FE87C1BF4123200450998 /* Chill.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08FE87B1BF4123200450998 /* Chill.swift */; };
+		D08FE87E1BF41D4100450998 /* prof.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D08FE87D1BF41D4100450998 /* prof.jpg */; };
 		D095DF5F1BE1695100CE294C /* Friends.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D095DF5E1BE1695100CE294C /* Friends.jpg */; };
 		D095DF631BE17ACA00CE294C /* Snowflake.png in Resources */ = {isa = PBXBuildFile; fileRef = D095DF621BE17ACA00CE294C /* Snowflake.png */; };
 		D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */; };
@@ -78,6 +80,8 @@
 		D08FE86D1BF3D39100450998 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D08FE86F1BF3D39700450998 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D08FE8711BF3D3A100450998 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		D08FE87B1BF4123200450998 /* Chill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chill.swift; sourceTree = "<group>"; };
+		D08FE87D1BF41D4100450998 /* prof.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = prof.jpg; sourceTree = "<group>"; };
 		D095DF5E1BE1695100CE294C /* Friends.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Friends.jpg; sourceTree = "<group>"; };
 		D095DF621BE17ACA00CE294C /* Snowflake.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Snowflake.png; sourceTree = "<group>"; };
 		D0A1BDF91BBCA38900B510A7 /* Rooms!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rooms!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +177,7 @@
 				D001723C1BBF82D4005253FD /* LaunchBack.jpg */,
 				D095DF5E1BE1695100CE294C /* Friends.jpg */,
 				D095DF621BE17ACA00CE294C /* Snowflake.png */,
+				D08FE87D1BF41D4100450998 /* prof.jpg */,
 			);
 			sourceTree = "<group>";
 		};
@@ -194,6 +199,7 @@
 				D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */,
 				D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */,
 				D0869FCC1BCF26FF00B607FF /* ChillViewController.swift */,
+				D08FE87B1BF4123200450998 /* Chill.swift */,
 				D0A1BE031BBCA38900B510A7 /* Assets.xcassets */,
 				D0A1BE051BBCA38900B510A7 /* LaunchScreen.storyboard */,
 				D0A1BE081BBCA38900B510A7 /* Info.plist */,
@@ -328,6 +334,7 @@
 				D001723D1BBF82D4005253FD /* LaunchBack.jpg in Resources */,
 				D0A1BE041BBCA38900B510A7 /* Assets.xcassets in Resources */,
 				D0A1BE021BBCA38900B510A7 /* Main.storyboard in Resources */,
+				D08FE87E1BF41D4100450998 /* prof.jpg in Resources */,
 				D095DF5F1BE1695100CE294C /* Friends.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0A1BDFF1BBCA38900B510A7 /* LandingViewController.swift in Sources */,
+				D08FE87C1BF4123200450998 /* Chill.swift in Sources */,
 				D0869FC91BCF267200B607FF /* UIColor+CustomColors.swift in Sources */,
 				D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */,
 				D0869FCD1BCF26FF00B607FF /* ChillViewController.swift in Sources */,

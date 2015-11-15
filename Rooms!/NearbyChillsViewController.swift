@@ -10,7 +10,7 @@ import UIKit
 import Parse
 import QuartzCore
 
-class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var chillArray : [Chill] = []
     
@@ -45,11 +45,11 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
     
     
     func addMainUI(){
-        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.12)
+        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
         bannerBackground.backgroundColor = UIColor.pSeafoam()
         view.addSubview(bannerBackground)
         
-        let bannerY = bannerBackground.frame.height * 0.1
+        let bannerY = bannerBackground.frame.height * 0.25
         let bannerHeight = bannerBackground.frame.height * 0.8
         
         andLabel.frame = CGRectMake(view.frame.width * 0.47, bannerY, view.frame.width * 0.06, bannerHeight)
@@ -57,18 +57,20 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         andLabel.adjustsFontSizeToFitWidth = true
         andLabel.font = UIFont(name: "Helvetica", size: 30.0)
         andLabel.textColor = UIColor.whiteColor()
-        view.addSubview(andLabel)
+//        view.addSubview(andLabel)
         
         chillLabel.frame = CGRectMake(view.frame.width * 0.53, bannerY, view.frame.width * 0.49, bannerHeight)
         chillLabel.text = "Chill"
         chillLabel.font = UIFont(name: "Helvetica", size: 30.0)
         chillLabel.textColor = UIColor.whiteColor()
-        view.addSubview(chillLabel)
+//        view.addSubview(chillLabel)
         
-        blankTextField.frame = CGRectMake(0, bannerY + 1.5, view.frame.width * 0.46, bannerHeight)
-        blankTextField.textAlignment = NSTextAlignment.Right
-        blankTextField.font = UIFont(name: "Helvetica", size: 30.0)
+        blankTextField.frame = CGRectMake(view.frame.width * 0.125, bannerY, view.frame.width * 0.75, bannerHeight)
+        blankTextField.textAlignment = NSTextAlignment.Center
+        blankTextField.font = UIFont.systemFontOfSize(25.0)
         blankTextField.textColor = UIColor.whiteColor()
+        blankTextField.text = "&Chill"
+        blankTextField.clearButtonMode = .WhileEditing
         blankTextField.returnKeyType = UIReturnKeyType.Done
         blankTextField.delegate = self
         blankTextField.tintColor = UIColor.whiteColor()
@@ -76,7 +78,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         
         let underline : UIView = UIView(frame: CGRectMake(blankTextField.frame.width * 0.2, blankTextField.frame.height - blankTextField.frame.size.height * 0.25, blankTextField.frame.width * 0.8, 1))
         underline.backgroundColor = UIColor.whiteColor()
-        blankTextField.addSubview(underline)
+//        blankTextField.addSubview(underline)
         
         addChillButton.frame = CGRectMake(view.frame.size.width/2 - 25, view.frame.height - 100, 50, 50)
         addChillButton.backgroundColor = UIColor.pSeafoam()
@@ -85,7 +87,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         addChillButton.setTitle("+", forState: UIControlState.Normal)
         addChillButton.titleLabel?.font = UIFont(name: "Helvetica-Bold", size: 30.0)
         addChillButton.addTarget(self, action: "showAddChillView", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(addChillButton)
+//        view.addSubview(addChillButton)
     }
     
     func addAddChillUI(){
@@ -137,6 +139,16 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
      */
     func getChills(){
         let query = PFQuery(className:"Chill")
+        
+        //FOR APPS CLUB
+        var chillType : String = blankTextField.text!
+        if(chillType.characters.count > 6){
+            chillType = chillType.stringByReplacingOccurrencesOfString("&Chill", withString: "")
+            chillType = chillType.lowercaseString
+            query.whereKey("type", containsString:chillType)
+        }
+        query.addDescendingOrder("createdAt")
+        
         query.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
             
@@ -165,7 +177,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
      */
     func addChill(){
         let chill = PFObject(className: "Chill")
-        chill["type"] = addChillTitle.text
+        chill["type"] = addChillTitle.text!.lowercaseString
         chill["details"] = addChillDetails.text
         chill.saveInBackground()
         hideAddChillView()
@@ -205,12 +217,25 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.text = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.letterCharacterSet().invertedSet).joinWithSeparator("")
         if(addChillTitle.isFirstResponder()){
             addChillDetails.becomeFirstResponder()
-        }else{
+        }else if(blankTextField.isFirstResponder()){
+            var blankText = blankTextField.text
+            blankText = blankText!.stringByReplacingOccurrencesOfString(" ", withString: "")
+            blankText = blankText!.stringByReplacingOccurrencesOfString("&", withString: "")
+            blankText = blankText!.stringByReplacingOccurrencesOfString("Chill", withString: "")
+            blankTextField.text = "\(blankText!)&Chill"
             textField.resignFirstResponder()
+            getChills()
         }
         return true
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        var blankText = textField.text
+        blankText = blankText!.stringByReplacingOccurrencesOfString("&Chill", withString: "")
+        textField.text = blankText
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
@@ -256,6 +281,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
         cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+        cell.selectionStyle = .None
         var currentChill : Chill = chillArray[indexPath.row]
         cell.chillDetailsLabel.text = currentChill.details
         
@@ -275,7 +301,7 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
         let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
         
         UIView.animateWithDuration(0.3) { () -> Void in
-            cell.profileImage.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
+            cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
 
         }
         
@@ -284,10 +310,11 @@ class ChillViewController: UIViewController, UITextFieldDelegate, UITextViewDele
 
             }) { (Bool) -> Void in
                 cell.profileImage.image = UIImage(named:"Snowflake")
+                cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
 
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
         
     }
 
@@ -312,6 +339,7 @@ class ChillTableViewCell: UITableViewCell {
         chillDetailsLabel.text = "Hey gurl let's chill!"
 //        chillDetailsLabel.textColor = UIColor.whiteColor()
         chillDetailsLabel.layer.masksToBounds = true
+        chillDetailsLabel.font = UIFont.systemFontOfSize(14.0)
         chillDetailsLabel.numberOfLines = -1
         containerView.addSubview(chillDetailsLabel)
         

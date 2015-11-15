@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ParseFacebookUtilsV4
 
 class LandingViewController: UIViewController {
     
@@ -39,7 +40,7 @@ class LandingViewController: UIViewController {
         
         titleLabel.text = "&Chill"
         titleLabel.frame = CGRectMake(0, view.frame.height * 0.06, view.frame.size.width, view.frame.size.height * 0.08)
-        titleLabel.textColor = UIColor.pSeafoam()
+        titleLabel.textColor = UIColor.cSeafoam()
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.font = UIFont(name: "Helvetica-Bold", size: 35.0)
         view.addSubview(titleLabel)
@@ -66,7 +67,7 @@ class LandingViewController: UIViewController {
         signUpButton.setTitle("Connect to Facebook", forState: UIControlState.Normal)
         signUpButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         signUpButton.titleLabel!.font = UIFont(name: "Helvetica", size: 15.0)
-        signUpButton.backgroundColor = UIColor.pSeafoam()
+        signUpButton.backgroundColor = UIColor.cSeafoam()
         signUpButton.addTarget(self, action: "loginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
         signUpButton.layer.cornerRadius = 5
         view.addSubview(signUpButton)
@@ -82,9 +83,23 @@ class LandingViewController: UIViewController {
     
     //TODO: Add User Login Flow
     func loginButtonPressed(){
-        performSegueWithIdentifier("loginSegue", sender: self)
+        
+        let permissions = [ "public_profile", "email", "user_friends" ]
+
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(permissions,  block: {  (user: PFUser?, error: NSError?) -> Void in
+            if let user = user {
+                if user.isNew {
+                    print("User signed up and logged in through Facebook!")
+                    self.performSegueWithIdentifier("loginSegue", sender: self)
+                } else {
+                    self.performSegueWithIdentifier("loginSegue", sender: self)
+                    print("User logged in through Facebook!")
+                }
+            } else {
+                print("Uh oh. The user cancelled the Facebook login.")
+            }
+        })
     }
-    
 }
 
 

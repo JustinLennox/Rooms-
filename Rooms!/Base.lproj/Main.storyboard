@@ -38,7 +38,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="pJj-fA-hEl" kind="relationship" relationship="viewControllers" id="dSx-c6-Uc0"/>
-                        <segue destination="mCE-5f-Py9" kind="relationship" relationship="viewControllers" id="B4r-K6-PE4"/>
+                        <segue destination="mCE-5f-Py9" kind="relationship" relationship="viewControllers" id="IOX-u1-3Mc"/>
                     </connections>
                 </tabBarController>
             </objects>
@@ -67,7 +67,7 @@
         <!--AddChill-->
         <scene sceneID="7dV-Wj-Zdj">
             <objects>
-                <viewController title="AddChill" id="mCE-5f-Py9" sceneMemberID="viewController">
+                <viewController title="AddChill" id="mCE-5f-Py9" customClass="AddChillViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="92z-af-bk3"/>
                         <viewControllerLayoutGuide type="bottom" id="Oni-Hs-SNp"/>

@@ -10,7 +10,7 @@
 		D001723B1BBF7E52005253FD /* LaunchBackground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723A1BBF7E52005253FD /* LaunchBackground.jpg */; };
 		D001723D1BBF82D4005253FD /* LaunchBack.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D001723C1BBF82D4005253FD /* LaunchBack.jpg */; };
 		D0869FC91BCF267200B607FF /* UIColor+CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */; };
-		D0869FCD1BCF26FF00B607FF /* ChillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FCC1BCF26FF00B607FF /* ChillViewController.swift */; };
+		D0869FCD1BCF26FF00B607FF /* NearbyChillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */; };
 		D08FE8571BF3D2F300450998 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08FE8501BF3D2F300450998 /* Bolts.framework */; };
 		D08FE8581BF3D2F300450998 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08FE8511BF3D2F300450998 /* Parse.framework */; };
 		D08FE8591BF3D2F300450998 /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D08FE8521BF3D2F300450998 /* ParseCrashReporting.framework */; };
@@ -32,6 +32,7 @@
 		D08FE87E1BF41D4100450998 /* prof.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D08FE87D1BF41D4100450998 /* prof.jpg */; };
 		D095DF5F1BE1695100CE294C /* Friends.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D095DF5E1BE1695100CE294C /* Friends.jpg */; };
 		D095DF631BE17ACA00CE294C /* Snowflake.png in Resources */ = {isa = PBXBuildFile; fileRef = D095DF621BE17ACA00CE294C /* Snowflake.png */; };
+		D097389C1BF86C47005C1A39 /* AddChillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D097389B1BF86C47005C1A39 /* AddChillViewController.swift */; };
 		D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */; };
 		D0A1BDFF1BBCA38900B510A7 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */; };
 		D0A1BE021BBCA38900B510A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0A1BE001BBCA38900B510A7 /* Main.storyboard */; };
@@ -62,7 +63,7 @@
 		D001723A1BBF7E52005253FD /* LaunchBackground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LaunchBackground.jpg; sourceTree = "<group>"; };
 		D001723C1BBF82D4005253FD /* LaunchBack.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LaunchBack.jpg; sourceTree = "<group>"; };
 		D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColors.swift"; sourceTree = "<group>"; };
-		D0869FCC1BCF26FF00B607FF /* ChillViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChillViewController.swift; sourceTree = "<group>"; };
+		D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyChillsViewController.swift; sourceTree = "<group>"; };
 		D08FE8501BF3D2F300450998 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		D08FE8511BF3D2F300450998 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D08FE8521BF3D2F300450998 /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
@@ -84,6 +85,7 @@
 		D08FE87D1BF41D4100450998 /* prof.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = prof.jpg; sourceTree = "<group>"; };
 		D095DF5E1BE1695100CE294C /* Friends.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Friends.jpg; sourceTree = "<group>"; };
 		D095DF621BE17ACA00CE294C /* Snowflake.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Snowflake.png; sourceTree = "<group>"; };
+		D097389B1BF86C47005C1A39 /* AddChillViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddChillViewController.swift; sourceTree = "<group>"; };
 		D0A1BDF91BBCA38900B510A7 /* Rooms!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rooms!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
@@ -196,9 +198,10 @@
 			children = (
 				D0A1BE001BBCA38900B510A7 /* Main.storyboard */,
 				D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */,
-				D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */,
 				D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */,
-				D0869FCC1BCF26FF00B607FF /* ChillViewController.swift */,
+				D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */,
+				D097389B1BF86C47005C1A39 /* AddChillViewController.swift */,
+				D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */,
 				D08FE87B1BF4123200450998 /* Chill.swift */,
 				D0A1BE031BBCA38900B510A7 /* Assets.xcassets */,
 				D0A1BE051BBCA38900B510A7 /* LaunchScreen.storyboard */,
@@ -364,7 +367,8 @@
 				D08FE87C1BF4123200450998 /* Chill.swift in Sources */,
 				D0869FC91BCF267200B607FF /* UIColor+CustomColors.swift in Sources */,
 				D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */,
-				D0869FCD1BCF26FF00B607FF /* ChillViewController.swift in Sources */,
+				D0869FCD1BCF26FF00B607FF /* NearbyChillsViewController.swift in Sources */,
+				D097389C1BF86C47005C1A39 /* AddChillViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

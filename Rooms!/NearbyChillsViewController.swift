@@ -27,15 +27,23 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     override func viewDidLoad() {
         addMainUI()
         addChillTableView()
-        updateUserLocation()
+        if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
+            let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
+            if(!firstTime && PFUser.currentUser() != nil){
+                updateUserLocation()
+            }
+        }
 
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = "Add an Activity"
-        if(PFUser.currentUser() != nil){
+        if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
+            let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
+            if(!firstTime && PFUser.currentUser() != nil){
                 getChills()
+            }
         }
     }
     
@@ -56,8 +64,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                             switch action.style{
                             default:
                                 self.updateUserLocation()
-                                NSUserDefaults.standardUserDefaults().setBool(false, forKey: "FirstTime")
-                                NSUserDefaults.standardUserDefaults().synchronize()
                             }
                         }
                     ))
@@ -141,10 +147,21 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             PFGeoPoint.geoPointForCurrentLocationInBackground {
                 (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
                 if error == nil {
+                    print("Get geo point")
                     // do something with the new geoPoint
                     PFUser.currentUser()?.setObject(geoPoint!, forKey: "location")
-                    PFUser.currentUser()?.saveInBackground()
-                    self.getChills()
+                    PFUser.currentUser()?.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                        print("Save geopoint")
+                        if(error == nil){
+                            print("No error saving geopoint")
+                            self.getChills()
+                            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "FirstTime")
+                            NSUserDefaults.standardUserDefaults().synchronize()
+                        }else{
+                            let alert = UIAlertController(title: "Oops@", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        }
+                    })
                 }else{
                     print("\(error)")
                 }

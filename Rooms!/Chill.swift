@@ -7,17 +7,26 @@
 //
 
 import Foundation
+import Parse
 
-class Chill{
+class Chill {
+    
+    var id : String
     var type : String
     var details : String
     var host : String
     var profilePic : String
+    var flipped : Bool = false
     
-    init(typeString : String, detailsString: String, hostString : String, profileString : String){
+    init(idString: String, typeString : String, detailsString: String, hostString : String, profileString : String){
+        id = idString
         type = typeString
         details = detailsString
         host = hostString
         profilePic = profileString
+    }
+    
+    class func parseClassName() -> String {
+        return "Chill"
     }
 }

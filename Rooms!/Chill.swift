@@ -16,17 +16,15 @@ class Chill {
     var details : String
     var host : String
     var profilePic : String
+    var chillers : [String]
     var flipped : Bool = false
     
-    init(idString: String, typeString : String, detailsString: String, hostString : String, profileString : String){
+    init(idString: String, typeString : String, detailsString: String, hostString : String, profileString : String, chillerArray : [String]){
         id = idString
         type = typeString
         details = detailsString
         host = hostString
         profilePic = profileString
-    }
-    
-    class func parseClassName() -> String {
-        return "Chill"
+        chillers = chillerArray
     }
 }

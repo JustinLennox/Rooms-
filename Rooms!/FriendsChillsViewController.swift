@@ -32,8 +32,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = "Add an Activity"
         if(PFUser.currentUser() != nil){
-//            getFacebookFriends()
-            getFriendsChills()
+            getFacebookFriends()
         }
         
     }
@@ -87,11 +86,13 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
                     self.chillArray = []
                     for chillDictionary in objects {
                         
-                        let chill = Chill(idString: String(chillDictionary["objectId"]),
+                        let chill = Chill(idString: chillDictionary.objectId!,
                             typeString: String(chillDictionary["type"]),
                             detailsString: String(chillDictionary["details"]),
                             hostString: String(chillDictionary["host"]),
-                            profileString:String(chillDictionary["profilePic"]))
+                            profileString:String(chillDictionary["profilePic"]),
+                            chillerArray: chillDictionary["chillers"] as! [String]
+                        )
 
                         self.chillArray.append(chill)
 
@@ -129,6 +130,13 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         }
     }
     
+    func joinChill(sender: UIButton){
+        let currentChill : Chill = chillArray[sender.tag]
+        let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
+        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+        parseChill.saveInBackground()
+    }
+    
     //MARK: - Table View
     
     let chillTableView = UITableView()
@@ -158,12 +166,21 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
         cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
         cell.selectionStyle = .None
+        cell.chillButton.addTarget(self, action: "joinChill:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.chillButton.tag = indexPath.row
         
         let currentChill : Chill = chillArray[indexPath.row]
         cell.chillDetailsLabel.text = currentChill.details
-        
         let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
         cell.profileImage.sd_setImageWithURL(profilePictureURL)
+        if(currentChill.flipped == true){
+            cell.profileImage.alpha = 0.0
+            cell.chillButton.alpha = 1.0
+        }else{
+            cell.profileImage.alpha = 1.0
+            cell.chillButton.alpha = 0.0
+        }
+        
         
         return cell
     }
@@ -173,26 +190,13 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(chillArray.count)
         return chillArray.count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
-        
-        UIView.animateWithDuration(0.3) { () -> Void in
-            cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
-            
-        }
-        
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
-            cell.profileImage.alpha = 0.5
-            
-            }) { (Bool) -> Void in
-                cell.profileImage.image = UIImage(named:"Snowflake")
-                cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
-                
-        }
+        let currentChill : Chill = chillArray[indexPath.row]
+        cell.flipCell(currentChill)
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }

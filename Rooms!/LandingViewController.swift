@@ -25,6 +25,17 @@ class LandingViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         view.backgroundColor = UIColor(red: (50.0/255.0), green: (50.0/255.0), blue: (50.0/255.0), alpha: 1.0)
         addUI()
+        if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") == nil){
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "FirstTime")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if(PFUser.currentUser() != nil){
+            self.performSegueWithIdentifier("loginSegue", sender: self)
+        }
     }
     
     override func prefersStatusBarHidden() -> Bool {

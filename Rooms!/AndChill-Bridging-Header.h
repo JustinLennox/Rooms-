@@ -14,5 +14,6 @@
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import "UIImageView+WebCache.h"
 
 #endif /* Rooms__Bridging_Header_h */

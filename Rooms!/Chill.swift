@@ -11,9 +11,13 @@ import Foundation
 class Chill{
     var type : String
     var details : String
+    var host : String
+    var profilePic : String
     
-    init(typeString : String, detailsString: String){
+    init(typeString : String, detailsString: String, hostString : String, profileString : String){
         type = typeString
         details = detailsString
+        host = hostString
+        profilePic = profileString
     }
 }

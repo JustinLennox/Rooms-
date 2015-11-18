@@ -74,6 +74,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         chill["type"] = addChillTitle.text!.lowercaseString
         chill["details"] = addChillDetails.text
         chill["host"] = PFUser.currentUser()
+        chill["profilePic"] = FBSDKAccessToken.currentAccessToken().tokenString
         PFGeoPoint.geoPointForCurrentLocationInBackground {
             (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
             if error == nil {

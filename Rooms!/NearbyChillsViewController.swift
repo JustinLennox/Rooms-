@@ -9,41 +9,65 @@
 import UIKit
 import Parse
 import QuartzCore
+import ParseFacebookUtilsV4
+import FBSDKCoreKit
 
 class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var chillArray : [Chill] = []
+    let chillTableCellHeight : CGFloat = 100.0
     
-    //MARK: - Main UI
+    //MARK: - UI
     let bannerBackground : UIView = UIView()
-    let andLabel : UILabel = UILabel()
-    let chillLabel : UILabel = UILabel()
     let blankTextField : UITextField = UITextField()
-    let addChillButton : UIButton = UIButton(type: UIButtonType.System)
     
     
     //MARK: - View Methods
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.topItem?.title = "Add an Activity"
-    }
-    
     override func viewDidLoad() {
         addMainUI()
         addChillTableView()
-        PFGeoPoint.geoPointForCurrentLocationInBackground {
-            (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
-            if error == nil {
-                // do something with the new geoPoint
-                PFUser.currentUser()?.setObject(geoPoint!, forKey: "location")
-                PFUser.currentUser()?.saveInBackground()
-                self.getChills()
-            }else{
-                print("\(error)")
+        updateUserLocation()
+
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.topItem?.title = "Add an Activity"
+        if(PFUser.currentUser() != nil){
+                getChills()
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //If there's no user logged in, send them to the Landing Screen
+        if(PFUser.currentUser() == nil){
+            performSegueWithIdentifier("showLoginSegue", sender: self)
+        }else{
+            //If there is a user and it's their first time using the app, tell them they need to allow us to access their location
+            if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
+                let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
+                if(firstTime){
+                    let alert = UIAlertController(title: "Allow &Chill to Access Your Location", message: "&Chill needs to use your location in order to find activities near you. Please allow &Chill access to your location when prompted.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler:
+                        { action in
+                            switch action.style{
+                            default:
+                                self.updateUserLocation()
+                                NSUserDefaults.standardUserDefaults().setBool(false, forKey: "FirstTime")
+                                NSUserDefaults.standardUserDefaults().synchronize()
+                            }
+                        }
+                    ))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
             }
         }
     }
+    
+
     
     
     func addMainUI(){
@@ -53,19 +77,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         
         let bannerY = bannerBackground.frame.height * 0.25
         let bannerHeight = bannerBackground.frame.height * 0.8
-        
-        andLabel.frame = CGRectMake(view.frame.width * 0.47, bannerY, view.frame.width * 0.06, bannerHeight)
-        andLabel.text = "&"
-        andLabel.adjustsFontSizeToFitWidth = true
-        andLabel.font = UIFont(name: "Helvetica", size: 30.0)
-        andLabel.textColor = UIColor.whiteColor()
-//        view.addSubview(andLabel)
-        
-        chillLabel.frame = CGRectMake(view.frame.width * 0.53, bannerY, view.frame.width * 0.49, bannerHeight)
-        chillLabel.text = "Chill"
-        chillLabel.font = UIFont(name: "Helvetica", size: 30.0)
-        chillLabel.textColor = UIColor.whiteColor()
-//        view.addSubview(chillLabel)
         
         blankTextField.frame = CGRectMake(view.frame.width * 0.125, bannerY, view.frame.width * 0.75, bannerHeight)
         blankTextField.textAlignment = NSTextAlignment.Center
@@ -77,19 +88,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         blankTextField.delegate = self
         blankTextField.tintColor = UIColor.whiteColor()
         view.addSubview(blankTextField)
-        
-        let underline : UIView = UIView(frame: CGRectMake(blankTextField.frame.width * 0.2, blankTextField.frame.height - blankTextField.frame.size.height * 0.25, blankTextField.frame.width * 0.8, 1))
-        underline.backgroundColor = UIColor.whiteColor()
-//        blankTextField.addSubview(underline)
-        
-        addChillButton.frame = CGRectMake(view.frame.size.width/2 - 25, view.frame.height - 100, 50, 50)
-        addChillButton.backgroundColor = UIColor.cSeafoam()
-        addChillButton.layer.cornerRadius = addChillButton.frame.width/2
-        addChillButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        addChillButton.setTitle("+", forState: UIControlState.Normal)
-        addChillButton.titleLabel?.font = UIFont(name: "Helvetica-Bold", size: 30.0)
-        addChillButton.addTarget(self, action: "showAddChillView", forControlEvents: UIControlEvents.TouchUpInside)
-//        view.addSubview(addChillButton)
+
     }
     
 
@@ -102,8 +101,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     func getChills(){
         let query = PFQuery(className:"Chill")
         let userLocation : PFGeoPoint = PFUser.currentUser()?.objectForKey("location") as! PFGeoPoint
-        print("User location:\(userLocation)")
-        query.whereKey("location", nearGeoPoint: userLocation, withinMiles: 25.0)
+        query.whereKey("location", nearGeoPoint: userLocation, withinMiles: 5.0)
+        query.limit = 25
 
         var chillType : String = blankTextField.text!
         if(chillType.characters.count > 6){
@@ -124,7 +123,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                     self.chillArray = []
                     for chillDictionary in objects {
                         
-                        var chill = Chill(typeString: String(chillDictionary["type"]), detailsString: String(chillDictionary["details"]))
+                        let chill = Chill(typeString: String(chillDictionary["type"]), detailsString: String(chillDictionary["details"]), hostString: String(chillDictionary["host"]), profileString:String(chillDictionary["profilePic"]))
                         self.chillArray.append(chill)
                     }
                     self.chillTableView.reloadData()
@@ -137,6 +136,23 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         }
     }
     
+    func updateUserLocation(){
+        if(PFUser.currentUser() != nil){
+            PFGeoPoint.geoPointForCurrentLocationInBackground {
+                (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
+                if error == nil {
+                    // do something with the new geoPoint
+                    PFUser.currentUser()?.setObject(geoPoint!, forKey: "location")
+                    PFUser.currentUser()?.saveInBackground()
+                    self.getChills()
+                }else{
+                    print("\(error)")
+                }
+            }
+        }
+    }
+    
+    //MARK: - TextField Methods
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.text = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.letterCharacterSet().invertedSet).joinWithSeparator("")
         if(blankTextField.isFirstResponder()){
@@ -187,14 +203,18 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
         cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
         cell.selectionStyle = .None
-        var currentChill : Chill = chillArray[indexPath.row]
+        
+        let currentChill : Chill = chillArray[indexPath.row]
         cell.chillDetailsLabel.text = currentChill.details
+        
+        let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
+        cell.profileImage.sd_setImageWithURL(profilePictureURL)
         
         return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100.0
+        return chillTableCellHeight
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -241,8 +261,7 @@ class ChillTableViewCell: UITableViewCell {
         containerView.layer.masksToBounds = true
         addSubview(containerView)
         
-        chillDetailsLabel.text = "Hey gurl let's chill!"
-//        chillDetailsLabel.textColor = UIColor.whiteColor()
+        chillDetailsLabel.text = ""
         chillDetailsLabel.layer.masksToBounds = true
         chillDetailsLabel.font = UIFont.systemFontOfSize(14.0)
         chillDetailsLabel.numberOfLines = -1
@@ -250,7 +269,6 @@ class ChillTableViewCell: UITableViewCell {
         
         profileImage.image = UIImage(named: "prof.jpg")
         profileImage.layer.masksToBounds = true
-//        profileImage.contentMode = UIViewContentMode.ScaleAspectFit
         containerView.addSubview(profileImage)
     }
     

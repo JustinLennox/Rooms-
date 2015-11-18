@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDisplayName</key>
+	<string>&amp;Chill</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -30,23 +32,23 @@
 	<array>
 		<string>armv7</string>
 	</array>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>fb141432489548373</string>
-            </array>
-        </dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>141432489548373</string>
-    <key>FacebookDisplayName</key>
-    <string>AndChill</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbauth2</string>
-    </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb141432489548373</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>141432489548373</string>
+	<key>FacebookDisplayName</key>
+	<string>AndChill</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbauth2</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -74,8 +76,8 @@
 			</dict>
 		</dict>
 	</dict>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>We want to send your location data to the NSA, please allow access to location services. (replace this text with whatever you want the dialog to say)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We want to send your location data to the NSA, please allow access to location services. (replace this text with whatever you want the dialog to say)</string>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>

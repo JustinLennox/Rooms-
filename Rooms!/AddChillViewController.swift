@@ -75,6 +75,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         chill["details"] = addChillDetails.text
         chill["host"] = PFUser.currentUser()?.objectForKey("facebookID")
         chill["profilePic"] = FBSDKAccessToken.currentAccessToken().tokenString
+        chill["chillers"] = []
         PFGeoPoint.geoPointForCurrentLocationInBackground {
             (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
             if error == nil {
@@ -89,29 +90,6 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         }
     }
     
-    /**
-//     *   Show the 'Add Chill' view by setting all of the Add Chill UI alphas to 1
-//     */
-//    func showAddChillView(){
-//        addChillBackground.alpha = 1.0
-//        addChillView.alpha = 1.0
-//        doneAddingChillButton.alpha = 1.0
-//    }
-//    
-//    /**
-//     *   Hide the 'Add Chill' view by setting all of the Add Chill UI alphas to 0
-//     *   Also, removes the text from the addChillTitle and addChillDetails
-//     */
-//    func hideAddChillView(){
-//        addChillBackground.alpha = 0.0
-//        addChillView.alpha = 0.0
-//        doneAddingChillButton.alpha = 0.0
-//        addChillTitle.resignFirstResponder()
-//        addChillDetails.resignFirstResponder()
-//        addChillTitle.text = ""
-//        addChillDetails.text = ""
-//    }
-    
     func chillBackgroundTapped(){
         if(addChillTitle.isFirstResponder() || addChillDetails.isFirstResponder()){
             addChillTitle.resignFirstResponder()
@@ -124,6 +102,8 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         textField.text = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.letterCharacterSet().invertedSet).joinWithSeparator("")
         if(addChillTitle.isFirstResponder()){
             addChillDetails.becomeFirstResponder()
+        }else{
+            textField.resignFirstResponder()
         }
         return true
     }

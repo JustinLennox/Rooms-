@@ -133,8 +133,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                             typeString: String(chillDictionary["type"]),
                             detailsString: String(chillDictionary["details"]),
                             hostString: String(chillDictionary["host"]),
-                            profileString:String(chillDictionary["profilePic"]))
-                        
+                            profileString:String(chillDictionary["profilePic"]),
+                            chillerArray: chillDictionary["chillers"] as! [String])
                         self.chillArray.append(chill)
                     }
                     self.chillTableView.reloadData()
@@ -145,6 +145,15 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                 print("Error: \(error!)")
             }
         }
+    }
+    
+    func joinChill(sender: UIButton){
+
+        let currentChill : Chill = chillArray[sender.tag]
+        let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
+        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+        parseChill.saveInBackground()
+        
     }
     
     func updateUserLocation(){
@@ -226,7 +235,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
         cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
         cell.selectionStyle = .None
-        cell.chillButton.addTarget(self, action: "addChill:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.chillButton.addTarget(self, action: "joinChill:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.chillButton.tag = indexPath.row
 
         let currentChill : Chill = chillArray[indexPath.row]
@@ -257,51 +266,10 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         blankTextField.resignFirstResponder()
         let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
         let currentChill : Chill = chillArray[indexPath.row]
-        
-        if(currentChill.flipped == false){  //We're flipping the cell over to show the Add Chill UI
-            UIView.animateWithDuration(0.3) { () -> Void in
-                cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
-
-            }
-            
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                cell.profileImage.alpha = 0.0
-
-                }) { (Bool) -> Void in
-                    currentChill.flipped = true
-                    cell.chillButton.alpha = 1.0
-                    cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
-
-            }
-        }else{  //We're flipping the cell to its original position to show the FBProfilePic
-            UIView.animateWithDuration(0.3) { () -> Void in
-                cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
-                
-            }
-            
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                cell.chillButton.alpha = 0.0
-                
-                }) { (Bool) -> Void in
-                    currentChill.flipped = false
-                    cell.profileImage.alpha = 1.0
-                    cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
-                    
-            }
-        }
+        cell.flipCell(currentChill)
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
-    
-    func addChill(sender: UIButton){
-        print("Button tag:\(sender.tag)")
-        let currentChill : Chill = chillArray[sender.tag]
-        let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
-        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
-        parseChill.saveInBackground()
-    }
-    
-    
     
 }
 

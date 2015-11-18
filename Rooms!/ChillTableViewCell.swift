@@ -50,4 +50,36 @@ class ChillTableViewCell: UITableViewCell {
         
     }
     
+    func flipCell(currentChill : Chill){
+        if(currentChill.flipped == false){  //We're flipping the cell over to show the Add Chill UI
+            
+            UIView.animateWithDuration(0.3) { () -> Void in
+                self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
+            }
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.profileImage.alpha = 0.0
+                
+                }) { (Bool) -> Void in
+                    currentChill.flipped = true
+                    self.chillButton.alpha = 1.0
+                    self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+            }
+            
+        }else{  //We're flipping the cell to its original position to show the FBProfilePic
+            UIView.animateWithDuration(0.3) { () -> Void in
+                self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
+            }
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.chillButton.alpha = 0.0
+                
+                }) { (Bool) -> Void in
+                    currentChill.flipped = false
+                    self.profileImage.alpha = 1.0
+                    self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+            }
+        }
+    }
+    
 }

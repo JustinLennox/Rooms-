@@ -1,94 +1,116 @@
 //
-//  LandingViewController.swift
+//  ViewController.swift
 //  Rooms!
 //
-//  Created by Justin Lennox on 10/2/15.
+//  Created by Justin Lennox on 9/30/15.
 //  Copyright © 2015 Justin Lennox. All rights reserved.
 //
 
 import UIKit
+import ParseFacebookUtilsV4
 
 class LandingViewController: UIViewController {
     
     //MARK: UI Properties
-    
-    let backgroundImageView = UIImageView()
+    let backgroundImage = UIImageView()
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
-    let signUpButton = UIButton(type: UIButtonType.System)
+    let assuranceLabel = UILabel()
     let loginButton = UIButton(type: UIButtonType.System)
+    let signUpButton = UIButton(type: UIButtonType.System)
     
-    //MARK: - View Methods
+    //MARK: View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // Do any additional setup after loading the view, typically from a nib.
         view.backgroundColor = UIColor(red: (50.0/255.0), green: (50.0/255.0), blue: (50.0/255.0), alpha: 1.0)
-        
         addUI()
-        
+        if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") == nil){
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "FirstTime")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
     }
     
-    //MARK: - UI Methods
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if(PFUser.currentUser() != nil){
+            self.performSegueWithIdentifier("loginSegue", sender: self)
+        }
+    }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    //MARK: UI Methods
+    
+    /**
+    *   Adds, styles, and positions all of the UI subviews in the view
+    */
     func addUI(){
         
-        titleLabel.text = "Rooms"
-        titleLabel.frame = CGRectMake(0, view.frame.height * 0.12, view.frame.size.width, view.frame.size.height * 0.08)
-        titleLabel.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
+        titleLabel.text = "&Chill"
+        titleLabel.frame = CGRectMake(0, view.frame.height * 0.06, view.frame.size.width, view.frame.size.height * 0.08)
+        titleLabel.textColor = UIColor.cSeafoam()
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 50.0)
+        titleLabel.font = UIFont(name: "Helvetica-Bold", size: 35.0)
         view.addSubview(titleLabel)
         
-        descriptionLabel.text = "The location-based activities app"
-        descriptionLabel.frame = CGRectMake(0, CGRectGetMaxY(titleLabel.frame) + view.frame.height * 0.03, view.frame.size.width, view.frame.size.height * 0.05)
+        descriptionLabel.text = "Find Other Chill People Near You To Do Chill Things With"
+        descriptionLabel.frame = CGRectMake(view.frame.size.width * 0.05, view.frame.size.height * 0.45, view.frame.size.width * 0.9, view.frame.size.height * 0.13)
         descriptionLabel.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
+        descriptionLabel.adjustsFontSizeToFitWidth = true;
         descriptionLabel.textAlignment = NSTextAlignment.Center
-        descriptionLabel.font = UIFont(name: "Avenir Next", size: 20.0)
+        descriptionLabel.numberOfLines = 2;
+        descriptionLabel.font = UIFont(name: "Helvetica", size: 25.0)
         view.addSubview(descriptionLabel)
         
-        signUpButton.frame = CGRectMake(view.frame.width/2.0 - view.frame.size.width * 0.25, view.frame.height * 0.4, view.frame.size.width * 0.50, view.frame.height * 0.1)
-        signUpButton.setTitle("Sign Up", forState: UIControlState.Normal)
+        assuranceLabel.text = "We'll never post to your Facebook or send invites or spam"
+        assuranceLabel.frame = CGRectMake(view.frame.width * 0.125, CGRectGetMaxY(descriptionLabel.frame), view.frame.width * 0.75, view.frame.size.height * 0.125)
+        assuranceLabel.textColor = UIColor(red: (230.0/255.0), green: (230.0/255.0), blue: (230.0/255.0), alpha: 1.0)
+        assuranceLabel.textAlignment = NSTextAlignment.Center
+        assuranceLabel.numberOfLines = 2;
+        assuranceLabel.font = UIFont(name: "Helvetica", size: 15.0)
+        view.addSubview(assuranceLabel)
+        
+        signUpButton.frame = CGRectMake(view.frame.size.width * 0.0625, CGRectGetMaxY(assuranceLabel.frame) + view.frame.height * 0.01, view.frame.size.width * 0.875, view.frame.height * 0.06)
+        signUpButton.titleLabel?.textAlignment = NSTextAlignment.Center
+        signUpButton.setTitle("Connect to Facebook", forState: UIControlState.Normal)
         signUpButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        signUpButton.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 30.0)
-        signUpButton.layer.borderColor = UIColor.whiteColor().CGColor
-        signUpButton.layer.borderWidth = 1
-        signUpButton.layer.cornerRadius = 3
-        signUpButton.layer.masksToBounds = true
-        signUpButton.backgroundColor = UIColor.clearColor()
-        signUpButton.addTarget(self, action: "signUpPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        signUpButton.titleLabel!.font = UIFont(name: "Helvetica", size: 15.0)
+        signUpButton.backgroundColor = UIColor.cSeafoam()
+        signUpButton.addTarget(self, action: "loginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        signUpButton.layer.cornerRadius = 5
         view.addSubview(signUpButton)
         
-        loginButton.frame = CGRectMake(view.frame.width/2.0 - view.frame.size.width * 0.25, view.frame.height * 0.55, view.frame.size.width * 0.50, view.frame.height * 0.1)
-        loginButton.setTitle("Login", forState: UIControlState.Normal)
-        loginButton.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 30.0)
-        loginButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        loginButton.backgroundColor = UIColor.clearColor()
-        loginButton.layer.borderColor = UIColor.whiteColor().CGColor
-        loginButton.layer.borderWidth = 1
-        loginButton.layer.cornerRadius = 3
-        loginButton.layer.masksToBounds = true
-        loginButton.addTarget(self, action: "loginPressed", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(loginButton)
-        
-        backgroundImageView.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
-        backgroundImageView.image = UIImage(named: "LaunchBack.jpg")
-        backgroundImageView.alpha = 0.5
-        view.addSubview(backgroundImageView)
-        view.sendSubviewToBack(backgroundImageView)
+        backgroundImage.image = UIImage(named: "Friends.jpg")
+        backgroundImage.contentMode = UIViewContentMode.ScaleAspectFill
+        backgroundImage.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
+        backgroundImage.alpha = 0.8
+        view.addSubview(backgroundImage)
+        view.sendSubviewToBack(backgroundImage)
         
     }
     
-    //MARK: - Button Methods
-    //TODO: Add user signup logic
-    func signUpPressed(){
-        performSegueWithIdentifier("loginSegue", sender: self)
+    //TODO: Add User Login Flow
+    func loginButtonPressed(){
         
-    }
-    
-    //TODO: Add user login logic
-    func loginPressed(){
-        performSegueWithIdentifier("loginSegue", sender: self)
-    }
+        let permissions = [ "public_profile", "email", "user_friends" ]
 
-
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(permissions,  block: {  (user: PFUser?, error: NSError?) -> Void in
+            if let user = user {
+                if user.isNew {
+                    print("User signed up and logged in through Facebook!")
+                    self.performSegueWithIdentifier("loginSegue", sender: self)
+                } else {
+                    self.performSegueWithIdentifier("loginSegue", sender: self)
+                    print("User logged in through Facebook!")
+                }
+            } else {
+                print("Uh oh. The user cancelled the Facebook login.")
+            }
+        })
+    }
 }
+
+

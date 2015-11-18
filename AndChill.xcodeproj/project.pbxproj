@@ -642,7 +642,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JustinLennox.AndChill;
 				PRODUCT_NAME = AndChill;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/Justin/Documents/Rooms!/Rooms!/AndChill-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Rooms!/AndChill-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -658,7 +658,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JustinLennox.AndChill;
 				PRODUCT_NAME = AndChill;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/Justin/Documents/Rooms!/Rooms!/AndChill-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Rooms!/AndChill-Bridging-Header.h";
 			};
 			name = Release;
 		};

@@ -129,7 +129,12 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                     self.chillArray = []
                     for chillDictionary in objects {
                         
-                        let chill = Chill(typeString: String(chillDictionary["type"]), detailsString: String(chillDictionary["details"]), hostString: String(chillDictionary["host"]), profileString:String(chillDictionary["profilePic"]))
+                        let chill = Chill(idString: chillDictionary.objectId!,
+                            typeString: String(chillDictionary["type"]),
+                            detailsString: String(chillDictionary["details"]),
+                            hostString: String(chillDictionary["host"]),
+                            profileString:String(chillDictionary["profilePic"]))
+                        
                         self.chillArray.append(chill)
                     }
                     self.chillTableView.reloadData()
@@ -158,7 +163,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "FirstTime")
                             NSUserDefaults.standardUserDefaults().synchronize()
                         }else{
-                            let alert = UIAlertController(title: "Oops@", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
+                            let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                             self.presentViewController(alert, animated: true, completion: nil)
                         }
                     })
@@ -196,7 +202,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     let chillTableView = UITableView()
     
     func addChillTableView(){
-        chillTableView.frame = CGRectMake(0, CGRectGetMaxY(bannerBackground.frame), view.frame.width, view.frame.height - bannerBackground.frame.height)
+        chillTableView.frame = CGRectMake(0, CGRectGetMaxY(bannerBackground.frame), view.frame.width, view.frame.height - bannerBackground.frame.height - 49)
         chillTableView.delegate = self
         chillTableView.dataSource = self
         chillTableView.registerClass(ChillTableViewCell.self, forCellReuseIdentifier: "ChillCell")
@@ -220,12 +226,21 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
         cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
         cell.selectionStyle = .None
-        
+        cell.chillButton.addTarget(self, action: "addChill:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.chillButton.tag = indexPath.row
+
         let currentChill : Chill = chillArray[indexPath.row]
         cell.chillDetailsLabel.text = currentChill.details
-        
         let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
         cell.profileImage.sd_setImageWithURL(profilePictureURL)
+        if(currentChill.flipped == true){
+            cell.profileImage.alpha = 0.0
+            cell.chillButton.alpha = 1.0
+        }else{
+            cell.profileImage.alpha = 1.0
+            cell.chillButton.alpha = 0.0
+        }
+        
         
         return cell
     }
@@ -241,65 +256,52 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         blankTextField.resignFirstResponder()
         let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
+        let currentChill : Chill = chillArray[indexPath.row]
         
-        UIView.animateWithDuration(0.3) { () -> Void in
-            cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
+        if(currentChill.flipped == false){  //We're flipping the cell over to show the Add Chill UI
+            UIView.animateWithDuration(0.3) { () -> Void in
+                cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
 
-        }
-        
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
-            cell.profileImage.alpha = 0.5
+            }
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                cell.profileImage.alpha = 0.0
 
-            }) { (Bool) -> Void in
-                cell.profileImage.image = UIImage(named:"Snowflake")
-                cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+                }) { (Bool) -> Void in
+                    currentChill.flipped = true
+                    cell.chillButton.alpha = 1.0
+                    cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
 
+            }
+        }else{  //We're flipping the cell to its original position to show the FBProfilePic
+            UIView.animateWithDuration(0.3) { () -> Void in
+                cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
+                
+            }
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                cell.chillButton.alpha = 0.0
+                
+                }) { (Bool) -> Void in
+                    currentChill.flipped = false
+                    cell.profileImage.alpha = 1.0
+                    cell.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+                    
+            }
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        
-    }
-
-    
-}
-
-
-class ChillTableViewCell: UITableViewCell {
-    
-    let containerView = UIView()
-    let profileImage = UIImageView()
-    let chillDetailsLabel = UILabel()
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        containerView.backgroundColor = UIColor.whiteColor()
-        containerView.layer.cornerRadius = 8.0
-        containerView.layer.masksToBounds = true
-        addSubview(containerView)
-        
-        chillDetailsLabel.text = ""
-        chillDetailsLabel.layer.masksToBounds = true
-        chillDetailsLabel.font = UIFont.systemFontOfSize(14.0)
-        chillDetailsLabel.numberOfLines = -1
-        containerView.addSubview(chillDetailsLabel)
-        
-        profileImage.image = UIImage(named: "prof.jpg")
-        profileImage.layer.masksToBounds = true
-        containerView.addSubview(profileImage)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("FATAL ERROR")
+    func addChill(sender: UIButton){
+        print("Button tag:\(sender.tag)")
+        let currentChill : Chill = chillArray[sender.tag]
+        let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
+        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+        parseChill.saveInBackground()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        containerView.frame = CGRectMake(frame.width * 0.025, frame.height * 0.05, frame.width * 0.95, frame.height * 0.9)
-        profileImage.frame = CGRectMake(0, 0, containerView.frame.height, containerView.frame.height)
-        chillDetailsLabel.frame = CGRectMake(profileImage.frame.width + 20, 0, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height)
-        
-    }
+    
     
 }
 

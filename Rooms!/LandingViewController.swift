@@ -100,11 +100,24 @@ class LandingViewController: UIViewController {
         PFFacebookUtils.logInInBackgroundWithReadPermissions(permissions,  block: {  (user: PFUser?, error: NSError?) -> Void in
             if let user = user {
                 if user.isNew {
-                    print("User signed up and logged in through Facebook!")
-                    self.performSegueWithIdentifier("loginSegue", sender: self)
+
                 } else {
-                    self.performSegueWithIdentifier("loginSegue", sender: self)
-                    print("User logged in through Facebook!")
+
+                }
+                
+                let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters: nil);
+                fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+                    if error == nil {
+                        print("USERID: \(result.objectForKey("id") as! String)")
+                        PFUser.currentUser()?.setObject(result.objectForKey("id") as! String, forKey: "facebookID")
+                        PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
+                            if(error == nil){
+                                self.performSegueWithIdentifier("loginSegue", sender: self)
+                            }
+                        })
+                    } else {
+                        print("Error Getting Friends \(error)");
+                    }
                 }
             } else {
                 print("Uh oh. The user cancelled the Facebook login.")

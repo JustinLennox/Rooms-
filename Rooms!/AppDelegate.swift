@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-
+        
         // Override point for customization after application launch.
         return true
     }

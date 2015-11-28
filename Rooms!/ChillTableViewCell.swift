@@ -13,6 +13,9 @@ class ChillTableViewCell: UITableViewCell {
     let chillButton = UIButton(type: UIButtonType.System)
     let chillDetailsLabel = UILabel()
     
+    /**
+    *   This is where we add all of the UI for the chill table view cell
+    */
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -41,6 +44,9 @@ class ChillTableViewCell: UITableViewCell {
         fatalError("FATAL ERROR")
     }
     
+    /**
+    *   This is where we position the UI for the chill table view cell
+    */
     override func layoutSubviews() {
         super.layoutSubviews()
         containerView.frame = CGRectMake(frame.width * 0.025, frame.height * 0.05, frame.width * 0.95, frame.height * 0.9)
@@ -50,31 +56,34 @@ class ChillTableViewCell: UITableViewCell {
         
     }
     
+    /**
+    *   This animates the chill cell when we tap it. It flip/rotates it and shows the front or back
+    */
     func flipCell(currentChill : Chill){
-        if(currentChill.flipped == false){  //We're flipping the cell over to show the Add Chill UI
+        if(currentChill.flipped == false){  //We're flipping the cell over to show the BACK
             
             UIView.animateWithDuration(0.3) { () -> Void in
                 self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
             }
             
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
+            UIView.animateWithDuration(0.15, animations: { () -> Void in //HIDE THE FRONT UI
                 self.profileImage.alpha = 0.0
                 
-                }) { (Bool) -> Void in
+                }) { (Bool) -> Void in //SHOW THE BACK UI
                     currentChill.flipped = true
                     self.chillButton.alpha = 1.0
                     self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
             }
             
-        }else{  //We're flipping the cell to its original position to show the FBProfilePic
+        }else{  //We're flipping the cell to its original position to show the FRONT
             UIView.animateWithDuration(0.3) { () -> Void in
                 self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 1.0, 0.0, 0.0)
             }
             
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
+            UIView.animateWithDuration(0.15, animations: { () -> Void in //HIDE THE BACK UI
                 self.chillButton.alpha = 0.0
                 
-                }) { (Bool) -> Void in
+                }) { (Bool) -> Void in  // SHOW THE FRONT UI
                     currentChill.flipped = false
                     self.profileImage.alpha = 1.0
                     self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)

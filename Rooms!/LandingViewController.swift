@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Darwin
 import ParseFacebookUtilsV4
 
 class LandingViewController: UIViewController {
@@ -16,8 +17,7 @@ class LandingViewController: UIViewController {
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
     let assuranceLabel = UILabel()
-    let loginButton = UIButton(type: UIButtonType.System)
-    let signUpButton = UIButton(type: UIButtonType.System)
+    let connectToFacebookButton = UIButton(type: UIButtonType.System)
     
     //MARK: View Methods
     override func viewDidLoad() {
@@ -74,15 +74,15 @@ class LandingViewController: UIViewController {
         assuranceLabel.font = UIFont(name: "Helvetica", size: 15.0)
         view.addSubview(assuranceLabel)
         
-        signUpButton.frame = CGRectMake(view.frame.size.width * 0.0625, CGRectGetMaxY(assuranceLabel.frame) + view.frame.height * 0.01, view.frame.size.width * 0.875, view.frame.height * 0.06)
-        signUpButton.titleLabel?.textAlignment = NSTextAlignment.Center
-        signUpButton.setTitle("Connect to Facebook", forState: UIControlState.Normal)
-        signUpButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        signUpButton.titleLabel!.font = UIFont(name: "Helvetica", size: 15.0)
-        signUpButton.backgroundColor = UIColor.cSeafoam()
-        signUpButton.addTarget(self, action: "loginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
-        signUpButton.layer.cornerRadius = 5
-        view.addSubview(signUpButton)
+        connectToFacebookButton.frame = CGRectMake(view.frame.size.width * 0.0625, CGRectGetMaxY(assuranceLabel.frame) + view.frame.height * 0.01, view.frame.size.width * 0.875, view.frame.height * 0.06)
+        connectToFacebookButton.titleLabel?.textAlignment = NSTextAlignment.Center
+        connectToFacebookButton.setTitle("Connect to Facebook", forState: UIControlState.Normal)
+        connectToFacebookButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        connectToFacebookButton.titleLabel!.font = UIFont(name: "Helvetica", size: 15.0)
+        connectToFacebookButton.backgroundColor = UIColor.cSeafoam()
+        connectToFacebookButton.addTarget(self, action: "loginButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        connectToFacebookButton.layer.cornerRadius = 5
+        view.addSubview(connectToFacebookButton)
         
         backgroundImage.image = UIImage(named: "Friends.jpg")
         backgroundImage.contentMode = UIViewContentMode.ScaleAspectFill

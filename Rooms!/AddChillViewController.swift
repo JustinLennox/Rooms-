@@ -24,6 +24,9 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         addUI()
     }
 
+    /**
+    *   This is where you can add/change/play with the UI for adding chills!
+    */
     func addUI(){
         
         addChillBackground.frame = view.frame

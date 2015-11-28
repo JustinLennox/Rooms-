@@ -45,6 +45,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
             performSegueWithIdentifier("showLoginSegue", sender: self)
         }
     }
+
     
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)

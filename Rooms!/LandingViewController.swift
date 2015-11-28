@@ -45,7 +45,8 @@ class LandingViewController: UIViewController {
     //MARK: UI Methods
     
     /**
-    *   Adds, styles, and positions all of the UI subviews in the view
+    *   Adds, styles, and positions all of the UI subviews in the view.
+    * This is where you can change/add/play with the landing screen UI!
     */
     func addUI(){
         

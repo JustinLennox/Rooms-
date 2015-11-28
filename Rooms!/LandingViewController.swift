@@ -95,7 +95,7 @@ class LandingViewController: UIViewController {
     //TODO: Add User Login Flow
     func loginButtonPressed(){
         
-        let permissions = [ "public_profile", "email", "user_friends" ]
+        let permissions = ["public_profile", "email", "user_friends"]
 
         PFFacebookUtils.logInInBackgroundWithReadPermissions(permissions,  block: {  (user: PFUser?, error: NSError?) -> Void in
             if let user = user {
@@ -108,7 +108,6 @@ class LandingViewController: UIViewController {
                 let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters: nil);
                 fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                     if error == nil {
-                        print("USERID: \(result.objectForKey("id") as! String)")
                         PFUser.currentUser()?.setObject(result.objectForKey("id") as! String, forKey: "facebookID")
                         PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                             if(error == nil){

@@ -14,8 +14,13 @@ import FBSDKCoreKit
 
 class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    //Chill Variables
     var chillArray : [Chill] = []
     let chillTableCellHeight : CGFloat = 100.0
+    
+    //Suggestion Variables
+    var suggestionArray = [[String:String]]()
+    let suggestionTableCellHeight : CGFloat = 75.0
     
     //MARK: - UI
     let bannerBackground : UIView = UIView()
@@ -26,14 +31,14 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     override func viewDidLoad() {
         addMainUI()
-        addChillTableView()
+        addTableViews()
         if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
             let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
             if(!firstTime && PFUser.currentUser() != nil){
                 updateUserLocation()
             }
         }
-
+        getSuggestions()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -102,7 +107,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     //MARK: - Adding & Getting Chills from the Backend
     
     /**
-     * Downloads our chills from the backend
+     * Downloads nearby chills from the backend
      */
     func getChills(){
         let query = PFQuery(className:"Chill")
@@ -112,8 +117,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
 
         var chillType : String = blankTextField.text!
         if(chillType.characters.count > 6){
-            chillType = chillType.stringByReplacingOccurrencesOfString("&Chill", withString: "")
             chillType = chillType.lowercaseString
+            chillType = chillType.stringByReplacingOccurrencesOfString("&chill", withString: "")
             query.whereKey("type", containsString:chillType)
         }
         query.addDescendingOrder("createdAt")
@@ -138,15 +143,19 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                         self.chillArray.append(chill)
                     }
                     self.chillTableView.reloadData()
-
+                    self.refreshControl.endRefreshing()
                 }
             } else {
                 // Log details of the failure
                 print("Error: \(error!)")
+                self.refreshControl.endRefreshing()
             }
         }
     }
     
+    /**
+     *  Adds the current user to the chill's chillers
+     */
     func joinChill(sender: UIButton){
 
         let currentChill : Chill = chillArray[sender.tag]
@@ -156,6 +165,9 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         
     }
     
+    /**
+     * Updates and stores the user's current GeoLocation
+     */
     func updateUserLocation(){
         if(PFUser.currentUser() != nil){
             PFGeoPoint.geoPointForCurrentLocationInBackground {
@@ -184,6 +196,51 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         }
     }
     
+    //MARK: - Getting Suggestions from the Backend
+    
+    func getSuggestions(){
+        let query = PFQuery(className:"Suggestion")
+    
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                
+                // Do something with the found objects
+                if let objects = objects as [PFObject]!  {
+                    self.suggestionArray = [[String:String]]()
+                    for suggestionObject in objects {
+                        let suggestionDictionary : [String:String] = ["type":suggestionObject["type"] as! String, "color":suggestionObject["color"] as! String]
+                        self.suggestionArray.append(suggestionDictionary)
+                    }
+                    self.suggestionTableView.reloadData()
+                    
+                }
+            } else {
+                // Log details of the failure
+                print("Error: \(error!)")
+            }
+        }
+
+    }
+    
+    func parseSuggestionColor(suggestion : [String:String]) -> UIColor {
+        let colorName = suggestion["color"]
+        if(colorName == "Blue"){
+            return UIColor.suggestionBlue()
+        }else if(colorName == "Red"){
+            return UIColor.suggestionRed()
+        }else if(colorName == "Yellow"){
+            return UIColor.suggestionYellow()
+        }else if(colorName == "Green"){
+            return UIColor.suggestionGreen()
+        }else if(colorName == "Black"){
+            return UIColor.suggestionBlack()
+        }else{
+            return UIColor.grayColor()
+        }
+    }
+    
     //MARK: - TextField Methods
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.text = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.letterCharacterSet().invertedSet).joinWithSeparator("")
@@ -195,22 +252,25 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             blankTextField.text = "\(blankText!)&Chill"
             textField.resignFirstResponder()
             getChills()
+            suggestionTableView.alpha = 0
         }
         return true
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
+        suggestionTableView.alpha = 1
         var blankText = textField.text
         blankText = blankText!.stringByReplacingOccurrencesOfString("&Chill", withString: "")
         textField.text = blankText
     }
     
 
-    //MARK: - Table View
+    //MARK: - Table Views
     
     let chillTableView = UITableView()
+    let suggestionTableView = UITableView()
     
-    func addChillTableView(){
+    func addTableViews(){
         chillTableView.frame = CGRectMake(0, CGRectGetMaxY(bannerBackground.frame), view.frame.width, view.frame.height - bannerBackground.frame.height - 49)
         chillTableView.delegate = self
         chillTableView.dataSource = self
@@ -219,57 +279,174 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         chillTableView.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
         view.addSubview(chillTableView)
         view.sendSubviewToBack(chillTableView)
-        let refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor.cRed()
+        
+        suggestionTableView.frame = CGRectMake(0, CGRectGetMaxY(bannerBackground.frame), view.frame.width, suggestionTableCellHeight * 4)
+        suggestionTableView.delegate = self
+        suggestionTableView.dataSource = self
+        suggestionTableView.separatorStyle = .None
+        suggestionTableView.alpha = 0
+        view.addSubview(suggestionTableView)
+
+        //***Added by Alan Guilfoyle
+        //Setup the loading view, which will hold the moving graphics
+        self.loadSnowView = SnowingView( frame: refreshControl.bounds )
+        //  Center the mode of the UIView
+        self.loadSnowView.contentMode = UIViewContentMode.Center
+        //  Set background color of the animation
+        self.loadSnowView.backgroundColor = UIColor.suggestionBlack()
+        
+        //Hide the original spinner icon
+        self.refreshControl.tintColor = UIColor.clearColor()
+        
+        //Add the loading colors views to our refresh control
+        self.refreshControl.addSubview( loadSnowView )
+        
+        //Initalize flags
+        self.isRefreshAnimating = false;
+        self.isRefreshIconsOverlap = false;
+        
         refreshControl.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
         chillTableView.addSubview(refreshControl)
     }
     
-    func refresh(refreshControl: UIRefreshControl) {
-        // Do your job, when done:
-        getChills()
-        refreshControl.endRefreshing()
-    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
-        cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
-        cell.selectionStyle = .None
-        cell.chillButton.addTarget(self, action: "joinChill:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.chillButton.tag = indexPath.row
+        
+        if(tableView == chillTableView){    //Settings for the Nearby Chill Table View
+            let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
+            cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+            cell.selectionStyle = .None
+            cell.chillButton.addTarget(self, action: "joinChill:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.chillButton.tag = indexPath.row
 
-        let currentChill : Chill = chillArray[indexPath.row]
-        cell.chillDetailsLabel.text = currentChill.details
-        let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
-        cell.profileImage.sd_setImageWithURL(profilePictureURL)
-        if(currentChill.flipped == true){
-            cell.profileImage.alpha = 0.0
-            cell.chillButton.alpha = 1.0
-        }else{
-            cell.profileImage.alpha = 1.0
-            cell.chillButton.alpha = 0.0
+            let currentChill : Chill = chillArray[indexPath.row]
+            cell.chillDetailsLabel.text = currentChill.details
+            let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
+            cell.profileImage.sd_setImageWithURL(profilePictureURL)
+            if(currentChill.flipped == true){
+                cell.profileImage.alpha = 0.0
+                cell.chillButton.alpha = 1.0
+            }else{
+                cell.profileImage.alpha = 1.0
+                cell.chillButton.alpha = 0.0
+            }
+            return cell
+        }else{  //Settings for the Suggestion Table View
+            let cell : UITableViewCell = UITableViewCell()
+            let currentSuggestion = suggestionArray[indexPath.row]
+
+            let suggestionLabel = UILabel()
+            suggestionLabel.frame = CGRectMake(0, 0, view.frame.width, suggestionTableCellHeight)
+            suggestionLabel.textAlignment = .Center
+            suggestionLabel.backgroundColor = parseSuggestionColor(currentSuggestion)
+            suggestionLabel.textColor = UIColor.whiteColor()
+            suggestionLabel.text = "\(currentSuggestion["type"]!)&"
+            suggestionLabel.font = UIFont(name: "Helvetica", size: 40.0)
+            suggestionLabel.adjustsFontSizeToFitWidth = true
+            cell.addSubview(suggestionLabel)
+            return cell
         }
         
-        
-        return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return chillTableCellHeight
+        if(tableView == chillTableView){    //chill table view height
+            return chillTableCellHeight
+        }else{  //Suggestion table view height
+            return suggestionTableCellHeight
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chillArray.count
+        if(tableView == chillTableView){    //chill table view count
+            return chillArray.count
+        }else{  //suggestion table view count
+            return suggestionArray.count
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         blankTextField.resignFirstResponder()
-        let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
-        let currentChill : Chill = chillArray[indexPath.row]
-        cell.flipCell(currentChill)
+        if(tableView == chillTableView){    //chill table view
+            let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
+            let currentChill : Chill = chillArray[indexPath.row]
+            cell.flipCell(currentChill)
+        }else{  //suggestion table view
+            let currentSuggestion = suggestionArray[indexPath.row]
+            blankTextField.text = "\(currentSuggestion["type"]!)&Chill"
+            getChills()
+            suggestionTableView.alpha = 0
+        }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
+    
+    //MARK: - REFRESH CONTROL
+    
+    //***Added by Alan Guilfoyle
+    var isRefreshIconsOverlap   = false;
+    var isRefreshAnimating      = false;
+    var loadSnowView            = UIView()
+    let refreshControl          = UIRefreshControl()
+    
+    func refresh(refreshControl: UIRefreshControl) {
+        //***Added by Alan Guilfoyle
+        //  Adding a delay to show the animation
+        let delayInSeconds = 1.0;
+        let popTime = dispatch_time( DISPATCH_TIME_NOW,
+            Int64( delayInSeconds * Double( NSEC_PER_SEC )));
+        
+        dispatch_after( popTime, dispatch_get_main_queue()) { () -> Void in
+            self.getChills()
+        }
+    }
+    
+    //***Added by Alan Guilfoyle
+    func animateRefreshView()
+    {
+        //  Flag that we are animating
+        self.isRefreshAnimating = true;
+        
+        //  Create an instance of the SnowingView
+        let animateIt = self.loadSnowView as! SnowingView
+        
+        //  Start the animations and remove all animations once complete, resetAnimation flags
+        animateIt.addSpinningAnimation() { success in
+            animateIt.removeAllAnimations()
+            animateIt.addSpinningAnimation( removedOnCompletion: true )
+            self.resetAnimation()
+        }
+    }
+    
+    //***Added by Alan Guilfoyle
+    func resetAnimation()
+    {
+        // Reset our flags and }background color
+        self.isRefreshAnimating = false;
+        self.isRefreshIconsOverlap = false;
+    }
+    
+    
+    //***Added by Alan Guilfoyle
+    func scrollViewDidScroll(scrollView: UIScrollView)
+    {
+        // Get the current size of the refresh controller
+        var refreshBounds = self.refreshControl.bounds;
+        
+        // Distance the table has been pulled >= 0
+        let pullDistance = max(0.0, -self.refreshControl.frame.origin.y);
+
+        // Set the encompassing view's frames
+        refreshBounds.size.height = pullDistance;
+        
+        self.loadSnowView.frame = refreshBounds;
+        
+        // If we're refreshing and the animation is not playing, then play the animation
+        if (self.refreshControl.refreshing && !self.isRefreshAnimating)
+        {
+            self.animateRefreshView()
+        }
+    }
+    
     
 }
 

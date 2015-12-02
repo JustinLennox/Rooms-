@@ -65,6 +65,20 @@
 		D0AF11CD1BFCF061006B5034 /* ChillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF11CC1BFCF061006B5034 /* ChillTableViewCell.swift */; };
 		D0AF11CF1BFCF1AD006B5034 /* MyChillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF11CE1BFCF1AD006B5034 /* MyChillsViewController.swift */; };
 		D0AF11D11BFCF472006B5034 /* FriendsChillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF11D01BFCF472006B5034 /* FriendsChillsViewController.swift */; };
+		D0B88EF01C0F979E00A7AEAD /* Snowing.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EEE1C0F979E00A7AEAD /* Snowing.png */; };
+		D0B88EF11C0F979E00A7AEAD /* SnowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B88EEF1C0F979E00A7AEAD /* SnowingView.swift */; };
+		D0B88EF41C0F97D400A7AEAD /* Ampersand SnowFlake.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EF21C0F97D400A7AEAD /* Ampersand SnowFlake.png */; };
+		D0B88EF51C0F97D400A7AEAD /* Ampersand SnowFlake@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EF31C0F97D400A7AEAD /* Ampersand SnowFlake@2x.png */; };
+		D0B88EF71C0F97D900A7AEAD /* chilling.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EF61C0F97D900A7AEAD /* chilling.png */; };
+		D0B88EF91C0F98B800A7AEAD /* chill.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EF81C0F98B800A7AEAD /* chill.png */; };
+		D0B88F011C0F9EE500A7AEAD /* Cafe.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFA1C0F9EE500A7AEAD /* Cafe.png */; };
+		D0B88F021C0F9EE500A7AEAD /* Camp.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFB1C0F9EE500A7AEAD /* Camp.png */; };
+		D0B88F031C0F9EE500A7AEAD /* CampFire.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFC1C0F9EE500A7AEAD /* CampFire.png */; };
+		D0B88F041C0F9EE500A7AEAD /* Camping.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFD1C0F9EE500A7AEAD /* Camping.png */; };
+		D0B88F051C0F9EE500A7AEAD /* cooler.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFE1C0F9EE500A7AEAD /* cooler.png */; };
+		D0B88F061C0F9EE500A7AEAD /* Movies.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFF1C0F9EE500A7AEAD /* Movies.png */; };
+		D0B88F071C0F9EE500A7AEAD /* Party.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88F001C0F9EE500A7AEAD /* Party.png */; };
+		D0B88F0C1C0FA4A700A7AEAD /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88F0B1C0FA4A700A7AEAD /* LaunchScreen.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +181,20 @@
 		D0AF11CC1BFCF061006B5034 /* ChillTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChillTableViewCell.swift; sourceTree = "<group>"; };
 		D0AF11CE1BFCF1AD006B5034 /* MyChillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyChillsViewController.swift; sourceTree = "<group>"; };
 		D0AF11D01BFCF472006B5034 /* FriendsChillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsChillsViewController.swift; sourceTree = "<group>"; };
+		D0B88EEE1C0F979E00A7AEAD /* Snowing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Snowing.png; path = "Rooms!/Snowing.png"; sourceTree = "<group>"; };
+		D0B88EEF1C0F979E00A7AEAD /* SnowingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnowingView.swift; sourceTree = "<group>"; };
+		D0B88EF21C0F97D400A7AEAD /* Ampersand SnowFlake.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Ampersand SnowFlake.png"; path = "Rooms!/Ampersand SnowFlake.png"; sourceTree = "<group>"; };
+		D0B88EF31C0F97D400A7AEAD /* Ampersand SnowFlake@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Ampersand SnowFlake@2x.png"; path = "Rooms!/Ampersand SnowFlake@2x.png"; sourceTree = "<group>"; };
+		D0B88EF61C0F97D900A7AEAD /* chilling.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = chilling.png; path = "Rooms!/chilling.png"; sourceTree = "<group>"; };
+		D0B88EF81C0F98B800A7AEAD /* chill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chill.png; sourceTree = "<group>"; };
+		D0B88EFA1C0F9EE500A7AEAD /* Cafe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cafe.png; sourceTree = "<group>"; };
+		D0B88EFB1C0F9EE500A7AEAD /* Camp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camp.png; sourceTree = "<group>"; };
+		D0B88EFC1C0F9EE500A7AEAD /* CampFire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CampFire.png; sourceTree = "<group>"; };
+		D0B88EFD1C0F9EE500A7AEAD /* Camping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camping.png; sourceTree = "<group>"; };
+		D0B88EFE1C0F9EE500A7AEAD /* cooler.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cooler.png; sourceTree = "<group>"; };
+		D0B88EFF1C0F9EE500A7AEAD /* Movies.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Movies.png; sourceTree = "<group>"; };
+		D0B88F001C0F9EE500A7AEAD /* Party.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Party.png; sourceTree = "<group>"; };
+		D0B88F0B1C0FA4A700A7AEAD /* LaunchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreen.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,12 +313,7 @@
 				D0A1BE101BBCA38900B510A7 /* Rooms!Tests */,
 				D0A1BE1B1BBCA38900B510A7 /* Rooms!UITests */,
 				D0A1BDFA1BBCA38900B510A7 /* Products */,
-				D0AF11561BF9CDCD006B5034 /* Snowflake.png */,
-				D0AF11541BF9CD01006B5034 /* SnowflakeSmall.png */,
-				D001723A1BBF7E52005253FD /* LaunchBackground.jpg */,
-				D001723C1BBF82D4005253FD /* LaunchBack.jpg */,
-				D095DF5E1BE1695100CE294C /* Friends.jpg */,
-				D08FE87D1BF41D4100450998 /* prof.jpg */,
+				D0B88F081C0F9EEE00A7AEAD /* Images */,
 			);
 			sourceTree = "<group>";
 		};
@@ -319,6 +342,7 @@
 				D08FE87B1BF4123200450998 /* Chill.swift */,
 				D0A1BE031BBCA38900B510A7 /* Assets.xcassets */,
 				D09738A91BF8740A005C1A39 /* AndChill-Bridging-Header.h */,
+				D0B88EEF1C0F979E00A7AEAD /* SnowingView.swift */,
 				D0A1BE051BBCA38900B510A7 /* LaunchScreen.storyboard */,
 				D0A1BE081BBCA38900B510A7 /* Info.plist */,
 			);
@@ -341,6 +365,32 @@
 				D0A1BE1E1BBCA38A00B510A7 /* Info.plist */,
 			);
 			path = "Rooms!UITests";
+			sourceTree = "<group>";
+		};
+		D0B88F081C0F9EEE00A7AEAD /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				D0B88F0B1C0FA4A700A7AEAD /* LaunchScreen.png */,
+				D0B88EEE1C0F979E00A7AEAD /* Snowing.png */,
+				D0B88EF21C0F97D400A7AEAD /* Ampersand SnowFlake.png */,
+				D0B88EF31C0F97D400A7AEAD /* Ampersand SnowFlake@2x.png */,
+				D0B88EF61C0F97D900A7AEAD /* chilling.png */,
+				D0AF11561BF9CDCD006B5034 /* Snowflake.png */,
+				D0AF11541BF9CD01006B5034 /* SnowflakeSmall.png */,
+				D001723A1BBF7E52005253FD /* LaunchBackground.jpg */,
+				D001723C1BBF82D4005253FD /* LaunchBack.jpg */,
+				D0B88EF81C0F98B800A7AEAD /* chill.png */,
+				D095DF5E1BE1695100CE294C /* Friends.jpg */,
+				D08FE87D1BF41D4100450998 /* prof.jpg */,
+				D0B88EFA1C0F9EE500A7AEAD /* Cafe.png */,
+				D0B88EFB1C0F9EE500A7AEAD /* Camp.png */,
+				D0B88EFC1C0F9EE500A7AEAD /* CampFire.png */,
+				D0B88EFD1C0F9EE500A7AEAD /* Camping.png */,
+				D0B88EFE1C0F9EE500A7AEAD /* cooler.png */,
+				D0B88EFF1C0F9EE500A7AEAD /* Movies.png */,
+				D0B88F001C0F9EE500A7AEAD /* Party.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -446,15 +496,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0B88F031C0F9EE500A7AEAD /* CampFire.png in Resources */,
 				D001723B1BBF7E52005253FD /* LaunchBackground.jpg in Resources */,
 				D0A1BE071BBCA38900B510A7 /* LaunchScreen.storyboard in Resources */,
 				D001723D1BBF82D4005253FD /* LaunchBack.jpg in Resources */,
+				D0B88EF71C0F97D900A7AEAD /* chilling.png in Resources */,
 				D0A1BE041BBCA38900B510A7 /* Assets.xcassets in Resources */,
+				D0B88F061C0F9EE500A7AEAD /* Movies.png in Resources */,
 				D0A1BE021BBCA38900B510A7 /* Main.storyboard in Resources */,
+				D0B88F071C0F9EE500A7AEAD /* Party.png in Resources */,
 				D09738A31BF87256005C1A39 /* FacebookSDKStrings.bundle in Resources */,
+				D0B88F041C0F9EE500A7AEAD /* Camping.png in Resources */,
+				D0B88F051C0F9EE500A7AEAD /* cooler.png in Resources */,
 				D08FE87E1BF41D4100450998 /* prof.jpg in Resources */,
+				D0B88EF41C0F97D400A7AEAD /* Ampersand SnowFlake.png in Resources */,
+				D0B88EF91C0F98B800A7AEAD /* chill.png in Resources */,
+				D0B88F011C0F9EE500A7AEAD /* Cafe.png in Resources */,
+				D0B88F021C0F9EE500A7AEAD /* Camp.png in Resources */,
 				D0AF11551BF9CD01006B5034 /* SnowflakeSmall.png in Resources */,
 				D095DF5F1BE1695100CE294C /* Friends.jpg in Resources */,
+				D0B88EF51C0F97D400A7AEAD /* Ampersand SnowFlake@2x.png in Resources */,
+				D0B88F0C1C0FA4A700A7AEAD /* LaunchScreen.png in Resources */,
+				D0B88EF01C0F979E00A7AEAD /* Snowing.png in Resources */,
 				D0AF11571BF9CDCD006B5034 /* Snowflake.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +549,7 @@
 				D0AF11CF1BFCF1AD006B5034 /* MyChillsViewController.swift in Sources */,
 				D0AF117D1BFC2A43006B5034 /* SDImageCache.m in Sources */,
 				D0AF11811BFC2A43006B5034 /* SDWebImageDownloaderOperation.m in Sources */,
+				D0B88EF11C0F979E00A7AEAD /* SnowingView.swift in Sources */,
 				D0AF118A1BFC2A43006B5034 /* UIView+WebCacheOperation.m in Sources */,
 				D08FE87C1BF4123200450998 /* Chill.swift in Sources */,
 				D0AF11841BFC2A43006B5034 /* UIButton+WebCache.m in Sources */,

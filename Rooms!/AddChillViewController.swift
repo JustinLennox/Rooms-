@@ -74,7 +74,11 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
      */
     func addChill(){
         let chill = PFObject(className: "Chill")
-        chill["type"] = addChillTitle.text!.lowercaseString
+        var chillType = addChillTitle.text!.lowercaseString
+        chillType = chillType.stringByReplacingOccurrencesOfString("&", withString: "")
+        chillType = chillType.stringByReplacingOccurrencesOfString("chill", withString: "")
+        chillType = chillType.stringByReplacingOccurrencesOfString(" ", withString: "")
+        chill["type"] = chillType
         chill["details"] = addChillDetails.text
         chill["host"] = PFUser.currentUser()?.objectForKey("facebookID")
         chill["profilePic"] = FBSDKAccessToken.currentAccessToken().tokenString

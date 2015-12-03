@@ -74,7 +74,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         query.whereKey("host", containedIn: PFUser.currentUser()?.objectForKey("facebookFriends") as! [String])
         query.limit = 25
         query.addDescendingOrder("createdAt")
-        
+        print(PFUser.currentUser()?.objectForKey("facebookFriends") as! [String])
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
@@ -107,7 +107,8 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
     }
     
     func getFacebookFriends() {
-        let fbRequest = FBSDKGraphRequest(graphPath:"/me/friends", parameters: ["fields":"friends"]);
+        let fbRequest = FBSDKGraphRequest(graphPath:"/me/friends", parameters: nil);
+        print(fbRequest)
         fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
             
             if error == nil {
@@ -116,7 +117,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
                 for(index, friend) in facebookFriendArray.enumerate(){
                     parseFriendArray.append(friend.objectForKey("id") as! String)
                 }
-                
+                print("Parse friend array: \(parseFriendArray)")
                 PFUser.currentUser()?.setObject(parseFriendArray, forKey: "facebookFriends")
                 PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                     self.getFriendsChills()

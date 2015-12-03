@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+=======
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nWk-IP-qQY">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+>>>>>>> master
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Landing View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Rooms_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LandingViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -18,31 +24,124 @@
                         <animations/>
                     </view>
                     <connections>
-                        <segue destination="naq-lS-nJQ" kind="show" identifier="loginSegue" id="fYj-oz-k7z"/>
+                        <segue destination="nWk-IP-qQY" kind="show" identifier="loginSegue" id="p5c-Aq-0vu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="263" y="322"/>
+            <point key="canvasLocation" x="279" y="-1480"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="OtX-Fo-FsX">
+        <!--Tab Bar Controller-->
+        <scene sceneID="5W8-36-Nf5">
             <objects>
-                <viewController id="naq-lS-nJQ" sceneMemberID="viewController">
+                <tabBarController id="nWk-IP-qQY" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="7ED-hS-rrV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="pJj-fA-hEl" kind="relationship" relationship="viewControllers" id="dSx-c6-Uc0"/>
+                        <segue destination="mCE-5f-Py9" kind="relationship" relationship="viewControllers" id="IOX-u1-3Mc"/>
+                        <segue destination="oR1-wE-Ezd" kind="relationship" relationship="viewControllers" id="Kj2-17-msd"/>
+                        <segue destination="WCW-IU-GOX" kind="relationship" relationship="viewControllers" id="Lbk-4t-VbX"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qpA-Lh-RWp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1013" y="-1480"/>
+        </scene>
+        <!--NearbyChills-->
+        <scene sceneID="RiJ-rY-dup">
+            <objects>
+                <viewController title="NearbyChills" id="pJj-fA-hEl" customClass="NearbyChillsViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Orm-4p-EkW"/>
-                        <viewControllerLayoutGuide type="bottom" id="qja-OR-fCa"/>
+                        <viewControllerLayoutGuide type="top" id="qzX-Ix-cEk"/>
+                        <viewControllerLayoutGuide type="bottom" id="VRc-0j-sis"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Kpl-QP-ZST">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <view key="view" contentMode="scaleToFill" id="Pyy-M4-HyN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <tabBarItem key="tabBarItem" title="Nearby" id="YMC-S5-5KN"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="showLoginSegue" id="vZK-dR-o3Z"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xVH-At-aaY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dEH-nh-WTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="959" y="322"/>
+            <point key="canvasLocation" x="225" y="-714"/>
+        </scene>
+        <!--AddChill-->
+        <scene sceneID="7dV-Wj-Zdj">
+            <objects>
+                <viewController title="AddChill" id="mCE-5f-Py9" customClass="AddChillViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="92z-af-bk3"/>
+                        <viewControllerLayoutGuide type="bottom" id="Oni-Hs-SNp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="W8q-vd-Po0">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <tabBarItem key="tabBarItem" title="" image="SnowflakeSmall.png" selectedImage="SnowflakeSmall.png" id="LEk-Zc-97Y"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="202-6f-oQo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1013" y="-714"/>
+        </scene>
+        <!--MyChillsViewController-->
+        <scene sceneID="r4J-NC-aTJ">
+            <objects>
+                <viewController id="oR1-wE-Ezd" userLabel="MyChillsViewController" customClass="MyChillsViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pb0-QB-bGF"/>
+                        <viewControllerLayoutGuide type="bottom" id="BEc-p5-X7l"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="J1D-JQ-3U2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <tabBarItem key="tabBarItem" title="My Chills" id="SBm-qP-4Lz" userLabel="MyChills"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tCI-BC-SPf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1705" y="-714"/>
+        </scene>
+        <!--FriendsChillsViewController-->
+        <scene sceneID="ReJ-NE-Lgu">
+            <objects>
+                <viewController id="WCW-IU-GOX" userLabel="FriendsChillsViewController" customClass="FriendsChillsViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ndD-Vf-8KN"/>
+                        <viewControllerLayoutGuide type="bottom" id="6QK-Hl-o75"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Q3g-2F-1MA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <tabBarItem key="tabBarItem" title="Friends" id="ywj-K4-H9v"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rmZ-JK-585" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2375" y="-714"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="SnowflakeSmall.png" width="30" height="30"/>
+    </resources>
 </document>

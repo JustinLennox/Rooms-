@@ -49,7 +49,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
     
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
-        bannerBackground.backgroundColor = UIColor.cSeafoam()
+        bannerBackground.backgroundColor = UIColor.icyBlue()
         view.addSubview(bannerBackground)
         
         let bannerY = bannerBackground.frame.height * 0.25
@@ -123,6 +123,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
                     parseChill!.deleteInBackground()
                 }else{
                     parseChill!.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+                    parseChill!.incrementKey("chillersCount", byAmount: -1)
                     parseChill!.saveInBackground()
                 }
             }

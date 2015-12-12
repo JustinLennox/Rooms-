@@ -1,18 +1,14 @@
 //
-//  FriendsChillsViewController.swift
+//  PopularChillsViewController.swift
 //  AndChill
 //
-//  Created by Justin Lennox on 11/18/15.
+//  Created by Justin Lennox on 12/7/15.
 //  Copyright © 2015 Justin Lennox. All rights reserved.
 //
 
 import UIKit
-import Parse
-import QuartzCore
-import ParseFacebookUtilsV4
-import FBSDKCoreKit
 
-class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class PopularChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var chillArray : [Chill] = []
     let chillTableCellHeight : CGFloat = 100.0
@@ -32,7 +28,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = "Add an Activity"
         if(PFUser.currentUser() != nil){
-            getFacebookFriends()
+            getPopularChills()
         }
         
     }
@@ -46,6 +42,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         }
     }
     
+    
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
         bannerBackground.backgroundColor = UIColor.icyBlue()
@@ -58,7 +55,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.font = UIFont.systemFontOfSize(25.0)
         titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = "Friends' Chills"
+        titleLabel.text = "Popular Chills"
         view.addSubview(titleLabel)
         
     }
@@ -66,17 +63,18 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
     //MARK: - Adding & Getting Chills from the Backend
     
     /**
-    * Downloads our chills from the backend that our friends are hosting
+    * Downloads our chills from the backend that we're the host of
     */
-    func getFriendsChills(){
-        print("Get friends chills")
-        let query = PFQuery(className:"Chill")
-        query.whereKey("host", containedIn: PFUser.currentUser()?.objectForKey("facebookFriends") as! [String])
-        query.limit = 25
-        query.addDescendingOrder("createdAt")
-        print(PFUser.currentUser()?.objectForKey("facebookFriends") as! [String])
+    func getPopularChills(){
         
-        query.findObjectsInBackgroundWithBlock {
+        let popularQuery = PFQuery(className: "Chill")
+        let userLocation : PFGeoPoint = PFUser.currentUser()?.objectForKey("location") as! PFGeoPoint
+        popularQuery.whereKey("location", nearGeoPoint: userLocation, withinMiles: 5.0)
+        popularQuery.limit = 25
+        popularQuery.addDescendingOrder("chillersCount")
+        
+        
+        popularQuery.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
@@ -93,11 +91,11 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
                             profileString:String(chillDictionary["profilePic"]),
                             chillerArray: chillDictionary["chillers"] as! [String]
                         )
-
+                        
                         self.chillArray.append(chill)
-
                     }
                     self.chillTableView.reloadData()
+                    
                 }
             } else {
                 // Log details of the failure
@@ -106,37 +104,17 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         }
     }
     
-    func getFacebookFriends() {
-        let fbRequest = FBSDKGraphRequest(graphPath:"/me/friends", parameters: nil);
-        print(fbRequest)
-        fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
-            
-            if error == nil {
-                let facebookFriendArray : NSArray = result.objectForKey("data") as! NSArray
-                var parseFriendArray : [String] = []
-                for(index, friend) in facebookFriendArray.enumerate(){
-                    parseFriendArray.append(friend.objectForKey("id") as! String)
-                }
-                print("Parse friend array: \(parseFriendArray)")
-                PFUser.currentUser()?.setObject(parseFriendArray, forKey: "facebookFriends")
-                PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
-                    self.getFriendsChills()
-                })
-                
-            } else {
-                
-                print("Error Getting Friends \(error)");
-                
-            }
-        }
-    }
-    
+    /**
+     *  Adds the current user to the chill's chillers
+     */
     func joinChill(sender: UIButton){
+        
         let currentChill : Chill = chillArray[sender.tag]
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
         parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
         parseChill.incrementKey("chillersCount")
         parseChill.saveInBackground()
+        
     }
     
     //MARK: - Table View
@@ -160,7 +138,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
     
     func refresh(refreshControl: UIRefreshControl) {
         // Do your job, when done:
-        getFriendsChills()
+        getPopularChills()
         refreshControl.endRefreshing()
     }
     
@@ -202,5 +180,4 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
-    
 }

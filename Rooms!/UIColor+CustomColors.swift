@@ -10,6 +10,11 @@ import UIKit
 
 extension UIColor{
     
+    //The color from the penguin landing screen photo
+    class func icyBlue() -> UIColor {
+        return UIColor(red: 120.0/255.0, green: 204.0/255.0, blue: 207.0/255.0, alpha: 1.0)
+    }
+    
     class func pBlue() -> UIColor {
         return UIColor(red: 33.0/255.0, green: 150.0/255.0, blue: 243.0/255.0, alpha: 1.0)
     }

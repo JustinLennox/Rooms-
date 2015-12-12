@@ -83,7 +83,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
-        bannerBackground.backgroundColor = UIColor.cSeafoam()
+        bannerBackground.backgroundColor = UIColor.icyBlue()
         view.addSubview(bannerBackground)
         
         let bannerY = bannerBackground.frame.height * 0.25
@@ -161,6 +161,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         let currentChill : Chill = chillArray[sender.tag]
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
         parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+        parseChill.incrementKey("chillersCount")
         parseChill.saveInBackground()
         
     }

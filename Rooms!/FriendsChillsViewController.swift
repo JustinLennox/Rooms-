@@ -175,6 +175,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         cell.chillDetailsLabel.text = currentChill.details
         let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
         cell.profileImage.sd_setImageWithURL(profilePictureURL)
+        cell.chillTypeLabel.text = "\(currentChill.type)&"
         if(currentChill.flipped == true){
             cell.profileImage.alpha = 0.0
             cell.chillButton.alpha = 1.0

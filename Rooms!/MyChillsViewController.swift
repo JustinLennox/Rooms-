@@ -175,7 +175,8 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
             cell.chillButton.alpha = 0.0
         }
         
-        
+        cell.chillTypeLabel.text = "\(currentChill.type)&"
+
         return cell
     }
     

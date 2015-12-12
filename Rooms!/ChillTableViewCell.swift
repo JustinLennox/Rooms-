@@ -12,6 +12,7 @@ class ChillTableViewCell: UITableViewCell {
     let profileImage = UIImageView()
     let chillButton = UIButton(type: UIButtonType.System)
     let chillDetailsLabel = UILabel()
+    let chillTypeLabel = UILabel()
     
     /**
     *   This is where we add all of the UI for the chill table view cell
@@ -24,15 +25,21 @@ class ChillTableViewCell: UITableViewCell {
         containerView.layer.masksToBounds = true
         addSubview(containerView)
         
+        profileImage.image = UIImage(named: "prof.jpg")
+        profileImage.layer.masksToBounds = true
+        containerView.addSubview(profileImage)
+        
         chillDetailsLabel.text = ""
         chillDetailsLabel.layer.masksToBounds = true
         chillDetailsLabel.font = UIFont.systemFontOfSize(14.0)
         chillDetailsLabel.numberOfLines = -1
         containerView.addSubview(chillDetailsLabel)
         
-        profileImage.image = UIImage(named: "prof.jpg")
-        profileImage.layer.masksToBounds = true
-        containerView.addSubview(profileImage)
+        chillTypeLabel.text = ""
+        chillTypeLabel.textAlignment = .Right
+        chillTypeLabel.textColor = UIColor.icyBlue()
+        chillTypeLabel.font = UIFont.systemFontOfSize(14.0)
+        containerView.addSubview(chillTypeLabel)
         
         chillButton.setBackgroundImage(UIImage(named: "Snowflake.png"), forState: UIControlState.Normal)
         chillButton.alpha = 0.0
@@ -51,7 +58,8 @@ class ChillTableViewCell: UITableViewCell {
         super.layoutSubviews()
         containerView.frame = CGRectMake(frame.width * 0.025, frame.height * 0.05, frame.width * 0.95, frame.height * 0.9)
         profileImage.frame = CGRectMake(0, 0, containerView.frame.height, containerView.frame.height)
-        chillDetailsLabel.frame = CGRectMake(profileImage.frame.width + 20, 0, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height)
+        chillDetailsLabel.frame = CGRectMake(profileImage.frame.width + 10, 5, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height * 0.8 - 5)
+        chillTypeLabel.frame = CGRectMake(profileImage.frame.width + 10, chillDetailsLabel.frame.height + 5, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height * 0.2)
         chillButton.frame = CGRectMake(10, 10, containerView.frame.height - 20, containerView.frame.height - 20)
         
     }

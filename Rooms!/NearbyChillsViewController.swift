@@ -330,6 +330,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                 cell.profileImage.alpha = 1.0
                 cell.chillButton.alpha = 0.0
             }
+            cell.chillTypeLabel.text = "\(currentChill.type)&"
             return cell
         }else{  //Settings for the Suggestion Table View
             let cell : UITableViewCell = UITableViewCell()

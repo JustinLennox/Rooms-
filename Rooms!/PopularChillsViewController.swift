@@ -160,7 +160,8 @@ class PopularChillsViewController: UIViewController, UITextFieldDelegate, UIText
             cell.profileImage.alpha = 1.0
             cell.chillButton.alpha = 0.0
         }
-        
+        cell.chillTypeLabel.text = "\(currentChill.type)&"
+
         
         return cell
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,19 +16,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="FW3-ao-OKq">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenBackground.png" translatesAutoresizingMaskIntoConstraints="NO" id="qXf-4O-Lcp">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenV2.png" translatesAutoresizingMaskIntoConstraints="NO" id="VI8-Hu-ygh">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                         </subviews>
-                        <animations/>
-                        <color key="backgroundColor" red="0.40784313729999999" green="0.76078431369999999" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.70524215092934039" green="0.71801340379586076" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="FW3-ao-OKq" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="22N-2Q-wgJ"/>
-                            <constraint firstItem="FW3-ao-OKq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="BET-qK-ZM4"/>
-                            <constraint firstItem="FW3-ao-OKq" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="dLf-ig-DBB"/>
-                            <constraint firstAttribute="trailing" secondItem="FW3-ao-OKq" secondAttribute="trailing" id="diQ-uk-KvO"/>
+                            <constraint firstItem="VI8-Hu-ygh" firstAttribute="trailing" secondItem="qXf-4O-Lcp" secondAttribute="trailing" id="6PY-j5-CDB"/>
+                            <constraint firstItem="VI8-Hu-ygh" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7h1-UP-qF3"/>
+                            <constraint firstItem="qXf-4O-Lcp" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="Ef6-C2-1bA"/>
+                            <constraint firstItem="VI8-Hu-ygh" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="WAZ-Si-CLn"/>
+                            <constraint firstItem="VI8-Hu-ygh" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="dHb-U3-gxl"/>
+                            <constraint firstAttribute="trailing" secondItem="VI8-Hu-ygh" secondAttribute="trailing" id="k1W-xO-cTJ"/>
+                            <constraint firstItem="VI8-Hu-ygh" firstAttribute="leading" secondItem="qXf-4O-Lcp" secondAttribute="leading" id="lHe-f6-AB9"/>
+                            <constraint firstItem="VI8-Hu-ygh" firstAttribute="top" secondItem="qXf-4O-Lcp" secondAttribute="top" id="tyx-ll-PRE"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -38,6 +42,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen.png" width="1037" height="1525"/>
+        <image name="LaunchScreenBackground.png" width="1037" height="1525"/>
+        <image name="LaunchScreenV2.png" width="1037" height="1525"/>
     </resources>
 </document>

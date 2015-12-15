@@ -12,7 +12,8 @@ import QuartzCore
 import ParseFacebookUtilsV4
 import FBSDKCoreKit
 
-class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, EnableLocationViewDelegate
+{
     
     //Chill Variables
     var chillArray : [Chill] = []
@@ -23,13 +24,15 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     let suggestionTableCellHeight : CGFloat = 75.0
     
     //MARK: - UI
+    let enableLocationView = EnableLocationView()
     let bannerBackground : UIView = UIView()
     let blankTextField : UITextField = UITextField()
     
     
     //MARK: - View Methods
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         addMainUI()
         addTableViews()
         if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
@@ -41,7 +44,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         getSuggestions()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool)
+    {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.topItem?.title = "Add an Activity"
         if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
@@ -52,8 +56,11 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(animated: Bool)
+    {
         super.viewDidAppear(animated)
+        
+        self.enableLocationView.enableLocationViewDelegate = self
         
         //If there's no user logged in, send them to the Landing Screen
         if(PFUser.currentUser() == nil){
@@ -62,20 +69,39 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             //If there is a user and it's their first time using the app, tell them they need to allow us to access their location
             if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
                 let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
-                if(firstTime){
-                    let alert = UIAlertController(title: "Allow &Chill to Access Your Location", message: "&Chill needs to use your location in order to find activities near you. Please allow &Chill access to your location when prompted.", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler:
-                        { action in
-                            switch action.style{
-                            default:
-                                self.updateUserLocation()
-                            }
-                        }
-                    ))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                if(firstTime)
+                {
+                    self.tabBarController?.tabBar.hidden = true
+                    self.view.addSubview( self.enableLocationView )
+                    
+                    self.enableLocationView.addEnableLocationAnimation { _ in
+                        self.enableLocationView.addAmbientAnimation()
+                    }
+                    
+                    
+                    
+//                    let alert = UIAlertController(title: "Allow &Chill to Access Your Location", message: "&Chill needs to use your location in order to find activities near you. Please allow &Chill access to your location when prompted.", preferredStyle: UIAlertControllerStyle.Alert)
+//                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler:
+//                        { action in
+//                            switch action.style{
+//                            default:
+//                                self.updateUserLocation()
+//                            }
+//                        }
+//                    ))
+//                    self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
         }
+    }
+    
+    
+    func allowButtonPressed(allowButton: UIButton)
+    {
+        self.tabBarController?.tabBar.hidden = false
+        self.enableLocationView.removeAllAnimations()
+        self.enableLocationView.removeFromSuperview()
+        self.updateUserLocation()
     }
     
 
@@ -100,6 +126,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         blankTextField.tintColor = UIColor.whiteColor()
         view.addSubview(blankTextField)
 
+        enableLocationView.frame = CGRectMake( 0, 0, view.frame.width, view.frame.height )
+        enableLocationView.backgroundColor = UIColor.clearColor()
     }
     
 

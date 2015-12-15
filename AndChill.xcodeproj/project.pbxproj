@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		BF5DB3671C209FF400982B8D /* LaunchScreenV2.png in Resources */ = {isa = PBXBuildFile; fileRef = BF5DB3661C209FF400982B8D /* LaunchScreenV2.png */; };
+		BF5DB36B1C20B84500982B8D /* Shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = BF5DB36A1C20B84500982B8D /* Shadow.png */; };
+		BF5DB36D1C20B9FC00982B8D /* EnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5DB36C1C20B9FC00982B8D /* EnableLocationView.swift */; };
 		BF925DC11C208AFB00C90756 /* Allow_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DBA1C208AFB00C90756 /* Allow_Button.png */; };
 		BF925DC21C208AFB00C90756 /* Enable.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DBB1C208AFB00C90756 /* Enable.png */; };
 		BF925DC31C208AFB00C90756 /* Floating_Ice_00.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DBC1C208AFB00C90756 /* Floating_Ice_00.png */; };
 		BF925DC61C208AFB00C90756 /* LocationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DBF1C208AFB00C90756 /* LocationBackground.png */; };
 		BF925DC71C208AFB00C90756 /* LocationPenguin.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DC01C208AFB00C90756 /* LocationPenguin.png */; };
-		BF925DD11C209C0E00C90756 /* EnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF925DD01C209C0E00C90756 /* EnableLocationView.swift */; };
 		BF925DD41C209C2A00C90756 /* Floating_Ice_01.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DD21C209C2A00C90756 /* Floating_Ice_01.png */; };
 		BF925DD51C209C2A00C90756 /* Floating_Ice_02.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DD31C209C2A00C90756 /* Floating_Ice_02.png */; };
 		BF925DD91C209D9900C90756 /* LaunchScreenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BF925DD81C209D9900C90756 /* LaunchScreenBackground.png */; };
@@ -110,12 +111,13 @@
 
 /* Begin PBXFileReference section */
 		BF5DB3661C209FF400982B8D /* LaunchScreenV2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreenV2.png; sourceTree = "<group>"; };
+		BF5DB36A1C20B84500982B8D /* Shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Shadow.png; sourceTree = "<group>"; };
+		BF5DB36C1C20B9FC00982B8D /* EnableLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnableLocationView.swift; sourceTree = "<group>"; };
 		BF925DBA1C208AFB00C90756 /* Allow_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Allow_Button.png; sourceTree = "<group>"; };
 		BF925DBB1C208AFB00C90756 /* Enable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enable.png; sourceTree = "<group>"; };
 		BF925DBC1C208AFB00C90756 /* Floating_Ice_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Floating_Ice_00.png; sourceTree = "<group>"; };
 		BF925DBF1C208AFB00C90756 /* LocationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationBackground.png; sourceTree = "<group>"; };
 		BF925DC01C208AFB00C90756 /* LocationPenguin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationPenguin.png; sourceTree = "<group>"; };
-		BF925DD01C209C0E00C90756 /* EnableLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnableLocationView.swift; sourceTree = "<group>"; };
 		BF925DD21C209C2A00C90756 /* Floating_Ice_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Floating_Ice_01.png; sourceTree = "<group>"; };
 		BF925DD31C209C2A00C90756 /* Floating_Ice_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Floating_Ice_02.png; sourceTree = "<group>"; };
 		BF925DD81C209D9900C90756 /* LaunchScreenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreenBackground.png; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 		BF36DA071C208AB400435358 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				BF5DB36A1C20B84500982B8D /* Shadow.png */,
 				BF925DD21C209C2A00C90756 /* Floating_Ice_01.png */,
 				BF925DD31C209C2A00C90756 /* Floating_Ice_02.png */,
 				BF925DBA1C208AFB00C90756 /* Allow_Button.png */,
@@ -280,7 +283,7 @@
 		BFE53FB91C20873900FF2780 /* Enable Location Animation */ = {
 			isa = PBXGroup;
 			children = (
-				BF925DD01C209C0E00C90756 /* EnableLocationView.swift */,
+				BF5DB36C1C20B9FC00982B8D /* EnableLocationView.swift */,
 				BF36DA071C208AB400435358 /* images */,
 			);
 			name = "Enable Location Animation";
@@ -545,6 +548,7 @@
 				BF925DC21C208AFB00C90756 /* Enable.png in Resources */,
 				D0B88F031C0F9EE500A7AEAD /* CampFire.png in Resources */,
 				D001723B1BBF7E52005253FD /* LaunchBackground.jpg in Resources */,
+				BF5DB36B1C20B84500982B8D /* Shadow.png in Resources */,
 				BF925DC61C208AFB00C90756 /* LocationBackground.png in Resources */,
 				BF925DD41C209C2A00C90756 /* Floating_Ice_01.png in Resources */,
 				BF925DD91C209D9900C90756 /* LaunchScreenBackground.png in Resources */,
@@ -599,7 +603,7 @@
 			files = (
 				D0A1BDFF1BBCA38900B510A7 /* LandingViewController.swift in Sources */,
 				D0AF11CD1BFCF061006B5034 /* ChillTableViewCell.swift in Sources */,
-				BF925DD11C209C0E00C90756 /* EnableLocationView.swift in Sources */,
+				BF5DB36D1C20B9FC00982B8D /* EnableLocationView.swift in Sources */,
 				D0AF11821BFC2A43006B5034 /* SDWebImageManager.m in Sources */,
 				D0AF11CF1BFCF1AD006B5034 /* MyChillsViewController.swift in Sources */,
 				D0AF117D1BFC2A43006B5034 /* SDImageCache.m in Sources */,

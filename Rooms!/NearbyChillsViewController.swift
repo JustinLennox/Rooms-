@@ -127,7 +127,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         view.addSubview(blankTextField)
 
         enableLocationView.frame = CGRectMake( 0, 0, view.frame.width, view.frame.height )
-        enableLocationView.backgroundColor = UIColor.clearColor()
     }
     
 

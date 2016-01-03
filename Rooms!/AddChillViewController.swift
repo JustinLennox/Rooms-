@@ -12,49 +12,73 @@ import CoreLocation
 
 class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate {
     
+    var delegate: addChillDelegate! = nil
+    
     //MARK: - UI
     let addChillTitle : UITextField = UITextField()
     let doneAddingChillButton : UIButton = UIButton(type: UIButtonType.System)
+    let backArrow = UIButton(type: .System)
+    let scrollView : TPKeyboardAvoidingScrollView = TPKeyboardAvoidingScrollView()
     
-    //MARK - Front Cell
+    //MARK - Public Overview Cell
     let frontContainerView = UIView()
     let profileImage = UIImageView()
-    let publicChillDetails : UITextView = UITextView()
+    let publicChillOverview : UITextView = UITextView()
     let chillTypeLabel = UILabel()
+    let publicOverviewPlaceholderText = "Public Overview (e.g. Main Description)"
     
-    //MARK - Back Cell
+    //MARK - Public Details Cell
+    let publicDetailsContainerView = UIView()
+    let publicDetailsLabel = UILabel()
+    let publicChillDetails : UITextView = UITextView()
+    let publicDetailsPlaceholderText = "Public Details (e.g. Time, Likes/Dislikes)"
+
+    
+    //MARK - Private Cell
     let backContainerView = UIView()
     let chillLabel = UILabel()
     let privateChillDetails = UITextView()
-    
-    //MARK: - UnusedUI
-    let snowflakeImageView = UIImageView(image: UIImage(named: "Snowflake.png"))
-    let addressLine1 : UITextField = UITextField()
-    let addressLine2 : UITextField = UITextField()
-    let hoursLabel : UILabel = UILabel()
-    let startHoursFirstTF = UITextField()
-    let startHoursColon = UILabel()
-    let startHoursSecondTF = UITextField()
-    let hoursDash = UILabel()
-    let endHoursFirstTF = UITextField()
-    let endHoursColon = UILabel()
-    let endHoursSecondTF = UITextField()
-    
+    let privatePlaceholderText = "Private Details (e.g. Address/Location, Phone Number)"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.flatGray()
+        view.backgroundColor = UIColor.clearColor()
         addUI()
         addFrontCellUI()
+        addPublicDetailsUI()
         addBackCellUI()
     }
     
     func addUI(){
         
-        doneAddingChillButton.frame = CGRectMake(view.frame.width/2 - 25, 500, 50, 50)
-        doneAddingChillButton.setBackgroundImage(UIImage(named: "Snowflake.png"), forState: UIControlState.Normal)
-        doneAddingChillButton.addTarget(self, action: "addChill", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(doneAddingChillButton)
+        scrollView.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
+        view.addSubview(scrollView)
+        
+        addChillTitle.frame = CGRectMake(view.frame.width * 0.025, CGRectGetMidY(view.frame) - 200, view.frame.width * 0.95, 50)
+        addChillTitle.backgroundColor = UIColor.icyBlue()
+        addChillTitle.textColor = UIColor.whiteColor()
+        addChillTitle.layer.cornerRadius = 8.0
+        addChillTitle.layer.masksToBounds = true
+        addChillTitle.clearButtonMode = .WhileEditing
+        addChillTitle.textAlignment = NSTextAlignment.Center
+        addChillTitle.placeholder = "Type of Chill"
+        addChillTitle.delegate = self
+        addChillTitle.font = UIFont(name: "Helvetica-Bold", size: 25.0)
+        addChillTitle.tintColor = UIColor.whiteColor()
+        addChillTitle.returnKeyType = .Done
+        scrollView.addSubview(addChillTitle)
+        
+        backArrow.frame = CGRectMake(CGRectGetMinX(addChillTitle.frame), CGRectGetMinY(addChillTitle.frame) - 15, 30, 30)
+        backArrow.contentMode = .ScaleAspectFit
+        backArrow.imageView?.contentMode = .ScaleAspectFit
+        backArrow.setBackgroundImage(UIImage(named: "backArrow.png"), forState: .Normal)
+        backArrow.addTarget(self, action: "backPressed", forControlEvents: .TouchUpInside)
+        view.addSubview(backArrow)
+        
+        doneAddingChillButton.frame = CGRectMake(view.frame.width/2 - 25, CGRectGetMidY(view.frame) + 160, 50, 50)
+        doneAddingChillButton.setBackgroundImage(UIImage(named: "ChillSnowflakeSmall.png"), forState: UIControlState.Normal)
+        doneAddingChillButton.addTarget(self, action: "doneAddingChill", forControlEvents: UIControlEvents.TouchUpInside)
+        scrollView.addSubview(doneAddingChillButton)
     
     }
 
@@ -63,22 +87,11 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
     */
     func addFrontCellUI(){
         
-        addChillTitle.frame = CGRectMake(0, 100, view.frame.width, 100)
-        addChillTitle.backgroundColor = UIColor.icyBlue()
-        addChillTitle.textColor = UIColor.whiteColor()
-        addChillTitle.textAlignment = NSTextAlignment.Center
-        addChillTitle.placeholder = "Type of Chill"
-        addChillTitle.delegate = self
-        addChillTitle.font = UIFont(name: "Helvetica-Bold", size: 25.0)
-        addChillTitle.tintColor = UIColor.whiteColor()
-        addChillTitle.returnKeyType = .Next
-        view.addSubview(addChillTitle)
-        
         frontContainerView.frame = CGRectMake(view.frame.width * 0.025, CGRectGetMaxY(addChillTitle.frame) + 10, view.frame.width * 0.95, 90)
         frontContainerView.backgroundColor = UIColor.whiteColor()
         frontContainerView.layer.cornerRadius = 8.0
         frontContainerView.layer.masksToBounds = true
-        view.addSubview(frontContainerView)
+        scrollView.addSubview(frontContainerView)
         
         profileImage.image = UIImage(named: "prof.jpg")
         if let accessToken = FBSDKAccessToken.currentAccessToken() {
@@ -89,17 +102,18 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         profileImage.layer.masksToBounds = true
         frontContainerView.addSubview(profileImage)
         
-        publicChillDetails.frame = CGRectMake(profileImage.frame.width + 10, 5, frontContainerView.frame.width - profileImage.frame.width - 20, frontContainerView.frame.height * 0.8 - 5)
-        publicChillDetails.layer.masksToBounds = true
-        publicChillDetails.backgroundColor = UIColor.whiteColor()
-        publicChillDetails.delegate = self
-        publicChillDetails.returnKeyType = .Next
-        publicChillDetails.textColor = UIColor.blackColor()
-        publicChillDetails.textAlignment = NSTextAlignment.Center
-        publicChillDetails.font = UIFont.systemFontOfSize(14.0)
-        frontContainerView.addSubview(publicChillDetails)
+        publicChillOverview.frame = CGRectMake(profileImage.frame.width + 10, 5, frontContainerView.frame.width - profileImage.frame.width - 20, frontContainerView.frame.height * 0.8 - 5)
+        publicChillOverview.layer.masksToBounds = true
+        publicChillOverview.backgroundColor = UIColor.whiteColor()
+        publicChillOverview.delegate = self
+        publicChillOverview.returnKeyType = .Done
+        publicChillOverview.text = publicOverviewPlaceholderText
+        publicChillOverview.textColor = UIColor.flatGray()
+        publicChillOverview.textAlignment = NSTextAlignment.Center
+        publicChillOverview.font = UIFont.systemFontOfSize(14.0)
+        frontContainerView.addSubview(publicChillOverview)
         
-        chillTypeLabel.frame = CGRectMake(profileImage.frame.width + 10, publicChillDetails.frame.height + 5, frontContainerView.frame.width - profileImage.frame.width - 20, frontContainerView.frame.height * 0.2)
+        chillTypeLabel.frame = CGRectMake(profileImage.frame.width + 10, publicChillOverview.frame.height + 5, frontContainerView.frame.width - profileImage.frame.width - 20, frontContainerView.frame.height * 0.2)
         chillTypeLabel.text = ""
         chillTypeLabel.textAlignment = .Right
         chillTypeLabel.textColor = UIColor.icyBlue()
@@ -108,126 +122,78 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         
     }
     
+    func addPublicDetailsUI(){
+        
+        publicDetailsContainerView.frame = CGRectMake(view.frame.width * 0.025, CGRectGetMaxY(frontContainerView.frame) + 10, view.frame.width * 0.95, 90)
+        publicDetailsContainerView.backgroundColor = UIColor.whiteColor()
+        publicDetailsContainerView.layer.cornerRadius = 8.0
+        publicDetailsContainerView.layer.masksToBounds = true
+        scrollView.addSubview(publicDetailsContainerView)
+        
+        publicDetailsLabel.frame = CGRectMake(0, 0, publicDetailsContainerView.frame.height, publicDetailsContainerView.frame.height)
+        publicDetailsLabel.text = "Public\nDetails"
+        publicDetailsLabel.numberOfLines = 2
+        publicDetailsLabel.textColor = UIColor.whiteColor()
+        publicDetailsLabel.textAlignment = .Center
+        publicDetailsLabel.backgroundColor = UIColor.icyBlue()
+        publicDetailsContainerView.addSubview(publicDetailsLabel)
+        
+        publicChillDetails.frame = CGRectMake(profileImage.frame.width + 10, 5, frontContainerView.frame.width - profileImage.frame.width - 20, frontContainerView.frame.height * 0.8 - 5)
+        publicChillDetails.layer.masksToBounds = true
+        publicChillDetails.backgroundColor = UIColor.whiteColor()
+        publicChillDetails.delegate = self
+        publicChillDetails.returnKeyType = .Done
+        publicChillDetails.text = publicDetailsPlaceholderText
+        publicChillDetails.textColor = UIColor.flatGray()
+        publicChillDetails.textAlignment = NSTextAlignment.Center
+        publicChillDetails.font = UIFont.systemFontOfSize(14.0)
+        publicDetailsContainerView.addSubview(publicChillDetails)
+        
+    }
+    
     func addBackCellUI(){
         
-        backContainerView.frame = CGRectMake(view.frame.width * 0.025, CGRectGetMaxY(frontContainerView.frame) + 10, view.frame.width * 0.95, 90)
+        backContainerView.frame = CGRectMake(view.frame.width * 0.025, CGRectGetMaxY(publicDetailsContainerView.frame) + 10, view.frame.width * 0.95, 90)
         backContainerView.backgroundColor = UIColor.whiteColor()
         backContainerView.layer.cornerRadius = 8.0
         backContainerView.layer.masksToBounds = true
-        view.addSubview(backContainerView)
+        scrollView.addSubview(backContainerView)
         
         chillLabel.frame = CGRectMake(0, 0, backContainerView.frame.height, backContainerView.frame.height)
-        chillLabel.text = "Chill"
+        chillLabel.text = "Private\nDetails"
+        chillLabel.numberOfLines = 2
         chillLabel.textColor = UIColor.whiteColor()
         chillLabel.textAlignment = .Center
         chillLabel.backgroundColor = UIColor.icyBlue()
         backContainerView.addSubview(chillLabel)
         
-        privateChillDetails.frame = CGRectMake(profileImage.frame.width + 10, 5, frontContainerView.frame.width - profileImage.frame.width - 20, frontContainerView.frame.height * 0.8 - 5)
+        privateChillDetails.frame = CGRectMake(chillLabel.frame.width + 10, 5, backContainerView.frame.width - profileImage.frame.width - 20, backContainerView.frame.height * 0.8 - 5)
         privateChillDetails.layer.masksToBounds = true
         privateChillDetails.backgroundColor = UIColor.whiteColor()
         privateChillDetails.delegate = self
-        privateChillDetails.returnKeyType = .Next
-        privateChillDetails.textColor = UIColor.blackColor()
+        privateChillDetails.text = privatePlaceholderText
+        privateChillDetails.returnKeyType = .Done
+        privateChillDetails.textColor = UIColor.flatGray()
         privateChillDetails.textAlignment = NSTextAlignment.Center
         privateChillDetails.font = UIFont.systemFontOfSize(14.0)
-        frontContainerView.addSubview(privateChillDetails)
+        backContainerView.addSubview(privateChillDetails)
         
 
         
     }
     
-    /**This is unused UI that could be added in later**/
-    func addOtherUI(){
-        
-        addressLine1.frame = CGRectMake(snowflakeImageView.frame.width, backContainerView.frame.height * 0.2, backContainerView.frame.width - 200.0, frontContainerView.frame.height * 0.3)
-        addressLine1.textAlignment = .Center
-        addressLine1.placeholder = "Address Line 1"
-        addressLine1.font = UIFont.systemFontOfSize(14.0)
-        backContainerView.addSubview(addressLine1)
-        
-        addressLine2.frame = CGRectMake(snowflakeImageView.frame.width, CGRectGetMaxY(addressLine1.frame), backContainerView.frame.width - 200.0, backContainerView.frame.height * 0.3)
-        addressLine2.placeholder = "Address Line 2"
-        addressLine2.textAlignment = .Center
-        addressLine2.font = UIFont.systemFontOfSize(14.0)
-        backContainerView.addSubview(addressLine2)
-        
-        let blueLine = UIView(frame: CGRectMake(CGRectGetMaxX(addressLine1.frame), 0, 1, backContainerView.frame.height))
-        blueLine.backgroundColor = UIColor.icyBlue()
-        backContainerView.addSubview(blueLine)
-        
-        hoursLabel.frame = CGRectMake(CGRectGetMaxX(addressLine1.frame), 0, 100.0, backContainerView.frame.height)
-        hoursLabel.text = "??:?? PM\n-\n??:?? PM"
-        hoursLabel.numberOfLines = 3
-        hoursLabel.adjustsFontSizeToFitWidth = true
-        hoursLabel.textAlignment = .Center
-        hoursLabel.font = UIFont.systemFontOfSize(14.0)
-        backContainerView.addSubview(hoursLabel)
-        
-        let yPosition = CGRectGetMaxY(backContainerView.frame) + self.view.frame.size.height * 0.1
-        let midX = CGRectGetMidX(self.view.frame)
-        
-        startHoursFirstTF.frame = CGRectMake(midX - 115, yPosition, 40, 30)
-        startHoursFirstTF.text = "??"
-        startHoursFirstTF.layer.borderColor = UIColor.icyBlue().CGColor
-        startHoursFirstTF.layer.borderWidth = 1.0
-        startHoursFirstTF.layer.cornerRadius = 8.0
-        startHoursFirstTF.keyboardType = .NumberPad
-        startHoursFirstTF.textAlignment = .Center
-        startHoursFirstTF.delegate = self
-        startHoursFirstTF.font = UIFont.systemFontOfSize(20.0)
-        view.addSubview(startHoursFirstTF)
-        
-        startHoursColon.frame = CGRectMake(CGRectGetMaxX(startHoursFirstTF.frame) + 5, yPosition, 10, 30)
-        startHoursColon.text = ":"
-        startHoursColon.textAlignment = .Center
-        startHoursColon.font = UIFont.systemFontOfSize(20.0)
-        view.addSubview(startHoursColon)
-        
-        startHoursSecondTF.frame = CGRectMake(CGRectGetMaxX(startHoursColon.frame) + 5, yPosition, 40, 30)
-        startHoursSecondTF.text = "??"
-        startHoursSecondTF.textAlignment = .Center
-        startHoursSecondTF.layer.borderColor = UIColor.icyBlue().CGColor
-        startHoursSecondTF.layer.borderWidth = 1.0
-        startHoursSecondTF.layer.cornerRadius = 8.0
-        startHoursSecondTF.delegate = self
-        startHoursSecondTF.keyboardType = .NumberPad
-        startHoursSecondTF.font = UIFont.systemFontOfSize(20.0)
-        view.addSubview(startHoursSecondTF)
-        
-        hoursDash.frame = CGRectMake(midX - 10, yPosition, 20, 30)
-        hoursDash.text = "-"
-        hoursDash.textAlignment = .Center
-        hoursDash.font = UIFont.systemFontOfSize(14.0)
-        view.addSubview(hoursDash)
-
-        endHoursFirstTF.frame = CGRectMake(midX + 15, yPosition, 40, 30)
-        endHoursFirstTF.text = "??"
-        endHoursFirstTF.layer.borderColor = UIColor.icyBlue().CGColor
-        endHoursFirstTF.layer.borderWidth = 1.0
-        endHoursFirstTF.textAlignment = .Center
-        endHoursFirstTF.layer.cornerRadius = 8.0
-        endHoursFirstTF.keyboardType = .NumberPad
-        endHoursFirstTF.delegate = self
-        endHoursFirstTF.font = UIFont.systemFontOfSize(20.0)
-        view.addSubview(endHoursFirstTF)
-        
-        endHoursColon.frame = CGRectMake(CGRectGetMaxX(endHoursFirstTF.frame) + 5, yPosition, 10, 30)
-        endHoursColon.text = ":"
-        endHoursColon.textAlignment = .Center
-        endHoursColon.font = UIFont.systemFontOfSize(20.0)
-        view.addSubview(endHoursColon)
-        
-        endHoursSecondTF.frame = CGRectMake(CGRectGetMaxX(endHoursColon.frame) + 5, yPosition, 40, 30)
-        endHoursSecondTF.text = "??"
-        endHoursSecondTF.textAlignment = .Center
-        endHoursSecondTF.layer.cornerRadius = 8.0
-        endHoursSecondTF.layer.borderColor = UIColor.icyBlue().CGColor
-        endHoursSecondTF.layer.borderWidth = 1.0
-        endHoursSecondTF.keyboardType = .NumberPad
-        endHoursSecondTF.delegate = self
-        endHoursSecondTF.font = UIFont.systemFontOfSize(20.0)
-        view.addSubview(endHoursSecondTF)
+    /**
+    * Checks to make sure we've met the conditions to add the chill
+    */
+     
+    func doneAddingChill(){
+        if(publicChillOverview.text != publicOverviewPlaceholderText && publicChillOverview.text.characters.count >= 1){
+            addChill()
+        }else{
+            let noOverviewAlert = UIAlertController(title: "Sorry!", message: "You must add a Public Overview for your Chill.", preferredStyle: UIAlertControllerStyle.Alert)
+            noOverviewAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            self.presentViewController(noOverviewAlert, animated: true, completion: nil)
+        }
     }
     
     /**
@@ -241,7 +207,18 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chillType = chillType.stringByReplacingOccurrencesOfString("chill", withString: "")
             chillType = chillType.stringByReplacingOccurrencesOfString(" ", withString: "")
             chill["type"] = chillType
-            chill["details"] = publicChillDetails.text
+            chill["overview"] = publicChillOverview.text
+            if(publicChillDetails.text == publicDetailsPlaceholderText){
+                chill["details"] = "❄️"
+            }else{
+                chill["details"] = publicChillDetails.text
+            }
+            if(privateChillDetails.text == privatePlaceholderText){
+                chill["privateDetails"] = "❄️"
+            }else{
+                chill["privateDetails"] = privateChillDetails.text
+            }
+    
             chill["host"] = PFUser.currentUser()?.objectForKey("facebookID")
             chill["profilePic"] = FBSDKAccessToken.currentAccessToken().tokenString
             chill["chillers"] = []
@@ -253,41 +230,66 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
                     // do something with the new geoPoint
                     chill["location"] = geoPoint
                     chill.saveInBackground()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.delegate!.finishedAddingChill()
 
                 }else{
-                    print("\(error)")
+                    let locationAlert = UIAlertController(title: "Sorry!", message: "We couldn't get your location. Make sure you've enabled Location tracking under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
+                    locationAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                    self.presentViewController(locationAlert, animated: true, completion: nil)
+
                 }
             }
         }else{
-            let one = UIAlertController(title: "Sorry!", message: "You have to be logged in to post a Chill! Make sure that you are logged in and connected to the internet", preferredStyle: UIAlertControllerStyle.Alert)
-            one.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            presentViewController(one, animated: true, completion: nil)
+            let loggedInAlert = UIAlertController(title: "Sorry!", message: "You have to be logged in to post a Chill! Make sure that you are logged in and connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
+            loggedInAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(loggedInAlert, animated: true, completion: nil)
         }
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        addressLine1.resignFirstResponder()
-        addressLine2.resignFirstResponder()
-        addChillTitle.resignFirstResponder()
-        publicChillDetails.resignFirstResponder()
-        startHoursFirstTF.resignFirstResponder()
-        startHoursSecondTF.resignFirstResponder()
-        endHoursFirstTF.resignFirstResponder()
-        endHoursSecondTF.resignFirstResponder()
+    func backPressed(){
+        self.dismissViewControllerAnimated(true, completion: nil)
+        self.delegate!.finishedAddingChill()
     }
     
-    //MARK - Text Field/View Delegate
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        addChillTitle.resignFirstResponder()
+        publicChillDetails.resignFirstResponder()
+        publicChillOverview.resignFirstResponder()
+        privateChillDetails.resignFirstResponder()
+    }
+    
+    //MARK: - Text Field/View Delegate
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        if(textView == publicChillOverview && publicChillOverview.text == publicOverviewPlaceholderText){
+            publicChillOverview.text = ""
+            publicChillOverview.textColor = UIColor.blackColor()
+        }else if(textView == publicChillDetails && publicChillDetails.text == publicDetailsPlaceholderText){
+            publicChillDetails.text = ""
+            publicChillDetails.textColor = UIColor.blackColor()
+        }else if(textView == privateChillDetails && privateChillDetails.text == privatePlaceholderText){
+            privateChillDetails.text = ""
+            privateChillDetails.textColor = UIColor.blackColor()
+        }
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        if(textView == publicChillOverview && publicChillOverview.text == ""){
+            publicChillOverview.text = publicOverviewPlaceholderText
+            publicChillOverview.textColor = UIColor.flatGray()
+        }else if(textView == publicChillDetails && publicChillDetails.text == ""){
+            publicChillDetails.text = publicDetailsPlaceholderText
+            publicChillDetails.textColor = UIColor.flatGray()
+        }else if(textView == privateChillDetails && privateChillDetails.text == ""){
+            privateChillDetails.text = privatePlaceholderText
+            privateChillDetails.textColor = UIColor.flatGray()
+        }
+    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if(addChillTitle.isFirstResponder()){
-            textField.text = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.letterCharacterSet().invertedSet).joinWithSeparator("")
-            publicChillDetails.becomeFirstResponder()
-        }else if(publicChillDetails.isFirstResponder()){
-            privateChillDetails.becomeFirstResponder()
-        }else{
-            textField.resignFirstResponder()
-        }
+        textField.resignFirstResponder()
         return true
     }
     
@@ -296,8 +298,6 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             var blankText = textField.text
             blankText = blankText!.stringByReplacingOccurrencesOfString("&Chill", withString: "")
             textField.text = blankText
-        }else if(textField == startHoursFirstTF || textField == startHoursSecondTF || textField == endHoursFirstTF || textField == endHoursSecondTF){
-            textField.text = ""
         }
     }
     
@@ -315,11 +315,6 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
                 addChillTitle.text = newChillTitle
             }
-        }else{
-            if(textField.text?.characters.count <= 0){
-                textField.text = "??"
-            }
-            hoursLabel.text = "\(startHoursFirstTF.text!):\(startHoursSecondTF.text!)\n-\n\(endHoursFirstTF.text!):\(endHoursSecondTF.text!)"
         }
     }
     
@@ -328,18 +323,18 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             textView.resignFirstResponder()
             return false
         }else{
-            return true
+            return textView.text.characters.count + (text.characters.count - range.length) <= 80;
         }
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        if(textField == startHoursFirstTF || textField == endHoursFirstTF || textField == startHoursSecondTF || textField == endHoursSecondTF){
+        if(textField == addChillTitle){
             let currentCharacterCount = textField.text?.characters.count ?? 0
             if (range.length + range.location > currentCharacterCount){
                 return false
             }
             let newLength = currentCharacterCount + string.characters.count - range.length
-            return newLength <= 2
+            return newLength <= 15
         }else{
             return true
         }
@@ -351,4 +346,14 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         textView.text = textViewText
     }
     
+    func addGuides(){
+        let xMid = UIView(frame: CGRectMake(CGRectGetMidX(self.view.frame), 0, 1, self.view.frame.height))
+        xMid.backgroundColor = UIColor.blueColor()
+        view.addSubview(xMid)
+    }
+    
+}
+
+protocol addChillDelegate {
+    func finishedAddingChill()
 }

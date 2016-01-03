@@ -18,6 +18,10 @@ extension UIColor{
     class func flatGray() -> UIColor {
         return UIColor(red: 149.0/255.0, green: 165.0/255.0, blue: 166.0/255.0, alpha: 1.0)
     }
+    
+    class func backgroundGray() -> UIColor{
+        return UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+    }
 
     class func suggestionRed() -> UIColor {
         return UIColor(red: 247.0/255.0, green: 98.0/255.0, blue: 94.0/255.0, alpha: 1.0)

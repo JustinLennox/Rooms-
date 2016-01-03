@@ -11,14 +11,21 @@ class ChillTableViewCell: UITableViewCell {
     let containerView = UIView()
     let profileImage = UIImageView()
     let chillButton = UIButton(type: UIButtonType.System)
+    let detailsButton = UIButton(type: UIButtonType.System)
+    let chillOverviewLabel = UILabel()
     let chillDetailsLabel = UILabel()
     let chillTypeLabel = UILabel()
+    var currentChill = Chill()
+    let reportButton = UIButton(type: UIButtonType.System)
     
     /**
     *   This is where we add all of the UI for the chill table view cell
     */
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+        selectionStyle = .None
         
         containerView.backgroundColor = UIColor.whiteColor()
         containerView.layer.cornerRadius = 8.0
@@ -29,7 +36,14 @@ class ChillTableViewCell: UITableViewCell {
         profileImage.layer.masksToBounds = true
         containerView.addSubview(profileImage)
         
+        chillOverviewLabel.text = ""
+        chillOverviewLabel.layer.masksToBounds = true
+        chillOverviewLabel.font = UIFont.systemFontOfSize(14.0)
+        chillOverviewLabel.numberOfLines = -1
+        containerView.addSubview(chillOverviewLabel)
+        
         chillDetailsLabel.text = ""
+        chillDetailsLabel.alpha = 0.0
         chillDetailsLabel.layer.masksToBounds = true
         chillDetailsLabel.font = UIFont.systemFontOfSize(14.0)
         chillDetailsLabel.numberOfLines = -1
@@ -41,10 +55,31 @@ class ChillTableViewCell: UITableViewCell {
         chillTypeLabel.font = UIFont.systemFontOfSize(14.0)
         containerView.addSubview(chillTypeLabel)
         
-        chillButton.setBackgroundImage(UIImage(named: "Snowflake.png"), forState: UIControlState.Normal)
+        chillButton.setTitle("Chill", forState: .Normal)
+        chillButton.backgroundColor = UIColor.icyBlue()
         chillButton.alpha = 0.0
-        chillButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        chillButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        chillButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
         containerView.addSubview(chillButton)
+        
+        detailsButton.setTitle("Details", forState: .Normal)
+        detailsButton.backgroundColor = UIColor.icyBlue()
+        detailsButton.alpha = 0.0
+        detailsButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        detailsButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
+        containerView.addSubview(detailsButton)
+        
+        reportButton.setTitle("report", forState: .Normal)
+        reportButton.alpha = 0.0
+        reportButton.contentHorizontalAlignment = .Right
+        reportButton.titleLabel?.textAlignment = .Right
+        reportButton.setTitleColor(UIColor.redColor(), forState: .Normal)
+        reportButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
+        containerView.addSubview(reportButton)
+        
+        let removeSwipe = UISwipeGestureRecognizer(target: self, action: "removeChill")
+        removeSwipe.direction = .Left
+        addGestureRecognizer(removeSwipe)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,16 +93,19 @@ class ChillTableViewCell: UITableViewCell {
         super.layoutSubviews()
         containerView.frame = CGRectMake(frame.width * 0.025, frame.height * 0.05, frame.width * 0.95, frame.height * 0.9)
         profileImage.frame = CGRectMake(0, 0, containerView.frame.height, containerView.frame.height)
-        chillDetailsLabel.frame = CGRectMake(profileImage.frame.width + 10, 5, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height * 0.8 - 5)
+        chillOverviewLabel.frame = CGRectMake(profileImage.frame.width + 10, 5, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height * 0.8 - 5)
+        chillDetailsLabel.frame = chillOverviewLabel.frame
         chillTypeLabel.frame = CGRectMake(profileImage.frame.width + 10, chillDetailsLabel.frame.height + 5, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height * 0.2)
-        chillButton.frame = CGRectMake(10, 10, containerView.frame.height - 20, containerView.frame.height - 20)
-        
+        chillButton.frame = profileImage.frame
+        reportButton.frame = CGRectMake(containerView.frame.width * 0.725, chillDetailsLabel.frame.height + 5, containerView.frame.width * 0.25, containerView.frame.height * 0.2)
+        detailsButton.frame = chillButton.frame
+
     }
     
     /**
     *   This animates the chill cell when we tap it. It flip/rotates it and shows the front or back
     */
-    func flipCell(currentChill : Chill){
+    func flipCell(){
         if(currentChill.flipped == false){  //We're flipping the cell over to show the BACK
             
             UIView.animateWithDuration(0.3) { () -> Void in
@@ -75,12 +113,11 @@ class ChillTableViewCell: UITableViewCell {
             }
             
             UIView.animateWithDuration(0.15, animations: { () -> Void in //HIDE THE FRONT UI
-                self.profileImage.alpha = 0.0
+                self.hideFrontUI()
                 
                 }) { (Bool) -> Void in //SHOW THE BACK UI
-                    currentChill.flipped = true
-                    self.chillButton.alpha = 1.0
-                    self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+                    self.currentChill.flipped = true
+                    self.showBackUI()
             }
             
         }else{  //We're flipping the cell to its original position to show the FRONT
@@ -89,14 +126,101 @@ class ChillTableViewCell: UITableViewCell {
             }
             
             UIView.animateWithDuration(0.15, animations: { () -> Void in //HIDE THE BACK UI
-                self.chillButton.alpha = 0.0
+                self.hideBackUI()
                 
                 }) { (Bool) -> Void in  // SHOW THE FRONT UI
-                    currentChill.flipped = false
-                    self.profileImage.alpha = 1.0
+                    self.currentChill.flipped = false
+                    self.showFrontUI()
                     self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
             }
         }
+    }
+    
+    func showBackUI(){
+        if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
+            if(currentChill.chillers.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String) || currentChill.host == PFUser.currentUser()?.objectForKey("facebookID") as! String){
+                self.detailsButton.alpha = 1.0
+                self.chillDetailsLabel.alpha = 1.0
+                self.reportButton.alpha = 1.0
+                self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+            }else{
+                self.chillButton.alpha = 1.0
+                self.chillDetailsLabel.alpha = 1.0
+                self.reportButton.alpha = 1.0
+                self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+            }
+        }
+    }
+    
+    func setUpWithChill(cellChill : Chill){
+        self.currentChill = cellChill
+        chillOverviewLabel.text = currentChill.overview
+        chillDetailsLabel.text = currentChill.details
+        let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
+        profileImage.sd_setImageWithURL(profilePictureURL)
+        if(currentChill.flipped == true){   //SHOW BACK
+            showBackUI()
+            hideFrontUI()
+        }else{  //SHOW FRONT
+            showFrontUI()
+            hideBackUI()
+        }
+        chillTypeLabel.text = "\(currentChill.type)&"
+    }
+    
+    //MARK: - Button Actions
+    
+    /**
+     *  Adds the current user to the chill's chillers
+     */
+    func joinChill(sender: UIButton){
+        
+        let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
+        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+        parseChill.incrementKey("chillersCount")
+        parseChill.saveInBackground()
+        
+    }
+    
+    /**
+     *  Removes the current user from the chill's chillers and deletes it if they're the host
+     */
+    func removeChill(sender: UIButton){
+
+        let parseChillQuery = PFQuery(className: "Chill")
+        parseChillQuery.whereKey("objectId", equalTo: currentChill.id)
+        parseChillQuery.getFirstObjectInBackgroundWithBlock { (parseChill : PFObject?, error: NSError?) -> Void in
+            if(error == nil){
+                if(parseChill!.objectForKey("host") as! String == PFUser.currentUser()?.objectForKey("facebookID") as! String){
+                    parseChill!.deleteInBackground()
+                }else{
+                    parseChill!.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+                    parseChill!.incrementKey("chillersCount", byAmount: -1)
+                    parseChill!.saveInBackground()
+                }
+            }
+        }
+    }
+    
+    //MARK: - Hide/Show UI
+    
+    func showFrontUI(){
+        profileImage.alpha = 1.0
+        chillOverviewLabel.alpha = 1.0
+        chillTypeLabel.alpha = 1.0
+    }
+    
+    func hideFrontUI(){
+        profileImage.alpha = 0.0
+        chillOverviewLabel.alpha = 0.0
+        chillTypeLabel.alpha = 0.0
+    }
+    
+    func hideBackUI(){
+        reportButton.alpha = 0.0
+        chillDetailsLabel.alpha = 0.0
+        chillButton.alpha = 0.0
+        detailsButton.alpha = 0.0
     }
     
 }

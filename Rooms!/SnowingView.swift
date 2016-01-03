@@ -67,21 +67,21 @@ class SnowingView : UIView {
 		self.addSubview(__scaling__)
 		viewsByName["__scaling__"] = __scaling__
 
-		let chill = UIImageView()
-		chill.bounds = CGRect(x:0, y:0, width:1024.0, height:502.0)
-		var imgChill: UIImage!
-		if let imagePath = bundle.pathForResource("chilling.png", ofType:nil) {
-			imgChill = UIImage(contentsOfFile:imagePath)
-		}else {
-			print("** Warning: Could not create image from 'chilling.png'. Please make sure that it is added to the project directly (not in a folder reference).")
-		}
-		chill.image = imgChill
-		chill.contentMode = .Center;
-		chill.layer.position = CGPoint(x:260.000, y:445.445)
-		chill.alpha = 0.00
-		chill.transform = CGAffineTransformMakeScale(0.32, 0.32)
-		__scaling__.addSubview(chill)
-		viewsByName["chilling"] = chill
+//		let chill = UIImageView()
+//		chill.bounds = CGRect(x:0, y:0, width:1024.0, height:502.0)
+//		var imgChill: UIImage!
+//		if let imagePath = bundle.pathForResource("chilling.png", ofType:nil) {
+//			imgChill = UIImage(contentsOfFile:imagePath)
+//		}else {
+//			print("** Warning: Could not create image from 'chilling.png'. Please make sure that it is added to the project directly (not in a folder reference).")
+//		}
+//		chill.image = imgChill
+//		chill.contentMode = .Center;
+//		chill.layer.position = CGPoint(x:260.000, y:445.445)
+//		chill.alpha = 0.00
+//		chill.transform = CGAffineTransformMakeScale(0.32, 0.32)
+//		__scaling__.addSubview(chill)
+//		viewsByName["chilling"] = chill
 
 		let snowFlake05 = UIImageView()
 		snowFlake05.bounds = CGRect(x:0, y:0, width:371.0, height:358.0)

@@ -50,6 +50,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                 getChills()
             }
         }
+        self.tabBarController?.tabBar.hidden = false
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -82,7 +83,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     
     func addMainUI(){
-        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
+        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
         bannerBackground.backgroundColor = UIColor.icyBlue()
         view.addSubview(bannerBackground)
         
@@ -134,12 +135,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                     self.chillArray = []
                     for chillDictionary in objects {
                         
-                        let chill = Chill(idString: chillDictionary.objectId!,
-                            typeString: String(chillDictionary["type"]),
-                            detailsString: String(chillDictionary["details"]),
-                            hostString: String(chillDictionary["host"]),
-                            profileString:String(chillDictionary["profilePic"]),
-                            chillerArray: chillDictionary["chillers"] as! [String])
+                        let chill = Chill.parseDictionaryIntoChill(chillDictionary)
                         self.chillArray.append(chill)
                     }
                     self.chillTableView.reloadData()
@@ -151,19 +147,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                 self.refreshControl.endRefreshing()
             }
         }
-    }
-    
-    /**
-     *  Adds the current user to the chill's chillers
-     */
-    func joinChill(sender: UIButton){
-
-        let currentChill : Chill = chillArray[sender.tag]
-        let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
-        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
-        parseChill.incrementKey("chillersCount")
-        parseChill.saveInBackground()
-        
     }
     
     /**
@@ -238,7 +221,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         }else if(colorName == "Black"){
             return UIColor.suggestionBlack()
         }else{
-            return UIColor.grayColor()
+            return UIColor.suggestionBlack()
         }
     }
     
@@ -277,6 +260,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         chillTableView.dataSource = self
         chillTableView.registerClass(ChillTableViewCell.self, forCellReuseIdentifier: "ChillCell")
         chillTableView.separatorStyle = .None
+        chillTableView.rowHeight = UITableViewAutomaticDimension
+        chillTableView.estimatedRowHeight = 160.0
         chillTableView.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
         view.addSubview(chillTableView)
         view.sendSubviewToBack(chillTableView)
@@ -314,23 +299,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         
         if(tableView == chillTableView){    //Settings for the Nearby Chill Table View
             let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
-            cell.backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
-            cell.selectionStyle = .None
-            cell.chillButton.addTarget(self, action: "joinChill:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.chillButton.tag = indexPath.row
-
             let currentChill : Chill = chillArray[indexPath.row]
-            cell.chillDetailsLabel.text = currentChill.details
-            let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
-            cell.profileImage.sd_setImageWithURL(profilePictureURL)
-            if(currentChill.flipped == true){
-                cell.profileImage.alpha = 0.0
-                cell.chillButton.alpha = 1.0
-            }else{
-                cell.profileImage.alpha = 1.0
-                cell.chillButton.alpha = 0.0
-            }
-            cell.chillTypeLabel.text = "\(currentChill.type)&"
+            cell.setUpWithChill(currentChill)
             return cell
         }else{  //Settings for the Suggestion Table View
             let cell : UITableViewCell = UITableViewCell()
@@ -368,15 +338,18 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         blankTextField.resignFirstResponder()
+        suggestionTableView.alpha = 0
         if(tableView == chillTableView){    //chill table view
             let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
             let currentChill : Chill = chillArray[indexPath.row]
-            cell.flipCell(currentChill)
+            let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "removeChill")
+            swipeLeftRecognizer.direction = .Left
+            cell.addGestureRecognizer(swipeLeftRecognizer)
+            cell.flipCell()
         }else{  //suggestion table view
             let currentSuggestion = suggestionArray[indexPath.row]
             blankTextField.text = "\(currentSuggestion["type"]!)&Chill"
             getChills()
-            suggestionTableView.alpha = 0
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)

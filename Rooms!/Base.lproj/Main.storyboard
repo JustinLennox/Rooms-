@@ -33,11 +33,15 @@
                         <viewControllerLayoutGuide type="bottom" id="2bN-L5-SUQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="UTq-cK-2jY">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <tabBarItem key="tabBarItem" title="Popular" id="g2p-0R-Gl0" userLabel="PopularChills"/>
+                    <connections>
+                        <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="899-JM-awQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTG-7E-3Em" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -47,7 +51,6 @@
         <scene sceneID="5W8-36-Nf5">
             <objects>
                 <tabBarController id="nWk-IP-qQY" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="7ED-hS-rrV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -75,7 +78,7 @@
                         <viewControllerLayoutGuide type="bottom" id="VRc-0j-sis"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Pyy-M4-HyN">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -83,16 +86,17 @@
                     <tabBarItem key="tabBarItem" title="Nearby" id="YMC-S5-5KN"/>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="showLoginSegue" id="vZK-dR-o3Z"/>
+                        <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="koZ-Un-q0W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dEH-nh-WTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-295" y="-714"/>
         </scene>
-        <!--AddChill-->
+        <!--AddChillTabController-->
         <scene sceneID="7dV-Wj-Zdj">
             <objects>
-                <viewController title="AddChill" id="mCE-5f-Py9" customClass="AddChillViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="AddChill" extendedLayoutIncludesOpaqueBars="YES" id="mCE-5f-Py9" userLabel="AddChillTabController" customClass="AddChillTabViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="92z-af-bk3"/>
                         <viewControllerLayoutGuide type="bottom" id="Oni-Hs-SNp"/>
@@ -100,16 +104,55 @@
                     <view key="view" contentMode="scaleToFill" id="W8q-vd-Po0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.47058823529999999" green="0.80000000000000004" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <tabBarItem key="tabBarItem" title="" image="SnowflakeSmall.png" selectedImage="SnowflakeSmall.png" id="LEk-Zc-97Y">
+                    <tabBarItem key="tabBarItem" title="" image="SnowflakeTabIcon" selectedImage="SnowflakeTabIcon" id="LEk-Zc-97Y">
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="axK-Ve-ed0" kind="presentation" identifier="showAddChillSegue" id="Hcx-n9-zee"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="202-6f-oQo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1013" y="-714"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Tpf-L9-qoG">
+            <objects>
+                <viewController id="H9s-ND-iaY" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UUg-WF-fxF"/>
+                        <viewControllerLayoutGuide type="bottom" id="77E-YR-2Sf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GKC-ss-tcc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lsg-jb-jyH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1013" y="955"/>
+        </scene>
+        <!--Add Chill View Controller-->
+        <scene sceneID="xob-wp-589">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="axK-Ve-ed0" customClass="AddChillViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ML4-xq-Sve"/>
+                        <viewControllerLayoutGuide type="bottom" id="kAK-jP-NkT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Bi0-b3-nkc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dJS-8q-saW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1013" y="43"/>
         </scene>
         <!--MyChillsViewController-->
         <scene sceneID="r4J-NC-aTJ">
@@ -120,12 +163,15 @@
                         <viewControllerLayoutGuide type="bottom" id="BEc-p5-X7l"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="J1D-JQ-3U2">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <tabBarItem key="tabBarItem" title="My Chills" id="SBm-qP-4Lz" userLabel="MyChills"/>
+                    <connections>
+                        <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="Xkq-QW-01d"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tCI-BC-SPf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -140,12 +186,15 @@
                         <viewControllerLayoutGuide type="bottom" id="6QK-Hl-o75"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Q3g-2F-1MA">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <tabBarItem key="tabBarItem" title="Friends" id="ywj-K4-H9v"/>
+                    <connections>
+                        <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="b6S-h8-bxo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rmZ-JK-585" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -153,6 +202,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SnowflakeSmall.png" width="30" height="30"/>
+        <image name="SnowflakeTabIcon" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="b6S-h8-bxo"/>
+    </inferredMetricsTieBreakers>
 </document>

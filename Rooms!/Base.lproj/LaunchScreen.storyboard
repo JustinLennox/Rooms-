@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,19 +16,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="FW3-ao-OKq">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChillSnowflakeSmall.png" translatesAutoresizingMaskIntoConstraints="NO" id="fcZ-wc-cXr">
+                                <rect key="frame" x="250" y="250" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="PQQ-He-aLa"/>
+                                </constraints>
                             </imageView>
                         </subviews>
-                        <animations/>
-                        <color key="backgroundColor" red="0.40784313729999999" green="0.76078431369999999" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.47058823529411764" green="0.80000000000000004" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="FW3-ao-OKq" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="22N-2Q-wgJ"/>
-                            <constraint firstItem="FW3-ao-OKq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="BET-qK-ZM4"/>
-                            <constraint firstItem="FW3-ao-OKq" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="dLf-ig-DBB"/>
-                            <constraint firstAttribute="trailing" secondItem="FW3-ao-OKq" secondAttribute="trailing" id="diQ-uk-KvO"/>
+                            <constraint firstItem="fcZ-wc-cXr" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="230" id="7L7-ja-c4d"/>
+                            <constraint firstItem="fcZ-wc-cXr" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="sji-l2-WRd"/>
+                            <constraint firstItem="fcZ-wc-cXr" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="t8V-dn-rfe"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -38,6 +37,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen.png" width="1037" height="1525"/>
+        <image name="ChillSnowflakeSmall.png" width="200" height="200"/>
     </resources>
 </document>

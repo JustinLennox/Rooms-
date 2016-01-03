@@ -47,7 +47,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
     }
     
     func addMainUI(){
-        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
+        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
         bannerBackground.backgroundColor = UIColor.icyBlue()
         view.addSubview(bannerBackground)
         
@@ -86,14 +86,7 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
                     self.chillArray = []
                     for chillDictionary in objects {
                         
-                        let chill = Chill(idString: chillDictionary.objectId!,
-                            typeString: String(chillDictionary["type"]),
-                            detailsString: String(chillDictionary["details"]),
-                            hostString: String(chillDictionary["host"]),
-                            profileString:String(chillDictionary["profilePic"]),
-                            chillerArray: chillDictionary["chillers"] as! [String]
-                        )
-
+                        let chill = Chill.parseDictionaryIntoChill(chillDictionary)
                         self.chillArray.append(chill)
 
                     }
@@ -197,9 +190,8 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
-        let currentChill : Chill = chillArray[indexPath.row]
-        cell.flipCell(currentChill)
+        let cell : ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
+        cell.flipCell()
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }

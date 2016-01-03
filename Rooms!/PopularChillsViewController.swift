@@ -44,7 +44,7 @@ class PopularChillsViewController: UIViewController, UITextFieldDelegate, UIText
     
     
     func addMainUI(){
-        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
+        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
         bannerBackground.backgroundColor = UIColor.icyBlue()
         view.addSubview(bannerBackground)
         
@@ -84,14 +84,7 @@ class PopularChillsViewController: UIViewController, UITextFieldDelegate, UIText
                     self.chillArray = []
                     for chillDictionary in objects {
                         
-                        let chill = Chill(idString: chillDictionary.objectId!,
-                            typeString: String(chillDictionary["type"]),
-                            detailsString: String(chillDictionary["details"]),
-                            hostString: String(chillDictionary["host"]),
-                            profileString:String(chillDictionary["profilePic"]),
-                            chillerArray: chillDictionary["chillers"] as! [String]
-                        )
-                        
+                        let chill = Chill.parseDictionaryIntoChill(chillDictionary)
                         self.chillArray.append(chill)
                     }
                     self.chillTableView.reloadData()

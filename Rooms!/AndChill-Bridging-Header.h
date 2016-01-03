@@ -16,5 +16,5 @@
 #import <FBSDKShareKit/FBSDKShareKit.h>
 #import "UIImageView+WebCache.h"
 #import <Parse/PFObject+Subclass.h>
-
+#import "TPKeyboardAvoidingScrollView.h"
 #endif /* Rooms__Bridging_Header_h */

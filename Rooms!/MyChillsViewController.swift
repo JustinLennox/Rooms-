@@ -48,7 +48,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
     
     func addMainUI(){
-        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, view.frame.height * 0.1)
+        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
         bannerBackground.backgroundColor = UIColor.icyBlue()
         view.addSubview(bannerBackground)
         
@@ -91,14 +91,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
                     self.chillArray = []
                     for chillDictionary in objects {
                         
-                        let chill = Chill(idString: chillDictionary.objectId!,
-                            typeString: String(chillDictionary["type"]),
-                            detailsString: String(chillDictionary["details"]),
-                            hostString: String(chillDictionary["host"]),
-                            profileString:String(chillDictionary["profilePic"]),
-                            chillerArray: chillDictionary["chillers"] as! [String]
-                        )
-                        
+                        let chill = Chill.parseDictionaryIntoChill(chillDictionary)
                         self.chillArray.append(chill)
                     }
                     self.chillTableView.reloadData()
@@ -109,26 +102,6 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
                 print("Error: \(error!)")
             }
         }
-    }
-    
-    func removeChill(sender: UIButton){
-        print("Button tag:\(sender.tag)")
-        let currentChill : Chill = chillArray[sender.tag]
-        chillArray.removeAtIndex(sender.tag)
-        let parseChillQuery = PFQuery(className: "Chill")
-        parseChillQuery.whereKey("objectId", equalTo: currentChill.id)
-        parseChillQuery.getFirstObjectInBackgroundWithBlock { (parseChill : PFObject?, error: NSError?) -> Void in
-            if(error == nil){
-                if(parseChill!.objectForKey("host") as! String == PFUser.currentUser()?.objectForKey("facebookID") as! String){
-                    parseChill!.deleteInBackground()
-                }else{
-                    parseChill!.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
-                    parseChill!.incrementKey("chillersCount", byAmount: -1)
-                    parseChill!.saveInBackground()
-                }
-            }
-        }
-        chillTableView.reloadData()
     }
     
     //MARK: - Table View
@@ -191,7 +164,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
         let currentChill : Chill = chillArray[indexPath.row]
-        cell.flipCell(currentChill)
+        cell.flipCell()
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }

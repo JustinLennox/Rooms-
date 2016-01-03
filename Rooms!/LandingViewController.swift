@@ -16,7 +16,8 @@ class LandingViewController: UIViewController {
     var imageIndex = 1
     
     //MARK: UI Properties
-    let backgroundImage = UIImageView()
+    let backgroundImageOne = UIImageView()
+    let backgroundImageTwo = UIImageView()
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
     let assuranceLabel = UILabel()
@@ -25,6 +26,7 @@ class LandingViewController: UIViewController {
     //MARK: View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        let myTimer = NSTimer.scheduledTimerWithTimeInterval(3.5, target: self, selector: "cycleImages", userInfo: nil, repeats: true)
         // Do any additional setup after loading the view, typically from a nib.
 //        view.backgroundColor = UIColor(red: (50.0/255.0), green: (50.0/255.0), blue: (50.0/255.0), alpha: 1.0)
         view.backgroundColor = UIColor.blackColor()
@@ -33,12 +35,6 @@ class LandingViewController: UIViewController {
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "FirstTime")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        let myTimer = NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: "cycleImages", userInfo: nil, repeats: true)
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -62,44 +58,51 @@ class LandingViewController: UIViewController {
         
         titleLabel.text = "&Chill"
         titleLabel.frame = CGRectMake(0, view.frame.height * 0.06, view.frame.size.width, view.frame.size.height * 0.08)
-        titleLabel.textColor = UIColor.cSeafoam()
+        titleLabel.textColor = UIColor.icyBlue()
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.font = UIFont(name: "Helvetica-Bold", size: 35.0)
+        titleLabel.font = UIFont.systemFontOfSize(35.0, weight: 0.1)
         view.addSubview(titleLabel)
         
         descriptionLabel.text = "Find Other Chill People Near You To Do Chill Things With"
-        descriptionLabel.frame = CGRectMake(view.frame.size.width * 0.05, view.frame.size.height * 0.45, view.frame.size.width * 0.9, view.frame.size.height * 0.13)
+        descriptionLabel.frame = CGRectMake(view.frame.size.width * 0.05, view.frame.size.height * 0.6, view.frame.size.width * 0.9, view.frame.size.height * 0.13)
         descriptionLabel.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
         descriptionLabel.adjustsFontSizeToFitWidth = true;
         descriptionLabel.textAlignment = NSTextAlignment.Center
         descriptionLabel.numberOfLines = 2;
-        descriptionLabel.font = UIFont(name: "Helvetica", size: 25.0)
+        descriptionLabel.font = UIFont.systemFontOfSize(25.0, weight: 0.1)
         view.addSubview(descriptionLabel)
         
-        assuranceLabel.text = "We'll never post to your Facebook or send invites or spam"
+        assuranceLabel.text = "We'll never post to your Facebook or send invites or spam."
         assuranceLabel.frame = CGRectMake(view.frame.width * 0.125, CGRectGetMaxY(descriptionLabel.frame), view.frame.width * 0.75, view.frame.size.height * 0.125)
         assuranceLabel.textColor = UIColor(red: (230.0/255.0), green: (230.0/255.0), blue: (230.0/255.0), alpha: 1.0)
         assuranceLabel.textAlignment = NSTextAlignment.Center
         assuranceLabel.numberOfLines = 2;
-        assuranceLabel.font = UIFont(name: "Helvetica", size: 15.0)
+        assuranceLabel.font = UIFont.systemFontOfSize(15.0)
         view.addSubview(assuranceLabel)
         
-        connectToFacebookButton.frame = CGRectMake(view.frame.size.width * 0.0625, CGRectGetMaxY(assuranceLabel.frame) + view.frame.height * 0.01, view.frame.size.width * 0.875, view.frame.height * 0.06)
+        connectToFacebookButton.frame = CGRectMake(view.frame.size.width * 0.0625, CGRectGetMaxY(assuranceLabel.frame) + view.frame.height * 0.01, view.frame.size.width * 0.875, 44)
         connectToFacebookButton.titleLabel?.textAlignment = NSTextAlignment.Center
         connectToFacebookButton.setTitle("Connect to Facebook", forState: UIControlState.Normal)
         connectToFacebookButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        connectToFacebookButton.titleLabel!.font = UIFont(name: "Helvetica", size: 15.0)
-        connectToFacebookButton.backgroundColor = UIColor.cSeafoam()
+        connectToFacebookButton.titleLabel!.font = UIFont.systemFontOfSize(17.0)
+        connectToFacebookButton.backgroundColor = UIColor.icyBlue()
         connectToFacebookButton.addTarget(self, action: "facebookButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
-        connectToFacebookButton.layer.cornerRadius = 5
+        connectToFacebookButton.layer.cornerRadius = 4
         view.addSubview(connectToFacebookButton)
         
-        backgroundImage.image = UIImage(named: "Party.png")
-        backgroundImage.contentMode = UIViewContentMode.ScaleAspectFill
-        backgroundImage.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
-        backgroundImage.alpha = 0.5
-        view.addSubview(backgroundImage)
-        view.sendSubviewToBack(backgroundImage)
+        backgroundImageOne.image = UIImage(named: "CampFire.png")
+        backgroundImageOne.contentMode = UIViewContentMode.ScaleAspectFill
+        backgroundImageOne.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
+        backgroundImageOne.alpha = 0.5
+        view.addSubview(backgroundImageOne)
+        view.sendSubviewToBack(backgroundImageOne)
+        
+        backgroundImageTwo.image = UIImage(named: "CampFire.png")
+        backgroundImageTwo.contentMode = UIViewContentMode.ScaleAspectFill
+        backgroundImageTwo.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
+        backgroundImageTwo.alpha = 0.0
+        view.addSubview(backgroundImageTwo)
+        view.sendSubviewToBack(backgroundImageTwo)
     }
     
     /**
@@ -143,42 +146,48 @@ class LandingViewController: UIViewController {
     
     
     func cycleImages(){
-        
         //**Images complements of Jeffrey Nguyen
         switch (imageIndex)
         {
             case 0:
-                backgroundImage.image = UIImage(named: "Party.png")
+                backgroundImageOne.image = UIImage(named: "CampFire.png")
                 break
                 
             case 1:
-                backgroundImage.image = UIImage(named: "Camp.png")
+                backgroundImageTwo.image = UIImage(named: "Movies.png")
                 break
                 
             case 2:
-                backgroundImage.image = UIImage(named: "cooler.png")
+                backgroundImageOne.image = UIImage(named: "cooler.png")
                 break
             
             case 3:
-                backgroundImage.image = UIImage(named: "Camping.png")
+                backgroundImageTwo.image = UIImage(named: "Camping.png")
                 break
             
             case 4:
-                backgroundImage.image = UIImage(named: "Cafe.png")
+                backgroundImageOne.image = UIImage(named: "Cafe.png")
                 break
             
             case 5:
-                backgroundImage.image = UIImage(named: "Movies.png")
-                break
-            
-            case 6:
-                backgroundImage.image = UIImage(named: "CampFire.png")
+                backgroundImageTwo.image = UIImage(named: "Camp.png")
                 break
             
             default:
                 break
         }
-        imageIndex = imageIndex < 6 ? imageIndex + 1 : 0
+        if(imageIndex % 2 == 0){
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+                self.backgroundImageOne.alpha = 0.5
+                self.backgroundImageTwo.alpha = 0
+            })
+        }else{
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+                self.backgroundImageOne.alpha = 0
+                self.backgroundImageTwo.alpha = 0.5
+            })
+        }
+        imageIndex = imageIndex < 5 ? imageIndex + 1 : 0
     }
 }
 

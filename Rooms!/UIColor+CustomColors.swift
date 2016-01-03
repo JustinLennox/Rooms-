@@ -15,20 +15,8 @@ extension UIColor{
         return UIColor(red: 120.0/255.0, green: 204.0/255.0, blue: 207.0/255.0, alpha: 1.0)
     }
     
-    class func pBlue() -> UIColor {
-        return UIColor(red: 33.0/255.0, green: 150.0/255.0, blue: 243.0/255.0, alpha: 1.0)
-    }
-    
-    class func cIce() -> UIColor {
-        return UIColor(red: 128.0/255.0, green: 222.0/255.0, blue: 234.0/255.0, alpha: 1.0)
-    }
-    
-    class func cSeafoam() -> UIColor {
-        return UIColor(red: 104.0/255.0, green: 215.0/255.0, blue: 198.0/255.0, alpha: 1.0)
-    }
-    
-    class func cRed() -> UIColor {
-        return UIColor(red: 247.0/255.0, green: 98.0/255.0, blue: 94.0/255.0, alpha: 1.0)
+    class func flatGray() -> UIColor {
+        return UIColor(red: 149.0/255.0, green: 165.0/255.0, blue: 166.0/255.0, alpha: 1.0)
     }
 
     class func suggestionRed() -> UIColor {

@@ -145,7 +145,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
         view.addSubview(chillTableView)
         view.sendSubviewToBack(chillTableView)
         let refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor.cRed()
+        refreshControl.backgroundColor = UIColor.redColor()
         refreshControl.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
         chillTableView.addSubview(refreshControl)
     }

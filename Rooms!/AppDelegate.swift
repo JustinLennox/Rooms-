@@ -28,8 +28,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
         
+        //Sends a request to Facebook for the current facebook user and stores their ID
+        let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters: nil);
+        fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+            if error == nil {   //There wasn't a problem, this FB user exists
+                PFUser.currentUser()?.setObject(result.objectForKey("id") as! String, forKey: "facebookID")
+                PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
+                })
+            } else {
+                print("Error Getting FB Info")
+            }
+        }
+    
+    
         UITabBar.appearance().tintColor = UIColor.icyBlue()
-        
+    
         // Override point for customization after application launch.
         return true
     }

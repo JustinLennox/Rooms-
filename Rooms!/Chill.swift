@@ -19,6 +19,7 @@ class Chill {
     var overview : String
     var privateDetails : String
     var chillers : [String]
+    var requestedChillers : [String]
     var flipped : Bool = false
     
     init(){
@@ -30,9 +31,10 @@ class Chill {
         host = ""
         profilePic = ""
         chillers = []
+        requestedChillers = []
     }
     
-    init(idString: String, typeString : String, overviewString : String, detailsString: String, privateDetailsString : String, hostString : String, profileString : String, chillerArray : [String]){
+    init(idString: String, typeString : String, overviewString : String, detailsString: String, privateDetailsString : String, hostString : String, profileString : String, chillerArray : [String], chillRequests : [String]){
         id = idString
         type = typeString
         overview = overviewString
@@ -41,6 +43,7 @@ class Chill {
         host = hostString
         profilePic = profileString
         chillers = chillerArray
+        requestedChillers = chillRequests
     }
     
     class func parseDictionaryIntoChill(chillDictionary : PFObject) -> Chill{
@@ -51,6 +54,7 @@ class Chill {
             privateDetailsString: String(chillDictionary["privateDetails"]),
             hostString: String(chillDictionary["host"]),
             profileString:String(chillDictionary["profilePic"]),
-            chillerArray: chillDictionary["chillers"] as! [String])
+            chillerArray: chillDictionary["chillers"] as! [String],
+            chillRequests: chillDictionary["requestedChillers"] as! [String])
     }
 }

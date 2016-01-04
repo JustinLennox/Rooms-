@@ -301,6 +301,10 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
             let currentChill : Chill = chillArray[indexPath.row]
             cell.setUpWithChill(currentChill)
+            let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "removeChill:")
+            swipeLeftRecognizer.direction = .Left
+            cell.tag = indexPath.row
+            cell.addGestureRecognizer(swipeLeftRecognizer)
             return cell
         }else{  //Settings for the Suggestion Table View
             let cell : UITableViewCell = UITableViewCell()
@@ -341,10 +345,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         suggestionTableView.alpha = 0
         if(tableView == chillTableView){    //chill table view
             let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
-            let currentChill : Chill = chillArray[indexPath.row]
-            let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "removeChill")
-            swipeLeftRecognizer.direction = .Left
-            cell.addGestureRecognizer(swipeLeftRecognizer)
             cell.flipCell()
         }else{  //suggestion table view
             let currentSuggestion = suggestionArray[indexPath.row]
@@ -353,6 +353,12 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
+    
+    func removeChill(gestureRecognizer : UISwipeGestureRecognizer){
+        let chillCell = gestureRecognizer.view as! ChillTableViewCell
+        chillArray.removeAtIndex(chillCell.tag)
+        chillCell.removeChillFromTable(chillTableView)
     }
     
     //MARK: - REFRESH CONTROL

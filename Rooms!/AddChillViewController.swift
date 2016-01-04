@@ -222,6 +222,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chill["host"] = PFUser.currentUser()?.objectForKey("facebookID")
             chill["profilePic"] = FBSDKAccessToken.currentAccessToken().tokenString
             chill["chillers"] = []
+            chill["requestedChillers"] = []
             chill["chillersCount"] = 0
             PFGeoPoint.geoPointForCurrentLocationInBackground {
                 (geoPoint: PFGeoPoint?, error: NSError?) -> Void in

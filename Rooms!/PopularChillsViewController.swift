@@ -170,7 +170,7 @@ class PopularChillsViewController: UIViewController, UITextFieldDelegate, UIText
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell :ChillTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! ChillTableViewCell
         let currentChill : Chill = chillArray[indexPath.row]
-        cell.flipCell(currentChill)
+        cell.flipCell()
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }

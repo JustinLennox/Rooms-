@@ -58,6 +58,8 @@ class ChillTableViewCell: UITableViewCell {
         chillButton.setTitle("Chill", forState: .Normal)
         chillButton.backgroundColor = UIColor.icyBlue()
         chillButton.alpha = 0.0
+        chillButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        chillButton.addTarget(self, action: "joinChill", forControlEvents: .TouchUpInside)
         chillButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         chillButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
         containerView.addSubview(chillButton)
@@ -65,6 +67,7 @@ class ChillTableViewCell: UITableViewCell {
         detailsButton.setTitle("Details", forState: .Normal)
         detailsButton.backgroundColor = UIColor.icyBlue()
         detailsButton.alpha = 0.0
+        detailsButton.titleLabel?.adjustsFontSizeToFitWidth = true
         detailsButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         detailsButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
         containerView.addSubview(detailsButton)
@@ -76,10 +79,6 @@ class ChillTableViewCell: UITableViewCell {
         reportButton.setTitleColor(UIColor.redColor(), forState: .Normal)
         reportButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
         containerView.addSubview(reportButton)
-        
-        let removeSwipe = UISwipeGestureRecognizer(target: self, action: "removeChill")
-        removeSwipe.direction = .Left
-        addGestureRecognizer(removeSwipe)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -137,18 +136,34 @@ class ChillTableViewCell: UITableViewCell {
     }
     
     func showBackUI(){
+        
+        self.reportButton.alpha = 1.0
+        self.chillDetailsLabel.alpha = 1.0
+
         if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
             if(currentChill.chillers.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String) || currentChill.host == PFUser.currentUser()?.objectForKey("facebookID") as! String){
+                //THE USER IS ALREADY IN THE CHILL, EITHER AS HOST OR CHILLER
+                print("THE USER IS ALREADY IN THE CHILL, EITHER AS HOST OR CHILLER")
                 self.detailsButton.alpha = 1.0
-                self.chillDetailsLabel.alpha = 1.0
-                self.reportButton.alpha = 1.0
-                self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
-            }else{
+                self.chillButton.alpha = 0.0
+                
+            }else if(currentChill.requestedChillers.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String)){
+                //THE USER HAS REQUESTED TO CHILL
+                print("THE USER HAS REQUESTED TO CHILL")
+                self.chillButton.setTitle("Requested", forState: .Normal)
                 self.chillButton.alpha = 1.0
-                self.chillDetailsLabel.alpha = 1.0
-                self.reportButton.alpha = 1.0
-                self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+                self.chillButton.backgroundColor = UIColor.flatGray()
+                self.chillButton.enabled = false
+            
+            }else{
+                //THE HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING
+                print("THE HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING")
+                self.chillButton.alpha = 1.0
+                self.detailsButton.alpha = 0.0
+                self.chillButton.enabled = true
             }
+            self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+
         }
     }
     
@@ -173,20 +188,27 @@ class ChillTableViewCell: UITableViewCell {
     /**
      *  Adds the current user to the chill's chillers
      */
-    func joinChill(sender: UIButton){
+    func joinChill(){
         
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
-        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "requestedChillers")
         parseChill.incrementKey("chillersCount")
         parseChill.saveInBackground()
+        chillButton.setTitle("Requested", forState: .Normal)
+        chillButton.backgroundColor = UIColor.flatGray()
         
     }
     
     /**
      *  Removes the current user from the chill's chillers and deletes it if they're the host
      */
-    func removeChill(sender: UIButton){
-
+    func removeChillFromTable(tableView: UITableView){
+        print(currentChill.overview)
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.containerView.frame = CGRectMake(-600, self.containerView.frame.origin.y, self.containerView.frame.width, self.containerView.frame.height)
+            }) { (completed: Bool) -> Void in
+                tableView.reloadData()
+        }
         let parseChillQuery = PFQuery(className: "Chill")
         parseChillQuery.whereKey("objectId", equalTo: currentChill.id)
         parseChillQuery.getFirstObjectInBackgroundWithBlock { (parseChill : PFObject?, error: NSError?) -> Void in

@@ -301,10 +301,13 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
             let currentChill : Chill = chillArray[indexPath.row]
             cell.setUpWithChill(currentChill)
+            cell.detailsButton.addTarget(self, action: "showDetails", forControlEvents: .TouchUpInside)
+            
             let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "removeChill:")
             swipeLeftRecognizer.direction = .Left
             cell.tag = indexPath.row
             cell.addGestureRecognizer(swipeLeftRecognizer)
+            
             return cell
         }else{  //Settings for the Suggestion Table View
             let cell : UITableViewCell = UITableViewCell()
@@ -354,6 +357,8 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
+    
+    //MARK: - Table Cell Methods
     
     func removeChill(gestureRecognizer : UISwipeGestureRecognizer){
         let chillCell = gestureRecognizer.view as! ChillTableViewCell

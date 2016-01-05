@@ -18,6 +18,8 @@ class ChillTableViewCell: UITableViewCell {
     var currentChill = Chill()
     let reportButton = UIButton(type: UIButtonType.System)
     
+    //MARK - Setup
+    
     /**
     *   This is where we add all of the UI for the chill table view cell
     */
@@ -58,18 +60,21 @@ class ChillTableViewCell: UITableViewCell {
         chillButton.setTitle("Chill", forState: .Normal)
         chillButton.backgroundColor = UIColor.icyBlue()
         chillButton.alpha = 0.0
+        chillButton.titleLabel?.numberOfLines = 0
+        chillButton.titleLabel?.textAlignment = .Center
         chillButton.titleLabel?.adjustsFontSizeToFitWidth = true
         chillButton.addTarget(self, action: "joinChill", forControlEvents: .TouchUpInside)
         chillButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        chillButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
+        chillButton.titleLabel?.font = UIFont.systemFontOfSize(18.0)
         containerView.addSubview(chillButton)
         
         detailsButton.setTitle("Details", forState: .Normal)
         detailsButton.backgroundColor = UIColor.icyBlue()
         detailsButton.alpha = 0.0
+        detailsButton.titleLabel?.textAlignment = .Center
         detailsButton.titleLabel?.adjustsFontSizeToFitWidth = true
         detailsButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        detailsButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
+        detailsButton.titleLabel?.font = UIFont.systemFontOfSize(18.0)
         containerView.addSubview(detailsButton)
         
         reportButton.setTitle("report", forState: .Normal)
@@ -77,7 +82,7 @@ class ChillTableViewCell: UITableViewCell {
         reportButton.contentHorizontalAlignment = .Right
         reportButton.titleLabel?.textAlignment = .Right
         reportButton.setTitleColor(UIColor.redColor(), forState: .Normal)
-        reportButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
+        reportButton.titleLabel?.font = UIFont.systemFontOfSize(18.0)
         containerView.addSubview(reportButton)
     }
     
@@ -99,6 +104,22 @@ class ChillTableViewCell: UITableViewCell {
         reportButton.frame = CGRectMake(containerView.frame.width * 0.725, chillDetailsLabel.frame.height + 5, containerView.frame.width * 0.25, containerView.frame.height * 0.2)
         detailsButton.frame = chillButton.frame
 
+    }
+    
+    func setUpWithChill(cellChill : Chill){
+        self.currentChill = cellChill
+        chillOverviewLabel.text = currentChill.overview
+        chillDetailsLabel.text = currentChill.details
+        let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
+        profileImage.sd_setImageWithURL(profilePictureURL)
+        if(currentChill.flipped == true){   //SHOW BACK
+            showBackUI()
+            hideFrontUI()
+        }else{  //SHOW FRONT
+            showFrontUI()
+            hideBackUI()
+        }
+        chillTypeLabel.text = "\(currentChill.type)&"
     }
     
     /**
@@ -143,21 +164,18 @@ class ChillTableViewCell: UITableViewCell {
         if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
             if(currentChill.chillers.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String) || currentChill.host == PFUser.currentUser()?.objectForKey("facebookID") as! String){
                 //THE USER IS ALREADY IN THE CHILL, EITHER AS HOST OR CHILLER
-                print("THE USER IS ALREADY IN THE CHILL, EITHER AS HOST OR CHILLER")
                 self.detailsButton.alpha = 1.0
                 self.chillButton.alpha = 0.0
                 
             }else if(currentChill.requestedChillers.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String)){
                 //THE USER HAS REQUESTED TO CHILL
-                print("THE USER HAS REQUESTED TO CHILL")
-                self.chillButton.setTitle("Requested", forState: .Normal)
+                self.chillButton.setTitle("Request\nSent", forState: .Normal)
                 self.chillButton.alpha = 1.0
                 self.chillButton.backgroundColor = UIColor.flatGray()
                 self.chillButton.enabled = false
             
             }else{
                 //THE HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING
-                print("THE HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING")
                 self.chillButton.alpha = 1.0
                 self.detailsButton.alpha = 0.0
                 self.chillButton.enabled = true
@@ -165,22 +183,6 @@ class ChillTableViewCell: UITableViewCell {
             self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
 
         }
-    }
-    
-    func setUpWithChill(cellChill : Chill){
-        self.currentChill = cellChill
-        chillOverviewLabel.text = currentChill.overview
-        chillDetailsLabel.text = currentChill.details
-        let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
-        profileImage.sd_setImageWithURL(profilePictureURL)
-        if(currentChill.flipped == true){   //SHOW BACK
-            showBackUI()
-            hideFrontUI()
-        }else{  //SHOW FRONT
-            showFrontUI()
-            hideBackUI()
-        }
-        chillTypeLabel.text = "\(currentChill.type)&"
     }
     
     //MARK: - Button Actions
@@ -194,7 +196,7 @@ class ChillTableViewCell: UITableViewCell {
         parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "requestedChillers")
         parseChill.incrementKey("chillersCount")
         parseChill.saveInBackground()
-        chillButton.setTitle("Requested", forState: .Normal)
+        chillButton.setTitle("Request\nSent", forState: .Normal)
         chillButton.backgroundColor = UIColor.flatGray()
         
     }
@@ -203,7 +205,6 @@ class ChillTableViewCell: UITableViewCell {
      *  Removes the current user from the chill's chillers and deletes it if they're the host
      */
     func removeChillFromTable(tableView: UITableView){
-        print(currentChill.overview)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
                         self.containerView.frame = CGRectMake(-600, self.containerView.frame.origin.y, self.containerView.frame.width, self.containerView.frame.height)
             }) { (completed: Bool) -> Void in

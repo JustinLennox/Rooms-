@@ -19,7 +19,6 @@
 		D04129AF1C3934F800A7D900 /* Ampersand SnowFlake.png in Resources */ = {isa = PBXBuildFile; fileRef = D04129AE1C3934F800A7D900 /* Ampersand SnowFlake.png */; };
 		D04129B71C39363400A7D900 /* Ampersand SnowFlake@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04129B61C39363400A7D900 /* Ampersand SnowFlake@2x.png */; };
 		D04129B91C39370700A7D900 /* ChillSnowflakeTabIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04129B81C39370700A7D900 /* ChillSnowflakeTabIcon.png */; };
-		D04129BB1C393D4800A7D900 /* backArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = D04129BA1C393D4800A7D900 /* backArrow.png */; };
 		D04129BD1C39DB5000A7D900 /* ChillDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04129BC1C39DB5000A7D900 /* ChillDetailsViewController.swift */; };
 		D0869FC91BCF267200B607FF /* UIColor+CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */; };
 		D0869FCD1BCF26FF00B607FF /* NearbyChillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */; };
@@ -84,6 +83,8 @@
 		D0B88F051C0F9EE500A7AEAD /* cooler.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFE1C0F9EE500A7AEAD /* cooler.png */; };
 		D0B88F061C0F9EE500A7AEAD /* Movies.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88EFF1C0F9EE500A7AEAD /* Movies.png */; };
 		D0B88F071C0F9EE500A7AEAD /* Party.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B88F001C0F9EE500A7AEAD /* Party.png */; };
+		D0E22C7A1C3CB36C002FC68E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E22C791C3CB36C002FC68E /* SettingsViewController.swift */; };
+		D0E22C7C1C3E407E002FC68E /* backArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = D0E22C7B1C3E407D002FC68E /* backArrow.png */; };
 		D0F8A0B01C2F46C3008126E3 /* prof.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0F8A0AF1C2F46C3008126E3 /* prof.jpg */; };
 /* End PBXBuildFile section */
 
@@ -121,7 +122,6 @@
 		D04129AE1C3934F800A7D900 /* Ampersand SnowFlake.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ampersand SnowFlake.png"; sourceTree = "<group>"; };
 		D04129B61C39363400A7D900 /* Ampersand SnowFlake@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ampersand SnowFlake@2x.png"; sourceTree = "<group>"; };
 		D04129B81C39370700A7D900 /* ChillSnowflakeTabIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChillSnowflakeTabIcon.png; sourceTree = "<group>"; };
-		D04129BA1C393D4800A7D900 /* backArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backArrow.png; sourceTree = "<group>"; };
 		D04129BC1C39DB5000A7D900 /* ChillDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChillDetailsViewController.swift; sourceTree = "<group>"; };
 		D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColors.swift"; sourceTree = "<group>"; };
 		D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyChillsViewController.swift; sourceTree = "<group>"; };
@@ -210,6 +210,8 @@
 		D0B88EFE1C0F9EE500A7AEAD /* cooler.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cooler.png; sourceTree = "<group>"; };
 		D0B88EFF1C0F9EE500A7AEAD /* Movies.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Movies.png; sourceTree = "<group>"; };
 		D0B88F001C0F9EE500A7AEAD /* Party.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Party.png; sourceTree = "<group>"; };
+		D0E22C791C3CB36C002FC68E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D0E22C7B1C3E407D002FC68E /* backArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backArrow.png; sourceTree = "<group>"; };
 		D0F8A0AF1C2F46C3008126E3 /* prof.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = prof.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -364,6 +366,7 @@
 				D04129A61C391C0700A7D900 /* AddChillTabViewController.swift */,
 				D097389B1BF86C47005C1A39 /* AddChillViewController.swift */,
 				D04129BC1C39DB5000A7D900 /* ChillDetailsViewController.swift */,
+				D0E22C791C3CB36C002FC68E /* SettingsViewController.swift */,
 				D0AF11CC1BFCF061006B5034 /* ChillTableViewCell.swift */,
 				D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */,
 				D08FE87B1BF4123200450998 /* Chill.swift */,
@@ -397,7 +400,7 @@
 		D0B88F081C0F9EEE00A7AEAD /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				D04129BA1C393D4800A7D900 /* backArrow.png */,
+				D0E22C7B1C3E407D002FC68E /* backArrow.png */,
 				D04129A81C39269300A7D900 /* ChillSnowflake.png */,
 				D0F8A0AF1C2F46C3008126E3 /* prof.jpg */,
 				D04129B81C39370700A7D900 /* ChillSnowflakeTabIcon.png */,
@@ -535,9 +538,9 @@
 				D04129AB1C3927DE00A7D900 /* ChillSnowflakeSmall.png in Resources */,
 				D0B88F051C0F9EE500A7AEAD /* cooler.png in Resources */,
 				D04129B91C39370700A7D900 /* ChillSnowflakeTabIcon.png in Resources */,
-				D04129BB1C393D4800A7D900 /* backArrow.png in Resources */,
 				D04129A91C39269300A7D900 /* ChillSnowflake.png in Resources */,
 				D04129AD1C3934CA00A7D900 /* Snowing.png in Resources */,
+				D0E22C7C1C3E407E002FC68E /* backArrow.png in Resources */,
 				D0B88EF91C0F98B800A7AEAD /* chill.png in Resources */,
 				D0B88F011C0F9EE500A7AEAD /* Cafe.png in Resources */,
 				D04129B71C39363400A7D900 /* Ampersand SnowFlake@2x.png in Resources */,
@@ -597,6 +600,7 @@
 				D0AF117E1BFC2A43006B5034 /* SDWebImageCompat.m in Sources */,
 				D0869FCD1BCF26FF00B607FF /* NearbyChillsViewController.swift in Sources */,
 				D097389C1BF86C47005C1A39 /* AddChillViewController.swift in Sources */,
+				D0E22C7A1C3CB36C002FC68E /* SettingsViewController.swift in Sources */,
 				D04129A51C391A3700A7D900 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				D0AF11861BFC2A43006B5034 /* UIImage+MultiFormat.m in Sources */,
 				D0AF11881BFC2A43006B5034 /* UIImageView+HighlightedWebCache.m in Sources */,

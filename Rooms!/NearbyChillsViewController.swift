@@ -14,6 +14,8 @@ import FBSDKCoreKit
 
 class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    var currentChill = Chill() //The chill the user wishes to see the details/chat of
+    
     //Chill Variables
     var chillArray : [Chill] = []
     let chillTableCellHeight : CGFloat = 100.0
@@ -55,7 +57,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         //If there's no user logged in, send them to the Landing Screen
         if(PFUser.currentUser() == nil){
             performSegueWithIdentifier("showLoginSegue", sender: self)
@@ -227,7 +229,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     //MARK: - TextField Methods
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.text = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.letterCharacterSet().invertedSet).joinWithSeparator("")
+//        textField.text = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.letterCharacterSet().invertedSet).joinWithSeparator("")
         if(blankTextField.isFirstResponder()){
             var blankText = blankTextField.text
             blankText = blankText!.stringByReplacingOccurrencesOfString(" ", withString: "")
@@ -301,7 +303,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             let cell : ChillTableViewCell = tableView.dequeueReusableCellWithIdentifier("ChillCell") as! ChillTableViewCell
             let currentChill : Chill = chillArray[indexPath.row]
             cell.setUpWithChill(currentChill)
-            cell.detailsButton.addTarget(self, action: "showDetails", forControlEvents: .TouchUpInside)
+            cell.detailsButton.addTarget(self, action: "showDetails:", forControlEvents: .TouchUpInside)
             
             let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "removeChill:")
             swipeLeftRecognizer.direction = .Left
@@ -364,6 +366,24 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         let chillCell = gestureRecognizer.view as! ChillTableViewCell
         chillArray.removeAtIndex(chillCell.tag)
         chillCell.removeChillFromTable(chillTableView)
+    }
+    
+    func showDetails(sender : UIButton){
+        let detailsButton = sender
+        //TODO: This is the worst code in the app... We're using the detail button's superview.superview to refer to the 
+        //Chill TableViewCell to get the currentChill the details button is referring to... This needs to be fixed
+        let chillCell : ChillTableViewCell = detailsButton.superview?.superview as! ChillTableViewCell
+        currentChill = chillCell.currentChill
+        performSegueWithIdentifier("showChillDetailsSegue", sender: self)
+    }
+    
+    //MARK : - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier == "showChillDetailsSegue"){
+            let vc = segue.destinationViewController as! ChillDetailsViewController
+            vc.currentChill = currentChill
+        }
     }
     
     //MARK: - REFRESH CONTROL

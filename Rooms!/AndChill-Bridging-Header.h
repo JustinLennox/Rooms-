@@ -15,6 +15,10 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 #import "UIImageView+WebCache.h"
+#import "UIImage+WebP.h"
+#import "UIImage+MultiFormat.h"
+#import "SDWebImageDownloader.h"
+#import "SDWebImageManager.h"
 #import <Parse/PFObject+Subclass.h>
 #import "TPKeyboardAvoidingScrollView.h"
 #endif /* Rooms__Bridging_Header_h */

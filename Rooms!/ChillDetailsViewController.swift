@@ -12,6 +12,7 @@ import Parse
 class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     
     //MARK: - UI
+    let titleLabel = UILabel()
     let scrollView = TPKeyboardAvoidingScrollView()
     let privateDetailsContainerView = UIView()
     let privateDetailsLabel = UILabel()
@@ -20,18 +21,40 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     let messageTextField = UITextView()
     let messageBackground = UIView()
     let sendButton = UIButton(type: .System)
-    let currentChill = Chill()
+    var currentChill = Chill()
     var currentChat = PFObject(className: "Message")
-    var currentMessageY : CGFloat = 0.0
+    var currentMessageY : CGFloat = 10.0
+    var profilePicDictionary = [String: UIImage]()
     var temporaryMessageArray = NSMutableArray()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = UIColor.backgroundGray()
-        scrollView.frame = CGRectMake(0, 90, view.frame.width, view.frame.height - 90)
+        
+        let bannerBackground = UIView()
+        bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
+        bannerBackground.backgroundColor = UIColor.icyBlue()
+        view.addSubview(bannerBackground)
+        
+        let bannerY = bannerBackground.frame.height * 0.25
+        let bannerHeight = bannerBackground.frame.height * 0.8
+        
+        titleLabel.frame = CGRectMake(view.frame.width * 0.125, bannerY, view.frame.width * 0.75, bannerHeight)
+        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.font = UIFont.systemFontOfSize(25.0)
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = "&Chill"
+        view.addSubview(titleLabel)
+        
+        let backButton = UIButton(type: .System)
+        backButton.setBackgroundImage(UIImage(named: "backArrow.png"), forState: .Normal)
+        backButton.frame = CGRectMake(10, bannerY + 8, 32, 32)
+        backButton.addTarget(self, action: "backButtonPressed", forControlEvents: .TouchUpInside)
+        view.addSubview(backButton)
+
+        scrollView.frame = CGRectMake(0, 164, view.frame.width, view.frame.height - 164)
         view.addSubview(scrollView)
-        currentChill.id = "0100"
-        loadMessages()
         scrollView.scrollEnabled = false
         addPrivateDetailsUI()
         addMessageUI()
@@ -39,16 +62,18 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        getCurrentChat()
+        titleLabel.text = "\(currentChill.type)"
+        privateChillDetails.text = currentChill.privateDetails
+        loadMessages()
     }
     
     func addPrivateDetailsUI(){
         
-        privateDetailsContainerView.frame = CGRectMake(view.frame.width * 0.025, 10, view.frame.width * 0.95, 90)
+        privateDetailsContainerView.frame = CGRectMake(view.frame.width * 0.025, 74, view.frame.width * 0.95, 90)
         privateDetailsContainerView.backgroundColor = UIColor.whiteColor()
         privateDetailsContainerView.layer.cornerRadius = 8.0
         privateDetailsContainerView.layer.masksToBounds = true
-        scrollView.addSubview(privateDetailsContainerView)
+        view.addSubview(privateDetailsContainerView)
         
         privateDetailsLabel.frame = CGRectMake(0, 0, privateDetailsContainerView.frame.height, privateDetailsContainerView.frame.height)
         privateDetailsLabel.text = "Private\nDetails"
@@ -59,9 +84,9 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         privateDetailsContainerView.addSubview(privateDetailsLabel)
         
         privateChillDetails.frame = CGRectMake(privateDetailsLabel.frame.width + 10, 5, privateDetailsContainerView.frame.width - privateDetailsLabel.frame.width - 20, privateDetailsContainerView.frame.height * 0.8 - 5)
-        privateChillDetails.layer.masksToBounds = true
         privateChillDetails.text = "❄️"
-        privateChillDetails.backgroundColor = UIColor.whiteColor()
+        privateChillDetails.adjustsFontSizeToFitWidth = true
+        privateChillDetails.numberOfLines = 0
         privateChillDetails.textColor = UIColor.flatGray()
         privateChillDetails.font = UIFont.systemFontOfSize(14.0)
         privateDetailsContainerView.addSubview(privateChillDetails)
@@ -70,7 +95,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     
     func addMessageUI(){
         
-        messageTextField.frame = CGRectMake(5, scrollView.frame.height - 38, view.frame.width - 65, 33)
+        messageTextField.frame = CGRectMake(5, scrollView.frame.height - 40, view.frame.width - 65, 33)
         messageTextField.layer.cornerRadius = 5.0
         messageTextField.font = UIFont.systemFontOfSize(14.0)
         messageTextField.layer.masksToBounds = true
@@ -90,7 +115,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         scrollView.addSubview(messageBackground)
         scrollView.bringSubviewToFront(messageTextField)
         
-        messageScroller.frame = CGRectMake(0, CGRectGetMaxY(privateDetailsContainerView.frame) + 10, view.frame.size.width, CGRectGetMinY(messageBackground.frame) - CGRectGetMaxY(privateDetailsContainerView.frame) - 15)
+        messageScroller.frame = CGRectMake(0, 10, view.frame.size.width, scrollView.frame.height - messageBackground.frame.height - 10)
         messageScroller.backgroundColor = UIColor.backgroundGray()
         messageScroller.contentSize = messageScroller.frame.size
         scrollView.addSubview(messageScroller)
@@ -104,24 +129,10 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         
         let dismissalTap = UITapGestureRecognizer(target: self, action: "dismissMessage")
         messageScroller.addGestureRecognizer(dismissalTap)
-        
+        scrollView.sendSubviewToBack(messageScroller)
     }
     
     //MARK: - Message Methods
-    
-    func getCurrentChat(){
-        let messageQuery = PFQuery(className: "Message")
-        print("Current chill id: \(currentChill.id)")
-        messageQuery.whereKey("Chill", equalTo: currentChill.id)
-        messageQuery.getFirstObjectInBackgroundWithBlock { (chat : PFObject?, error: NSError?) -> Void in
-            if(error == nil){
-                if let cChat = chat{
-                    self.currentChat = cChat
-                    
-                }
-            }
-        }
-    }
     
     func sendButtonPressed(){
         print("Send!")
@@ -134,7 +145,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     
     func sendMessage(messageText: String){
         if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
-            var newMessage = ["text":messageText, "sender":facebookID]
+            let newMessage = ["text":messageText, "sender":facebookID, "senderName": PFUser.currentUser()?.objectForKey("name") as! String]
             currentChat.addObject(newMessage, forKey: "messageArray")
             currentChat.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
                 self.loadMessages()
@@ -144,19 +155,18 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     
     func loadMessages(){
         let chatQuery = PFQuery(className: "Message")
-        print("Current chill id: \(currentChill.id)")
         chatQuery.whereKey("Chill", equalTo: currentChill.id)
         chatQuery.addAscendingOrder("createdAt")
         chatQuery.getFirstObjectInBackgroundWithBlock { (pfChat : PFObject?, error: NSError?) -> Void in
             if(error == nil){
                 if let chat = pfChat{
+                    self.currentChat = chat
                     for view in self.temporaryMessageArray{
                         view.removeFromSuperview()
                     }
                     self.messageScroller.contentSize = self.messageScroller.frame.size
-                    self.currentMessageY = 0.0
+                    self.currentMessageY = 10.0
                     for message in chat.objectForKey("messageArray") as! [[String:String]]{
-                        print(message["text"])
                         self.generateMessageUIForMessage(message)
                     }
                 }
@@ -167,6 +177,26 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    func loadProfilePicDictionary(){
+        print("load profile pic dictionary")
+        profilePicDictionary = [String: UIImage]()
+        for facebookID in currentChat.objectForKey("participants") as! [String]{
+            print("Facebookid:", facebookID)
+            let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(facebookID)/picture?type=square&width=60&height=60&return_ssl_resources=1")
+            let sdImageManager = SDWebImageDownloader.sharedDownloader()
+            sdImageManager.downloadImageWithURL(profilePictureURL, options: .IgnoreCachedResponse, progress: nil, completed: { (profilePicture : UIImage!, data: NSData!, error: NSError!, success: Bool) -> Void in
+                print("Completed")
+                if(error == nil){
+                    print("No error")
+                    self.profilePicDictionary[facebookID] = profilePicture
+                }else{
+                    print("Error")
+                }
+            })
+        
+        }
+    }
+    
     func generateMessageUIForMessage(message : [String:String]){
         
         let messageView = UIView()
@@ -174,14 +204,30 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         messageView.layer.cornerRadius = 8.0
         messageView.layer.masksToBounds = true
         
+        let messageProfileImage = UIImageView()
+        messageProfileImage.frame = CGRectMake(0, 0, 30, 30)
+        let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(message["sender"]!)/picture?type=square&width=60&height=60&return_ssl_resources=1")
+        messageProfileImage.sd_setImageWithURL(profilePictureURL)
+        messageProfileImage.layer.cornerRadius = messageProfileImage.frame.height/2.0
+        messageProfileImage.layer.masksToBounds = true
+        messageView.addSubview(messageProfileImage)
+        
         let messageLabel = UILabel()
         messageLabel.numberOfLines = 0
+        messageLabel.font = UIFont.systemFontOfSize(14.0)
         messageLabel.text = message["text"]!
         
         var messageViewFrame = CGRectMake(view.frame.width * 0.025, currentMessageY, view.frame.width * 0.95, 90)
         messageView.frame = messageViewFrame
         
-        var messageLabelFrame = CGRectMake(5, 5, messageView.frame.width - 10, messageView.frame.height - 5)
+        let messageNameLabel = UILabel()
+        messageNameLabel.font = UIFont.systemFontOfSize(10.0)
+        messageNameLabel.textColor = UIColor.flatGray()
+        messageNameLabel.frame = CGRectMake(CGRectGetMaxX(messageProfileImage.frame) + 5, 7.5, messageView.frame.width - CGRectGetMaxX(messageProfileImage.frame) - 10, 15)
+        messageNameLabel.text = message["senderName"]!
+        messageView.addSubview(messageNameLabel)
+        
+        var messageLabelFrame = CGRectMake(CGRectGetMaxX(messageProfileImage.frame) + 5, 22.5, messageView.frame.width - CGRectGetMaxX(messageProfileImage.frame) - 10, messageView.frame.height - 35)
         messageLabel.frame = messageLabelFrame
 
         messageView.addSubview(messageLabel)
@@ -189,9 +235,8 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         messageLabel.sizeToFit()
         temporaryMessageArray.addObject(messageView)
         
-        let finalLabelHeight = messageLabel.frame.height < 30 ? 30 : messageLabel.frame.height
-        messageViewFrame = CGRectMake(messageViewFrame.origin.x, messageViewFrame.origin.y , messageViewFrame.width, finalLabelHeight + 10)
-        messageLabelFrame = CGRectMake(messageLabelFrame.origin.x, messageLabelFrame.origin.y, messageLabelFrame.width, finalLabelHeight)
+        messageViewFrame = CGRectMake(messageViewFrame.origin.x, messageViewFrame.origin.y , messageViewFrame.width, messageLabel.frame.height + 30)
+        messageLabelFrame = CGRectMake(messageLabelFrame.origin.x, messageLabelFrame.origin.y, messageLabelFrame.width, messageLabel.frame.height)
         messageView.frame = messageViewFrame
         messageLabel.frame = messageLabelFrame
         currentMessageY += messageView.frame.height + 10
@@ -202,6 +247,12 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         }
         messageScroller.contentOffset = CGPoint(x: 0, y: messageScroller.contentSize.height - messageScroller.bounds.size.height)
 
+    }
+    
+    //MARK: - Navigation
+    
+    func backButtonPressed(){
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
 
@@ -242,7 +293,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         messageFrame = CGRectMake(messageFrame.origin.x, scrollView.frame.height - messageTextField.frame.height - 5, messageFrame.width, messageTextField.frame.height)
         messageTextField.frame = messageFrame
         messageBackground.frame = CGRectMake(0, messageTextField.frame.origin.y - 9, view.frame.width, messageTextField.frame.height + 18)
-        messageScroller.frame = CGRectMake(messageScroller.frame.origin.x, CGRectGetMaxY(privateDetailsContainerView.frame) + 10 - (messageBackground.frame.height - 51), messageScroller.frame.width, messageScroller.frame.height)
+        messageScroller.frame = CGRectMake(messageScroller.frame.origin.x, 10 - (messageBackground.frame.height - 51), messageScroller.frame.width, messageScroller.frame.height)
         
     }
 

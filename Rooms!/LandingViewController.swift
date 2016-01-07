@@ -125,10 +125,11 @@ class LandingViewController: UIViewController {
                 }
                 
                 //Send a request to Facebook for the current facebook user
-                let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters: nil);
+                let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters:["fields": "id, friends, first_name"]);
                 fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                     if error == nil {   //There wasn't a problem, this FB user exists
                         PFUser.currentUser()?.setObject(result.objectForKey("id") as! String, forKey: "facebookID")
+                        PFUser.currentUser()?.setObject(result.objectForKey("first_name") as! String, forKey: "name")
                         PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                             if(error == nil){
                                 self.performSegueWithIdentifier("loginSegue", sender: self)

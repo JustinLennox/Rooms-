@@ -220,7 +220,6 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             }
     
             chill["host"] = PFUser.currentUser()?.objectForKey("facebookID")
-            chill["profilePic"] = FBSDKAccessToken.currentAccessToken().tokenString
             chill["chillers"] = []
             chill["requestedChillers"] = []
             chill["chillersCount"] = 0
@@ -230,9 +229,16 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
                     print("\(geoPoint)")
                     // do something with the new geoPoint
                     chill["location"] = geoPoint
-                    chill.saveInBackground()
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                    self.delegate!.finishedAddingChill()
+                    chill.saveInBackgroundWithBlock({ (success: Bool, error:NSError?) -> Void in
+                        if(error != nil){
+                            let failureAlert = UIAlertController(title: "Sorry!", message: "We couldn't save your Chill. Make sure you have an internet connection and try again!", preferredStyle: UIAlertControllerStyle.Alert)
+                            failureAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                            self.presentViewController(failureAlert, animated: true, completion: nil)
+
+                        }else{
+                            self.createChat(chill.objectId!)
+                        }
+                    })
 
                 }else{
                     let locationAlert = UIAlertController(title: "Sorry!", message: "We couldn't get your location. Make sure you've enabled Location tracking under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -247,6 +253,18 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             presentViewController(loggedInAlert, animated: true, completion: nil)
         }
         
+    }
+    
+    func createChat(chillID: String){
+        let chat = PFObject(className: "Message")
+        chat["Chill"] = chillID
+        chat["messageArray"] = []
+        chat["participants"] = [PFUser.currentUser()?.objectForKey("facebookID") as! String]
+        chat.saveInBackground()
+        self.dismissViewControllerAnimated(true, completion: nil)
+        self.delegate!.finishedAddingChill()
+        
+
     }
     
     func backPressed(){
@@ -324,7 +342,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             textView.resignFirstResponder()
             return false
         }else{
-            return textView.text.characters.count + (text.characters.count - range.length) <= 80;
+            return textView.text.characters.count + (text.characters.count - range.length) <= 100;
         }
     }
     

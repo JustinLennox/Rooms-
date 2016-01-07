@@ -39,6 +39,7 @@ class ChillTableViewCell: UITableViewCell {
         containerView.addSubview(profileImage)
         
         chillOverviewLabel.text = ""
+        chillOverviewLabel.adjustsFontSizeToFitWidth = true
         chillOverviewLabel.layer.masksToBounds = true
         chillOverviewLabel.font = UIFont.systemFontOfSize(14.0)
         chillOverviewLabel.numberOfLines = -1
@@ -46,6 +47,7 @@ class ChillTableViewCell: UITableViewCell {
         
         chillDetailsLabel.text = ""
         chillDetailsLabel.alpha = 0.0
+        chillDetailsLabel.adjustsFontSizeToFitWidth = true
         chillDetailsLabel.layer.masksToBounds = true
         chillDetailsLabel.font = UIFont.systemFontOfSize(14.0)
         chillDetailsLabel.numberOfLines = -1
@@ -68,7 +70,7 @@ class ChillTableViewCell: UITableViewCell {
         chillButton.titleLabel?.font = UIFont.systemFontOfSize(18.0)
         containerView.addSubview(chillButton)
         
-        detailsButton.setTitle("Details", forState: .Normal)
+        detailsButton.setTitle("Chat", forState: .Normal)
         detailsButton.backgroundColor = UIColor.icyBlue()
         detailsButton.alpha = 0.0
         detailsButton.titleLabel?.textAlignment = .Center
@@ -82,7 +84,7 @@ class ChillTableViewCell: UITableViewCell {
         reportButton.contentHorizontalAlignment = .Right
         reportButton.titleLabel?.textAlignment = .Right
         reportButton.setTitleColor(UIColor.redColor(), forState: .Normal)
-        reportButton.titleLabel?.font = UIFont.systemFontOfSize(18.0)
+        reportButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
         containerView.addSubview(reportButton)
     }
     
@@ -110,7 +112,7 @@ class ChillTableViewCell: UITableViewCell {
         self.currentChill = cellChill
         chillOverviewLabel.text = currentChill.overview
         chillDetailsLabel.text = currentChill.details
-        let profilePictureURL = NSURL(string: "https://graph.facebook.com/me/picture?width=200&height=200&return_ssl_resources=1&access_token=\(currentChill.profilePic)")
+        let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(currentChill.host)/picture?type=square&width=200&height=200&return_ssl_resources=1")
         profileImage.sd_setImageWithURL(profilePictureURL)
         if(currentChill.flipped == true){   //SHOW BACK
             showBackUI()

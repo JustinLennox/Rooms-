@@ -62,6 +62,17 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
         titleLabel.text = "My Chills"
         view.addSubview(titleLabel)
         
+        let settingsIcon = UIButton(type: .System)
+        settingsIcon.setBackgroundImage(UIImage(named: "settingsIcon.png"), forState: .Normal)
+        settingsIcon.imageView?.contentMode = .ScaleAspectFit
+        settingsIcon.frame = CGRectMake(view.frame.width - 40, bannerY + 10, 30, 30)
+        settingsIcon.addTarget(self, action: "settingsPressed", forControlEvents: .TouchUpInside)
+        view.addSubview(settingsIcon)
+        
+    }
+    
+    func settingsPressed(){
+        performSegueWithIdentifier("showSettingsSegue", sender: self)
     }
     
     //MARK: - Adding & Getting Chills from the Backend

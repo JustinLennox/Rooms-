@@ -117,22 +117,24 @@ class LandingViewController: UIViewController {
         PFFacebookUtils.logInInBackgroundWithReadPermissions(permissions,  block: {  (user: PFUser?, error: NSError?) -> Void in
             if let user = user {
                 
-                //We can check if the user is a new user here. Just in case we want to.
-                if user.isNew {
-
-                } else {
-
-                }
-                
                 //Send a request to Facebook for the current facebook user
                 let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters:["fields": "id, friends, first_name"]);
                 fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                     if error == nil {   //There wasn't a problem, this FB user exists
                         PFUser.currentUser()?.setObject(result.objectForKey("id") as! String, forKey: "facebookID")
                         PFUser.currentUser()?.setObject(result.objectForKey("first_name") as! String, forKey: "name")
+                        //For push notifications
+                        let installation = PFInstallation.currentInstallation()
+                        installation["facebookID"] = result.objectForKey("id") as! String
+                        installation.saveInBackground()
                         PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                             if(error == nil){
-                                self.performSegueWithIdentifier("loginSegue", sender: self)
+                                if user.isNew {
+                                    self.performSegueWithIdentifier("showEnableLocationSegue", sender: self)
+                                } else {
+                                    self.performSegueWithIdentifier("loginSegue", sender: self)
+
+                                }
                             }
                         })
                     } else {

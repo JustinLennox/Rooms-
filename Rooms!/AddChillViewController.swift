@@ -207,6 +207,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chillType = chillType.stringByReplacingOccurrencesOfString("chill", withString: "")
             chillType = chillType.stringByReplacingOccurrencesOfString(" ", withString: "")
             chill["type"] = chillType
+            chill["reportCount"] = 0
             chill["overview"] = publicChillOverview.text
             if(publicChillDetails.text == publicDetailsPlaceholderText){
                 chill["details"] = "❄️"

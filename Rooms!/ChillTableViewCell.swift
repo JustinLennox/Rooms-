@@ -109,6 +109,7 @@ class ChillTableViewCell: UITableViewCell {
     }
     
     func setUpWithChill(cellChill : Chill){
+        print("Set up")
         self.currentChill = cellChill
         chillOverviewLabel.text = currentChill.overview
         chillDetailsLabel.text = currentChill.details
@@ -200,6 +201,7 @@ class ChillTableViewCell: UITableViewCell {
         parseChill.saveInBackground()
         chillButton.setTitle("Request\nSent", forState: .Normal)
         chillButton.backgroundColor = UIColor.flatGray()
+        joinChillPush()
         
     }
     
@@ -224,6 +226,19 @@ class ChillTableViewCell: UITableViewCell {
                     parseChill!.saveInBackground()
                 }
             }
+        }
+    }
+    
+    func joinChillPush(){
+        if let userName = PFUser.currentUser()?.objectForKey("name"){
+            let pushQuery = PFInstallation.query()
+            pushQuery!.whereKey("facebookID", equalTo: currentChill.host)
+            
+            // Send push notification to query
+            let push = PFPush()
+            push.setQuery(pushQuery) // Set our Installation query
+            push.setMessage("\(userName) wants to join your \(currentChill.type)&Chill.")
+            push.sendPushInBackground()
         }
     }
     

@@ -18,11 +18,30 @@
                     </view>
                     <connections>
                         <segue destination="nWk-IP-qQY" kind="show" identifier="loginSegue" id="p5c-Aq-0vu"/>
+                        <segue destination="q5M-Yj-IUc" kind="show" identifier="showEnableLocationSegue" id="6I4-Qh-QVt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="279" y="-1480"/>
+            <point key="canvasLocation" x="1013" y="-2946"/>
+        </scene>
+        <!--Enable Location View Controller-->
+        <scene sceneID="Q5X-vW-LVn">
+            <objects>
+                <viewController id="q5M-Yj-IUc" customClass="EnableLocationViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sNT-hd-DoN"/>
+                        <viewControllerLayoutGuide type="bottom" id="3zD-OB-gu4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="atD-4L-bwI">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lbq-ra-GYr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1013" y="-2197"/>
         </scene>
         <!--PopularChills-->
         <scene sceneID="jQA-hK-7KT">
@@ -38,7 +57,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <tabBarItem key="tabBarItem" title="Popular" id="g2p-0R-Gl0" userLabel="PopularChills"/>
+                    <tabBarItem key="tabBarItem" title="Popular" image="PopularTabIcon" selectedImage="PopularTabIcon" id="g2p-0R-Gl0" userLabel="PopularChills"/>
                     <connections>
                         <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="899-JM-awQ"/>
                     </connections>
@@ -83,7 +102,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <tabBarItem key="tabBarItem" title="Nearby" id="YMC-S5-5KN"/>
+                    <tabBarItem key="tabBarItem" title="Nearby" image="CompassTabIcon" selectedImage="CompassTabIcon" id="YMC-S5-5KN"/>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="showLoginSegue" id="vZK-dR-o3Z"/>
                         <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="koZ-Un-q0W"/>
@@ -155,10 +174,10 @@
             </objects>
             <point key="canvasLocation" x="1013" y="43"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="cdX-7t-CcO">
             <objects>
-                <viewController id="Yuw-7N-KFe" sceneMemberID="viewController">
+                <viewController id="Yuw-7N-KFe" customClass="SettingsViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="77o-2T-Oi5"/>
                         <viewControllerLayoutGuide type="bottom" id="YzT-ac-QOJ"/>
@@ -168,6 +187,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="showLandingSegue" id="Hjr-PC-PqJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9qf-wS-4ac" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -187,7 +209,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <tabBarItem key="tabBarItem" title="My Chills" id="SBm-qP-4Lz" userLabel="MyChills"/>
+                    <tabBarItem key="tabBarItem" title="My Chills" image="PenguinTabIcon" selectedImage="PenguinTabIcon" id="SBm-qP-4Lz" userLabel="MyChills"/>
                     <connections>
                         <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="Xkq-QW-01d"/>
                         <segue destination="Yuw-7N-KFe" kind="show" identifier="showSettingsSegue" id="Sa0-Xd-Idj"/>
@@ -211,7 +233,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <tabBarItem key="tabBarItem" title="Friends" id="ywj-K4-H9v"/>
+                    <tabBarItem key="tabBarItem" title="Friends" image="FriendsTabIcon" selectedImage="FriendsTabIcon" id="ywj-K4-H9v"/>
                     <connections>
                         <segue destination="H9s-ND-iaY" kind="show" identifier="showChillDetailsSegue" id="b6S-h8-bxo"/>
                     </connections>
@@ -222,9 +244,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="CompassTabIcon" width="20" height="20"/>
+        <image name="FriendsTabIcon" width="20" height="20"/>
+        <image name="PenguinTabIcon" width="20" height="20"/>
+        <image name="PopularTabIcon" width="20" height="20"/>
         <image name="SnowflakeTabIcon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="vZK-dR-o3Z"/>
         <segue reference="Xkq-QW-01d"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -68,31 +68,33 @@ class PopularChillsViewController: UIViewController, UITextFieldDelegate, UIText
     func getPopularChills(){
         
         let popularQuery = PFQuery(className: "Chill")
-        let userLocation : PFGeoPoint = PFUser.currentUser()?.objectForKey("location") as! PFGeoPoint
-        popularQuery.whereKey("location", nearGeoPoint: userLocation, withinMiles: 5.0)
-        popularQuery.limit = 25
-        popularQuery.addDescendingOrder("chillersCount")
-        
-        
-        popularQuery.findObjectsInBackgroundWithBlock {
-            (objects: [PFObject]?, error: NSError?) -> Void in
+        if let geoPoint = PFUser.currentUser()?.objectForKey("location") {
+            let userLocation : PFGeoPoint = geoPoint as! PFGeoPoint
+            popularQuery.whereKey("location", nearGeoPoint: userLocation, withinMiles: 5.0)
+            popularQuery.limit = 25
+            popularQuery.addDescendingOrder("chillersCount")
             
-            if error == nil {
+            
+            popularQuery.findObjectsInBackgroundWithBlock {
+                (objects: [PFObject]?, error: NSError?) -> Void in
                 
-                // Do something with the found objects
-                if let objects = objects as [PFObject]! {
-                    self.chillArray = []
-                    for chillDictionary in objects {
-                        
-                        let chill = Chill.parseDictionaryIntoChill(chillDictionary)
-                        self.chillArray.append(chill)
-                    }
-                    self.chillTableView.reloadData()
+                if error == nil {
                     
+                    // Do something with the found objects
+                    if let objects = objects as [PFObject]! {
+                        self.chillArray = []
+                        for chillDictionary in objects {
+                            
+                            let chill = Chill.parseDictionaryIntoChill(chillDictionary)
+                            self.chillArray.append(chill)
+                        }
+                        self.chillTableView.reloadData()
+                        
+                    }
+                } else {
+                    // Log details of the failure
+                    print("Error: \(error!)")
                 }
-            } else {
-                // Log details of the failure
-                print("Error: \(error!)")
             }
         }
     }

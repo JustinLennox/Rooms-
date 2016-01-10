@@ -59,14 +59,14 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         super.viewDidAppear(animated)
 
         //If there's no user logged in, send them to the Landing Screen
-        if(PFUser.currentUser() == nil){
+        if(PFUser.currentUser() == nil || FBSDKAccessToken.currentAccessToken() == nil){
             performSegueWithIdentifier("showLoginSegue", sender: self)
         }else{
             //If there is a user and it's their first time using the app, tell them they need to allow us to access their location
             if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
                 let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
                 if(firstTime){
-                    let alert = UIAlertController(title: "Allow &Chill to Access Your Location", message: "&Chill needs to use your location in order to find activities near you. Please allow &Chill access to your location when prompted.", preferredStyle: UIAlertControllerStyle.Alert)
+                    let alert = UIAlertController(title: "Allow &Chill to Access Your Location", message: "&Chill needs to use your location in order to find activities near you. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler:
                         { action in
                             switch action.style{
@@ -144,6 +144,10 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                     self.refreshControl.endRefreshing()
                 }
             } else {
+                let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+
                 // Log details of the failure
                 print("Error: \(error!)")
                 self.refreshControl.endRefreshing()
@@ -170,13 +174,16 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "FirstTime")
                             NSUserDefaults.standardUserDefaults().synchronize()
                         }else{
-                            let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
+                            let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
                             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                             self.presentViewController(alert, animated: true, completion: nil)
                         }
                     })
                 }else{
                     print("\(error)")
+                    let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
         }
@@ -304,7 +311,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             let currentChill : Chill = chillArray[indexPath.row]
             cell.setUpWithChill(currentChill)
             cell.detailsButton.addTarget(self, action: "showDetails:", forControlEvents: .TouchUpInside)
-            
+            cell.reportButton.addTarget(self, action: "reportChill:", forControlEvents: .TouchUpInside)
             let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "removeChill:")
             swipeLeftRecognizer.direction = .Left
             cell.tag = indexPath.row
@@ -368,10 +375,40 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         chillCell.removeChillFromTable(chillTableView)
     }
     
+    //TODO: This is the worst code in the app... We're using the button's superview.superview to refer to the
+    //Chill TableViewCell to get the currentChill the button is referring to... This needs to be fixed
+    
+    func reportChill(sender : UIButton){
+        let reportButton = sender
+        let chillCell : ChillTableViewCell = reportButton.superview?.superview as! ChillTableViewCell
+        let originalColor = chillCell.containerView.backgroundColor
+        chillCell.containerView.backgroundColor = UIColor.redColor()
+        let currentChill = chillCell.currentChill
+
+        let alert = UIAlertController(title: "Reporting Chill", message: "You have opted to report this user's chill. If you choose to continue, the &Chill team will review it for deletion. We can also block this user if you would like, hiding all of their Chills from you. This action cannot be undone and should not be taken lightly.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        alert.addAction(UIAlertAction(title: "Nevermind", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Report Chill", style: UIAlertActionStyle.Default, handler:{ (alert: UIAlertAction) -> Void in
+            self.chillArray.removeAtIndex(chillCell.tag)
+            chillCell.removeChillFromTable(self.chillTableView)
+            self.updateReportedChill(currentChill)
+        }))
+        alert.addAction(UIAlertAction(title: "Block User", style: .Destructive, handler: { (alert: UIAlertAction) -> Void in
+            self.chillArray.removeAtIndex(chillCell.tag)
+            chillCell.removeChillFromTable(self.chillTableView)
+            self.updateReportedChill(currentChill)
+        }))
+        chillCell.containerView.backgroundColor = originalColor
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func updateReportedChill(reportedChill: Chill){
+        let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: reportedChill.id)
+        parseChill.incrementKey("reportCount")
+        parseChill.saveInBackground()
+    }
+    
     func showDetails(sender : UIButton){
         let detailsButton = sender
-        //TODO: This is the worst code in the app... We're using the detail button's superview.superview to refer to the 
-        //Chill TableViewCell to get the currentChill the details button is referring to... This needs to be fixed
         let chillCell : ChillTableViewCell = detailsButton.superview?.superview as! ChillTableViewCell
         currentChill = chillCell.currentChill
         performSegueWithIdentifier("showChillDetailsSegue", sender: self)

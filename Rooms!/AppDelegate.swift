@@ -28,23 +28,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
         
+        //Register for Push Notifications
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
+        
         //Sends a request to Facebook for the current facebook user and stores their ID
-        let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters: nil);
-        fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
-            if error == nil {   //There wasn't a problem, this FB user exists
-                PFUser.currentUser()?.setObject(result.objectForKey("id") as! String, forKey: "facebookID")
-                PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
-                })
-            } else {
-                print("Error Getting FB Info")
-            }
-        }
+        updateFacebookID()
     
     
         UITabBar.appearance().tintColor = UIColor.icyBlue()
     
         // Override point for customization after application launch.
         return true
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let installation = PFInstallation.currentInstallation()
+        installation.setDeviceTokenFromData(deviceToken)
+        installation.channels = ["global"]
+        installation.saveInBackground()
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        PFPush.handlePush(userInfo)
     }
     
     func applicationWillResignActive(application: UIApplication) {
@@ -77,6 +84,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func updateFacebookID(){
+        if(PFUser.currentUser() != nil){
+            let fbRequest = FBSDKGraphRequest(graphPath:"/me", parameters: nil);
+            fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+                if error == nil {   //There wasn't a problem, this FB user exists
+                    PFUser.currentUser()?.setObject(result.objectForKey("id") as! String, forKey: "facebookID")
+                    PFUser.currentUser()?.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
+                    })
+                } else {
+                    print("Error Getting FB Info")
+                }
+            }
+        }
     }
     
 }

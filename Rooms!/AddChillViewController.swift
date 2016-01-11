@@ -20,21 +20,21 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
     let backArrow = UIButton(type: .System)
     let scrollView : TPKeyboardAvoidingScrollView = TPKeyboardAvoidingScrollView()
     
-    //MARK - Public Overview Cell
+    //MARK: - Public Overview Cell
     let frontContainerView = UIView()
     let profileImage = UIImageView()
     let publicChillOverview : UITextView = UITextView()
     let chillTypeLabel = UILabel()
     let publicOverviewPlaceholderText = "Public Overview (e.g. Main Description)"
     
-    //MARK - Public Details Cell
+    //MARK: - Public Details Cell
     let publicDetailsContainerView = UIView()
     let publicDetailsLabel = UILabel()
     let publicChillDetails : UITextView = UITextView()
     let publicDetailsPlaceholderText = "Public Details (e.g. Time, Likes/Dislikes)"
 
     
-    //MARK - Private Cell
+    //MARK: - Private Cell
     let backContainerView = UIView()
     let chillLabel = UILabel()
     let privateChillDetails = UITextView()
@@ -49,26 +49,34 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         addBackCellUI()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if(NSUserDefaults.standardUserDefaults().objectForKey("AgreedToRules") == nil || NSUserDefaults.standardUserDefaults().objectForKey("AgreedToRules") as! String != "YES"){
+            NSUserDefaults.standardUserDefaults().setObject("NO", forKey: "AgreedToRules")
+            performSegueWithIdentifier("showRulesSegue", sender: self)
+        }
+    }
+    
     func addUI(){
         
         scrollView.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
         view.addSubview(scrollView)
         
-        addChillTitle.frame = CGRectMake(view.frame.width * 0.025, CGRectGetMidY(view.frame) - 200, view.frame.width * 0.95, 50)
-        addChillTitle.backgroundColor = UIColor.icyBlue()
-        addChillTitle.textColor = UIColor.whiteColor()
+        addChillTitle.frame = CGRectMake(view.frame.width * 0.025 + 45, CGRectGetMidY(view.frame) - 200, view.frame.width * 0.95 - 45, 50)
+        addChillTitle.backgroundColor = UIColor.whiteColor()
+        addChillTitle.textColor = UIColor.icyBlue()
         addChillTitle.layer.cornerRadius = 8.0
         addChillTitle.layer.masksToBounds = true
         addChillTitle.clearButtonMode = .WhileEditing
         addChillTitle.textAlignment = NSTextAlignment.Center
         addChillTitle.placeholder = "Type of Chill"
         addChillTitle.delegate = self
-        addChillTitle.font = UIFont(name: "Helvetica-Bold", size: 25.0)
-        addChillTitle.tintColor = UIColor.whiteColor()
+        addChillTitle.font = UIFont.systemFontOfSize(25.0)
+        addChillTitle.tintColor = UIColor.icyBlue()
         addChillTitle.returnKeyType = .Done
         scrollView.addSubview(addChillTitle)
         
-        backArrow.frame = CGRectMake(CGRectGetMinX(addChillTitle.frame), CGRectGetMinY(addChillTitle.frame) - 15, 30, 30)
+        backArrow.frame = CGRectMake(view.frame.width * 0.025 + 5, CGRectGetMidY(view.frame) - 190, 30, 30)
         backArrow.contentMode = .ScaleAspectFit
         backArrow.imageView?.contentMode = .ScaleAspectFit
         backArrow.setBackgroundImage(UIImage(named: "backArrow.png"), forState: .Normal)
@@ -135,7 +143,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         publicDetailsLabel.numberOfLines = 2
         publicDetailsLabel.textColor = UIColor.whiteColor()
         publicDetailsLabel.textAlignment = .Center
-        publicDetailsLabel.backgroundColor = UIColor.icyBlue()
+        publicDetailsLabel.backgroundColor = UIColor.suggestionBlack()
         publicDetailsContainerView.addSubview(publicDetailsLabel)
         
         publicChillDetails.frame = CGRectMake(profileImage.frame.width + 10, 5, frontContainerView.frame.width - profileImage.frame.width - 20, frontContainerView.frame.height * 0.8 - 5)
@@ -164,7 +172,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         chillLabel.numberOfLines = 2
         chillLabel.textColor = UIColor.whiteColor()
         chillLabel.textAlignment = .Center
-        chillLabel.backgroundColor = UIColor.icyBlue()
+        chillLabel.backgroundColor = UIColor.suggestionBlack()
         backContainerView.addSubview(chillLabel)
         
         privateChillDetails.frame = CGRectMake(chillLabel.frame.width + 10, 5, backContainerView.frame.width - profileImage.frame.width - 20, backContainerView.frame.height * 0.8 - 5)

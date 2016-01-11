@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D008EF391C4399B500A30018 /* RulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008EF381C4399B500A30018 /* RulesViewController.swift */; };
+		D008EF3B1C43A6E600A30018 /* privacyPolicy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D008EF3A1C43A6E600A30018 /* privacyPolicy.pdf */; };
+		D008EF3D1C43A6EF00A30018 /* termsUse.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D008EF3C1C43A6EF00A30018 /* termsUse.pdf */; };
+		D008EF3F1C43A75E00A30018 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008EF3E1C43A75E00A30018 /* PrivacyPolicyViewController.swift */; };
+		D008EF411C43A93C00A30018 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008EF401C43A93C00A30018 /* TermsOfUseViewController.swift */; };
 		D02EC6331C165375003C5C1D /* PopularChillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */; };
 		D04129A21C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D041299B1C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.m */; };
 		D04129A31C391A3700A7D900 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D041299D1C391A3700A7D900 /* TPKeyboardAvoidingScrollView.m */; };
@@ -116,6 +121,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D008EF381C4399B500A30018 /* RulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RulesViewController.swift; sourceTree = "<group>"; };
+		D008EF3A1C43A6E600A30018 /* privacyPolicy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = privacyPolicy.pdf; path = ../privacyPolicy.pdf; sourceTree = "<group>"; };
+		D008EF3C1C43A6EF00A30018 /* termsUse.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = termsUse.pdf; path = ../termsUse.pdf; sourceTree = "<group>"; };
+		D008EF3E1C43A75E00A30018 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		D008EF401C43A93C00A30018 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
 		D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopularChillsViewController.swift; sourceTree = "<group>"; };
 		D041299A1C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TPKeyboardAvoidingCollectionView.h; path = "Rooms!/TPKeyboardAvoidingCollectionView.h"; sourceTree = "<group>"; };
 		D041299B1C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TPKeyboardAvoidingCollectionView.m; path = "Rooms!/TPKeyboardAvoidingCollectionView.m"; sourceTree = "<group>"; };
@@ -281,6 +291,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D008EF371C43999700A30018 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D0E22C791C3CB36C002FC68E /* SettingsViewController.swift */,
+				D008EF3E1C43A75E00A30018 /* PrivacyPolicyViewController.swift */,
+				D008EF401C43A93C00A30018 /* TermsOfUseViewController.swift */,
+				D008EF381C4399B500A30018 /* RulesViewController.swift */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		D08FE85E1BF3D2F600450998 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,18 +401,20 @@
 				D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */,
 				D0E22C7D1C3F3255002FC68E /* EnableLocationViewController.swift */,
 				D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */,
-				D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */,
 				D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */,
-				D0AF11D01BFCF472006B5034 /* FriendsChillsViewController.swift */,
+				D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */,
 				D0AF11CE1BFCF1AD006B5034 /* MyChillsViewController.swift */,
+				D0AF11D01BFCF472006B5034 /* FriendsChillsViewController.swift */,
 				D0E22C961C431C8F002FC68E /* Model */,
 				D04129A61C391C0700A7D900 /* AddChillTabViewController.swift */,
 				D097389B1BF86C47005C1A39 /* AddChillViewController.swift */,
 				D04129BC1C39DB5000A7D900 /* ChillDetailsViewController.swift */,
 				D0E22C951C431808002FC68E /* TableViewCells */,
-				D0E22C791C3CB36C002FC68E /* SettingsViewController.swift */,
+				D008EF371C43999700A30018 /* Settings */,
 				D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */,
 				D0A1BE031BBCA38900B510A7 /* Assets.xcassets */,
+				D008EF3A1C43A6E600A30018 /* privacyPolicy.pdf */,
+				D008EF3C1C43A6EF00A30018 /* termsUse.pdf */,
 				D09738A91BF8740A005C1A39 /* AndChill-Bridging-Header.h */,
 				D0E22C7F1C3F32F3002FC68E /* EnableLocationView.swift */,
 				D0B88EEF1C0F979E00A7AEAD /* SnowingView.swift */,
@@ -595,6 +618,7 @@
 				D0B88F051C0F9EE500A7AEAD /* cooler.png in Resources */,
 				D04129B91C39370700A7D900 /* ChillSnowflakeTabIcon.png in Resources */,
 				D0E22C8C1C3F3316002FC68E /* Enable.png in Resources */,
+				D008EF3D1C43A6EF00A30018 /* termsUse.pdf in Resources */,
 				D04129A91C39269300A7D900 /* ChillSnowflake.png in Resources */,
 				D04129AD1C3934CA00A7D900 /* Snowing.png in Resources */,
 				D0E22C7C1C3E407E002FC68E /* backArrow.png in Resources */,
@@ -603,6 +627,7 @@
 				D0E22C8A1C3F3306002FC68E /* LocationPenguin.png in Resources */,
 				D04129B71C39363400A7D900 /* Ampersand SnowFlake@2x.png in Resources */,
 				D0E22C891C3F3306002FC68E /* LocationBackground.png in Resources */,
+				D008EF3B1C43A6E600A30018 /* privacyPolicy.pdf in Resources */,
 				D0B88F021C0F9EE500A7AEAD /* Camp.png in Resources */,
 				D0AF11551BF9CD01006B5034 /* SnowflakeSmall.png in Resources */,
 				D0AF11571BF9CDCD006B5034 /* Snowflake.png in Resources */,
@@ -635,6 +660,7 @@
 				D0AF11CD1BFCF061006B5034 /* ChillTableViewCell.swift in Sources */,
 				D0AF11821BFC2A43006B5034 /* SDWebImageManager.m in Sources */,
 				D0AF11CF1BFCF1AD006B5034 /* MyChillsViewController.swift in Sources */,
+				D008EF411C43A93C00A30018 /* TermsOfUseViewController.swift in Sources */,
 				D0AF117D1BFC2A43006B5034 /* SDImageCache.m in Sources */,
 				D04129A71C391C0700A7D900 /* AddChillTabViewController.swift in Sources */,
 				D0AF11811BFC2A43006B5034 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -644,6 +670,7 @@
 				D0B88EF11C0F979E00A7AEAD /* SnowingView.swift in Sources */,
 				D0AF118A1BFC2A43006B5034 /* UIView+WebCacheOperation.m in Sources */,
 				D04129A31C391A3700A7D900 /* TPKeyboardAvoidingScrollView.m in Sources */,
+				D008EF391C4399B500A30018 /* RulesViewController.swift in Sources */,
 				D08FE87C1BF4123200450998 /* Chill.swift in Sources */,
 				D0AF11841BFC2A43006B5034 /* UIButton+WebCache.m in Sources */,
 				D0AF117C1BFC2A43006B5034 /* NSData+ImageContentType.m in Sources */,
@@ -659,6 +686,7 @@
 				D0E22C941C42F40C002FC68E /* NotificationTableViewCell.swift in Sources */,
 				D0AF11D11BFCF472006B5034 /* FriendsChillsViewController.swift in Sources */,
 				D0AF117B1BFC2A43006B5034 /* MKAnnotationView+WebCache.m in Sources */,
+				D008EF3F1C43A75E00A30018 /* PrivacyPolicyViewController.swift in Sources */,
 				D0AF117E1BFC2A43006B5034 /* SDWebImageCompat.m in Sources */,
 				D0869FCD1BCF26FF00B607FF /* NearbyChillsViewController.swift in Sources */,
 				D097389C1BF86C47005C1A39 /* AddChillViewController.swift in Sources */,

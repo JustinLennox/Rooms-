@@ -22,24 +22,22 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     //Suggestion Variables
     var suggestionArray = [[String:String]]()
-    let suggestionTableCellHeight : CGFloat = 75.0
+    let suggestionTableCellHeight : CGFloat = 64.0
     
     //MARK: - UI
     let bannerBackground : UIView = UIView()
     let blankTextField : UITextField = UITextField()
+    let nobodyChillingView = UIView()
     
     //MARK: - View Methods
     
     override func viewDidLoad() {
         addMainUI()
         addTableViews()
-        if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
-            let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
-            if(!firstTime && PFUser.currentUser() != nil){
-                updateUserLocation()
-            }
-        }
         getSuggestions()
+        if(PFUser.currentUser() != nil || FBSDKAccessToken.currentAccessToken() != nil){
+            updateUserLocation()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -51,34 +49,56 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                 getChills()
             }
         }
+        if(NSUserDefaults.standardUserDefaults().objectForKey("TapForChill") == nil){
+            blankTextField.text = "Tap Here to Search!"
+        }
         self.tabBarController?.tabBar.hidden = false
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         //If there's no user logged in, send them to the Landing Screen
         if(PFUser.currentUser() == nil || FBSDKAccessToken.currentAccessToken() == nil){
             performSegueWithIdentifier("showLoginSegue", sender: self)
         }else{
-            //If there is a user and it's their first time using the app, tell them they need to allow us to access their location
-            if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil){
+            if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil)
+            {
                 let firstTime : Bool = NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") as! Bool
-                if(firstTime){
-                    let alert = UIAlertController(title: "Allow &Chill to Access Your Location", message: "&Chill needs to use your location in order to find activities near you. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler:
-                        { action in
-                            switch action.style{
-                            default:
-                                self.updateUserLocation()
-                            }
-                        }
-                    ))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                if(firstTime)
+                {
+                    askForLocationAndNotification()
+                }else{
+                    let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+                    UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+                    UIApplication.sharedApplication().registerForRemoteNotifications()
                 }
+            }else{
+                NSUserDefaults.standardUserDefaults().setObject(true, forKey: "FirstTime")
+                NSUserDefaults.standardUserDefaults().synchronize()
+                askForLocationAndNotification()
             }
         }
     }
+        
+        func askForLocationAndNotification(){
+            print("ask location")
+            let alert = UIAlertController(title: "Allow &Chill to Send You Notifications", message: "We're about to ask you if &Chill can send you notifications. &Chill needs to send you notifications when people invite you to chill, want to join your chills, or allow you to chill with them. Please consider allowing notifications.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (handler:UIAlertAction) -> Void in
+                
+                let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+                UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+                UIApplication.sharedApplication().registerForRemoteNotifications()
+                
+                let alert = UIAlertController(title: "Allow &Chill to Access Your Location", message: "&Chill needs to use your location in order to find activities near you. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (handler:UIAlertAction) -> Void in
+                    self.updateUserLocation()
+                }))
+                self.presentViewController(alert, animated: true, completion: nil)
+            }))
+            presentViewController(alert, animated: true, completion:nil)
+
+        }
     
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
@@ -100,6 +120,25 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         view.addSubview(blankTextField)
         
         addFacebookUI()
+        
+        nobodyChillingView.frame = CGRectMake(0, 74, view.frame.width, view.frame.height - 74)
+        nobodyChillingView.alpha = 0.0
+        view.addSubview(nobodyChillingView)
+        
+        let snowflakeIcon = UIImageView(image: UIImage(named: "ChillSnowflakeSmall.png"))
+        snowflakeIcon.frame = CGRectMake(CGRectGetMidX(view.frame) - 64, CGRectGetMidY(view.frame) - 128, 128, 128)
+        snowflakeIcon.contentMode = .ScaleAspectFit
+        nobodyChillingView.addSubview(snowflakeIcon)
+        
+        let nobodyLabel = UILabel(frame: CGRectMake(view.frame.size.width * 0.1, CGRectGetMaxY(snowflakeIcon.frame) + 10, view.frame.size.width * 0.8, 128))
+        nobodyLabel.adjustsFontSizeToFitWidth = true
+        nobodyLabel.textAlignment = .Center
+        nobodyLabel.font = UIFont.systemFontOfSize(14.0)
+        nobodyLabel.numberOfLines = -1
+        nobodyLabel.text = "Nobody near you is chilling :(\nTap the snowflake tab at the bottom of the screen to be the first! :)"
+        nobodyLabel.textColor = UIColor.flatGray()
+        nobodyChillingView.addSubview(nobodyLabel)
+        
 
     }
     
@@ -141,7 +180,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(chillCell.currentChill.host)/picture?type=square&width=512&height=512&return_ssl_resources=1")
         currentFacebookProfileID = "\(chillCell.currentChill.host)"
         fbProfileImage.sd_setImageWithURL(profilePictureURL)
-        fbNameButton.setTitle("View \(chillCell.currentChill.hostName)'s profile", forState: .Normal)
+        fbNameButton.setTitle("View \(chillCell.currentChill.hostName)'s Profile", forState: .Normal)
         fbPreviewView.alpha = 1.0
     }
     
@@ -150,13 +189,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     }
     
     func openProfile(){
-        let appUrl = NSURL(string: "fb://profile?app_scoped_user_id=\(currentFacebookProfileID)")!
-        
-        if UIApplication.sharedApplication().canOpenURL(appUrl) {
-            UIApplication.sharedApplication().openURL(appUrl)
-        } else {
-            UIApplication.sharedApplication().openURL(NSURL(string: "https://www.facebook.com/app_scoped_user_id/\(currentFacebookProfileID)")!)
-        }
+        UIApplication.sharedApplication().openURL(NSURL(string: "https://www.facebook.com/app_scoped_user_id/\(currentFacebookProfileID)")!)
     }
 
     
@@ -172,7 +205,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         query.limit = 25
 
         var chillType : String = blankTextField.text!
-        if(chillType.characters.count > 6){
+        if(chillType.characters.count > 6 && chillType != "Tap Here to Search!"){
             chillType = chillType.lowercaseString
             chillType = chillType.stringByReplacingOccurrencesOfString("&chill", withString: "")
             query.whereKey("type", containsString:chillType)
@@ -184,7 +217,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             (objects: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
-                
+                print("no error getting chills")
                 // Do something with the found objects
                 if let objects = objects as [PFObject]! {
                     self.chillArray = []
@@ -197,12 +230,12 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                     self.refreshControl.endRefreshing()
                 }
             } else {
-                let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
+                print("GET CHILL ERROR: \(error!)")
+                let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't load any chills. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
 
                 // Log details of the failure
-                print("Error: \(error!)")
                 self.refreshControl.endRefreshing()
             }
         }
@@ -227,6 +260,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
                             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "FirstTime")
                             NSUserDefaults.standardUserDefaults().synchronize()
                         }else{
+                            print("Error saving user: \(error)")
                             let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
                             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                             self.presentViewController(alert, animated: true, completion: nil)
@@ -304,6 +338,10 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
+        if(NSUserDefaults.standardUserDefaults().objectForKey("TapForChill") == nil){
+            NSUserDefaults.standardUserDefaults().setObject(true, forKey: "TapForChill")
+            blankTextField.text = ""
+        }
         suggestionTableView.alpha = 1
         var blankText = textField.text
         blankText = blankText!.stringByReplacingOccurrencesOfString("&Chill", withString: "")
@@ -328,8 +366,9 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         view.addSubview(chillTableView)
         view.sendSubviewToBack(chillTableView)
         
-        suggestionTableView.frame = CGRectMake(0, CGRectGetMaxY(bannerBackground.frame), view.frame.width, suggestionTableCellHeight * 4)
+        suggestionTableView.frame = CGRectMake(0, CGRectGetMaxY(bannerBackground.frame), view.frame.width, view.frame.height)
         suggestionTableView.delegate = self
+        suggestionTableView.backgroundColor = UIColor.backgroundGray()
         suggestionTableView.dataSource = self
         suggestionTableView.separatorStyle = .None
         suggestionTableView.alpha = 0
@@ -375,14 +414,17 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         }else{  //Settings for the Suggestion Table View
             let cell : UITableViewCell = UITableViewCell()
             let currentSuggestion = suggestionArray[indexPath.row]
+            cell.backgroundColor = UIColor.backgroundGray()
 
             let suggestionLabel = UILabel()
-            suggestionLabel.frame = CGRectMake(0, 0, view.frame.width, suggestionTableCellHeight)
+            suggestionLabel.frame = CGRectMake(0, 5, view.frame.width, suggestionTableCellHeight - 10)
             suggestionLabel.textAlignment = .Center
-            suggestionLabel.backgroundColor = parseSuggestionColor(currentSuggestion)
-            suggestionLabel.textColor = UIColor.whiteColor()
+            suggestionLabel.backgroundColor = UIColor.whiteColor()
+            suggestionLabel.textColor = UIColor.icyBlue()
+            suggestionLabel.layer.cornerRadius = 8.0
+            suggestionLabel.layer.masksToBounds = true
             suggestionLabel.text = "\(currentSuggestion["type"]!)&"
-            suggestionLabel.font = UIFont(name: "Helvetica", size: 40.0)
+            suggestionLabel.font = UIFont.systemFontOfSize(17.0)
             suggestionLabel.adjustsFontSizeToFitWidth = true
             cell.addSubview(suggestionLabel)
             return cell
@@ -400,6 +442,11 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(tableView == chillTableView){    //chill table view count
+            if(chillArray.count < 1){
+                nobodyChillingView.alpha = 1.0
+            }else{
+                nobodyChillingView.alpha = 0.0
+            }
             return chillArray.count
         }else{  //suggestion table view count
             return suggestionArray.count
@@ -467,8 +514,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         currentChill = chillCell.currentChill
         performSegueWithIdentifier("showChillDetailsSegue", sender: self)
     }
-    
-    //MARK : - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == "showChillDetailsSegue"){

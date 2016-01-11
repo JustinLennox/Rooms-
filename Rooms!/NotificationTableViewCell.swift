@@ -148,12 +148,12 @@ class NotificationTableViewCell: UITableViewCell {
     func acceptInviteWithTable(tableView:UITableView){
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
             if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
-            parseChill.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "invitedChillers")
-            parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
-            parseChill.incrementKey("chillersCount")
-            parseChill.saveInBackground()
-            pushChillFromTable(tableView)
-            acceptedInvitationPush()
+                parseChill.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "invitedChillers")
+                parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
+                parseChill.incrementKey("chillersCount")
+                parseChill.saveInBackground()
+                pushChillFromTable(tableView)
+                acceptedInvitationPush()
         }
     }
     
@@ -208,7 +208,7 @@ class NotificationTableViewCell: UITableViewCell {
             // Send push notification to query
             let push = PFPush()
             push.setQuery(pushQuery) // Set our Installation query
-            push.setMessage("\(PFUser.currentUser()?.objectForKey("name")) accepted your request to \(currentChill.type)&chill.")
+            push.setMessage("\(PFUser.currentUser()!.objectForKey("name")!) accepted your request to \(currentChill.type)&chill.")
             push.sendPushInBackground()
         }
     }

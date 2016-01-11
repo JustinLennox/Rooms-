@@ -49,12 +49,15 @@ class EnableLocationViewController: UIViewController, CLLocationManagerDelegate 
                             let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
                             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                             self.presentViewController(alert, animated: true, completion: nil)
+                            self.performSegueWithIdentifier("showNearbySegue", sender: self)
                         }
                     })
                 }else{
                     let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                     self.presentViewController(alert, animated: true, completion: nil)
+                    self.performSegueWithIdentifier("showNearbySegue", sender: self)
+
 
                 }
             }

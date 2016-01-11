@@ -10,6 +10,11 @@ import UIKit
 
 class AddChillTabViewController: UIViewController, addChillDelegate {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.icyBlue()
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         performSegueWithIdentifier("showAddChillSegue", sender: self)

@@ -109,7 +109,6 @@ class ChillTableViewCell: UITableViewCell {
     }
     
     func setUpWithChill(cellChill : Chill){
-        print("Set up")
         self.currentChill = cellChill
         chillOverviewLabel.text = currentChill.overview
         chillDetailsLabel.text = currentChill.details
@@ -163,25 +162,32 @@ class ChillTableViewCell: UITableViewCell {
         
         self.reportButton.alpha = 1.0
         self.chillDetailsLabel.alpha = 1.0
-
+        var request = false
         if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
             for requestDictionary in currentChill.requestedChillers{
                 if(requestDictionary["facebookID"] == facebookID as? String){
+                    //THE USER HAS REQUESTED TO CHILL
                     self.chillButton.setTitle("Request\nSent", forState: .Normal)
                     self.chillButton.alpha = 1.0
                     self.chillButton.backgroundColor = UIColor.flatGray()
                     self.chillButton.enabled = false
+                    request = true
                 }
             }
-            if(currentChill.chillers.contains((facebookID as? String)!) || currentChill.host == (facebookID as? String)!){
+            if(request == false && (currentChill.chillers.contains((facebookID as? String)!) || currentChill.host == (facebookID as? String)!)){
                 //THE USER IS ALREADY IN THE CHILL, EITHER AS HOST OR CHILLER
                 self.detailsButton.alpha = 1.0
+                self.detailsButton.enabled = true
                 self.chillButton.alpha = 0.0
                 
-            }else{
-                //THE HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING
+            }else if(request == false){
+                //THE USER HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING
+                print(" THE HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING")
                 self.chillButton.alpha = 1.0
+                self.chillButton.setTitle("Chill", forState: .Normal)
+                self.chillButton.backgroundColor = UIColor.icyBlue()
                 self.detailsButton.alpha = 0.0
+                print("ENABLED")
                 self.chillButton.enabled = true
             }
             self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
@@ -203,6 +209,8 @@ class ChillTableViewCell: UITableViewCell {
         parseChill.saveInBackground()
         chillButton.setTitle("Request\nSent", forState: .Normal)
         chillButton.backgroundColor = UIColor.flatGray()
+        currentChill.requestedChillers.append(["facebookID":(PFUser.currentUser()?.objectForKey("facebookID"))! as! String, "name":PFUser.currentUser()?.objectForKey("name") as! String])
+        chillButton.enabled = false
         joinChillPush()
         
     }

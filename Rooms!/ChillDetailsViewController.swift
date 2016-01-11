@@ -26,6 +26,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     var currentMessageY : CGFloat = 10.0
     var profilePicDictionary = [String: UIImage]()
     var temporaryMessageArray = NSMutableArray()
+    var messageTimer = NSTimer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,20 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         addPrivateDetailsUI()
         addMessageUI()
         
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if #available(iOS 9.0, *) {
+            
+        }else{
+            messageTimer = NSTimer.scheduledTimerWithTimeInterval(10.5, target: self, selector: "loadMessages", userInfo: nil, repeats:  true)
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        messageTimer.invalidate()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -176,6 +191,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     }
     
     func loadMessages(){
+        print("load messages")
         let chatQuery = PFQuery(className: "Message")
         chatQuery.whereKey("Chill", equalTo: currentChill.id)
         chatQuery.addAscendingOrder("createdAt")

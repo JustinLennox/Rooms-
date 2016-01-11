@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <connections>
@@ -35,7 +35,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3zD-OB-gu4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="atD-4L-bwI">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -127,7 +127,6 @@
                     <view key="view" contentMode="scaleToFill" id="W8q-vd-Po0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.47058823529999999" green="0.80000000000000004" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="SnowflakeTabIcon" selectedImage="SnowflakeTabIcon" id="LEk-Zc-97Y">
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
@@ -173,10 +172,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="fTw-8x-Ddb" kind="show" identifier="showRulesSegue" id="swj-7O-nLJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dJS-8q-saW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1013" y="43"/>
+        </scene>
+        <!--Rules View Controller-->
+        <scene sceneID="qIG-cE-S3s">
+            <objects>
+                <viewController id="fTw-8x-Ddb" customClass="RulesViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lJI-C7-BAs"/>
+                        <viewControllerLayoutGuide type="bottom" id="51g-yD-0w0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LG8-dZ-zod">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="nWk-IP-qQY" kind="show" identifier="returnNearbySegue" id="J6T-4b-KNI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ozX-SW-2Uk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1705" y="49"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="cdX-7t-CcO">
@@ -193,11 +216,32 @@
                     </view>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="showLandingSegue" id="Hjr-PC-PqJ"/>
+                        <segue destination="fTw-8x-Ddb" kind="show" identifier="showRulesSegue" id="07h-Pc-43d"/>
+                        <segue destination="Ah8-TA-KJE" kind="show" identifier="showPrivacyPolicySegue" id="ETG-nN-2Ql"/>
+                        <segue destination="FIE-m6-VcQ" kind="show" identifier="showTermsOfUseSegue" id="Gxh-Fk-aml"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9qf-wS-4ac" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1705" y="-1480"/>
+        </scene>
+        <!--Privacy Policy View Controller-->
+        <scene sceneID="Fl4-fQ-Xz7">
+            <objects>
+                <viewController id="Ah8-TA-KJE" customClass="PrivacyPolicyViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jwu-M1-t1b"/>
+                        <viewControllerLayoutGuide type="bottom" id="XRv-PA-4GX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AqG-ZM-F3N">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wy1-9c-Qzc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2349" y="-2163"/>
         </scene>
         <!--MyChillsViewController-->
         <scene sceneID="r4J-NC-aTJ">
@@ -222,6 +266,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tCI-BC-SPf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1705" y="-714"/>
+        </scene>
+        <!--Terms Of Use View Controller-->
+        <scene sceneID="oP4-BY-Q8E">
+            <objects>
+                <viewController id="FIE-m6-VcQ" customClass="TermsOfUseViewController" customModule="AndChill" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NYg-9C-3JG"/>
+                        <viewControllerLayoutGuide type="bottom" id="Oxz-Dz-b6I"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="frQ-AP-5yl">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WZs-F5-85P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3005" y="-2163"/>
         </scene>
         <!--FriendsChillsViewController-->
         <scene sceneID="ReJ-NE-Lgu">
@@ -255,8 +317,9 @@
         <image name="SnowflakeTabIcon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vZK-dR-o3Z"/>
-        <segue reference="Swe-8a-DOr"/>
+        <segue reference="Hjr-PC-PqJ"/>
+        <segue reference="J6T-4b-KNI"/>
+        <segue reference="07h-Pc-43d"/>
         <segue reference="Xkq-QW-01d"/>
     </inferredMetricsTieBreakers>
 </document>

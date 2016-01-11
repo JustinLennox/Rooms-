@@ -45,7 +45,12 @@ class SettingsViewController: UIViewController {
         logoutButton.layer.cornerRadius = 8.0
         logoutButton.layer.masksToBounds = true
         logoutButton.backgroundColor = UIColor.icyBlue()
-        logoutButton.titleLabel?.font = UIFont.systemFontOfSize(20.0, weight: 0.2)
+        if #available(iOS 8.2, *) {
+            logoutButton.titleLabel?.font = UIFont.systemFontOfSize(20.0, weight: 0.2)
+        } else {
+            // Fallback on earlier versions
+            logoutButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
+        }
         logoutButton.addTarget(self, action: "logout", forControlEvents: .TouchUpInside)
         view.addSubview(logoutButton)
     }

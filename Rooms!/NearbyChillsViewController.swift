@@ -28,7 +28,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     let bannerBackground : UIView = UIView()
     let blankTextField : UITextField = UITextField()
     
-    
     //MARK: - View Methods
     
     override func viewDidLoad() {
@@ -81,9 +80,6 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         }
     }
     
-
-    
-    
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
         bannerBackground.backgroundColor = UIColor.icyBlue()
@@ -98,13 +94,70 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         blankTextField.textColor = UIColor.whiteColor()
         blankTextField.text = "&Chill"
         blankTextField.clearButtonMode = .WhileEditing
-        blankTextField.returnKeyType = UIReturnKeyType.Done
+        blankTextField.returnKeyType = UIReturnKeyType.Search
         blankTextField.delegate = self
         blankTextField.tintColor = UIColor.whiteColor()
         view.addSubview(blankTextField)
+        
+        addFacebookUI()
 
     }
     
+    //MARK: -Facebook
+    
+    let fbPreviewView = UIButton(type: .System)
+    let fbProfileImage = UIImageView()
+    let fbNameButton = UIButton()
+    var currentFacebookProfileID = ""
+    
+    func addFacebookUI(){
+        fbPreviewView.frame = CGRectMake(0, 64, view.frame.width, view.frame.height)
+        fbPreviewView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        fbPreviewView.alpha = 0.0
+        fbPreviewView.addTarget(self, action: "hideFBPreview", forControlEvents: .TouchUpInside)
+        view.addSubview(fbPreviewView)
+        
+        fbProfileImage.frame = CGRectMake(CGRectGetMidX(view.frame) - 128, CGRectGetMidY(view.frame) - 256, 256, 256)
+        fbProfileImage.layer.cornerRadius = 8.0
+        fbProfileImage.backgroundColor = UIColor.flatGray()
+        fbProfileImage.layer.masksToBounds = true
+        fbPreviewView.addSubview(fbProfileImage)
+        
+        fbNameButton.frame = CGRectMake(fbProfileImage.frame.origin.x, CGRectGetMaxY(fbProfileImage.frame) + 10, 256, 40)
+        fbNameButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        fbNameButton.backgroundColor = UIColor.icyBlue()
+        fbNameButton.layer.cornerRadius = 8.0
+        fbNameButton.addTarget(self, action: "openProfile", forControlEvents: .TouchUpInside)
+        fbNameButton.layer.masksToBounds = true
+        fbNameButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
+        fbNameButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        fbPreviewView.addSubview(fbNameButton)
+        
+    }
+    
+    func showFBPreview(sender : UIButton){
+        let profileButton = sender
+        let chillCell : ChillTableViewCell = profileButton.superview?.superview as! ChillTableViewCell
+        let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(chillCell.currentChill.host)/picture?type=square&width=512&height=512&return_ssl_resources=1")
+        currentFacebookProfileID = "\(chillCell.currentChill.host)"
+        fbProfileImage.sd_setImageWithURL(profilePictureURL)
+        fbNameButton.setTitle("View \(chillCell.currentChill.hostName)'s profile", forState: .Normal)
+        fbPreviewView.alpha = 1.0
+    }
+    
+    func hideFBPreview(){
+        fbPreviewView.alpha = 0.0
+    }
+    
+    func openProfile(){
+        let appUrl = NSURL(string: "fb://profile?app_scoped_user_id=\(currentFacebookProfileID)")!
+        
+        if UIApplication.sharedApplication().canOpenURL(appUrl) {
+            UIApplication.sharedApplication().openURL(appUrl)
+        } else {
+            UIApplication.sharedApplication().openURL(NSURL(string: "https://www.facebook.com/app_scoped_user_id/\(currentFacebookProfileID)")!)
+        }
+    }
 
     
     //MARK: - Adding & Getting Chills from the Backend
@@ -312,6 +365,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
             cell.setUpWithChill(currentChill)
             cell.detailsButton.addTarget(self, action: "showDetails:", forControlEvents: .TouchUpInside)
             cell.reportButton.addTarget(self, action: "reportChill:", forControlEvents: .TouchUpInside)
+            cell.profileImage.addTarget(self, action: "showFBPreview:", forControlEvents: .TouchUpInside)
             let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "removeChill:")
             swipeLeftRecognizer.direction = .Left
             cell.tag = indexPath.row

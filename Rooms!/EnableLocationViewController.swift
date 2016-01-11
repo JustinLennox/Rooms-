@@ -8,9 +8,10 @@
 
 import UIKit
 
-class EnableLocationViewController: UIViewController {
+class EnableLocationViewController: UIViewController, CLLocationManagerDelegate {
     let animationView = EnableLocationView()
-    
+    let locationManager = CLLocationManager()
+
     override func viewDidLoad() {
         animationView.frame = CGRectMake(0, 0, view.frame.width, view.frame.height)
         view.addSubview(animationView)
@@ -18,13 +19,18 @@ class EnableLocationViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         animationView.addEnableLocationAnimation()
-        performSelector("updateUserLocation", withObject: nil, afterDelay: 1.0)
+        performSelector("updateUserLocation", withObject: nil, afterDelay: 2.5)
     }
     
     /**
      * Updates and stores the user's current GeoLocation
      */
     func updateUserLocation(){
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager.requestAlwaysAuthorization()
+        
         if(PFUser.currentUser() != nil){
             PFGeoPoint.geoPointForCurrentLocationInBackground {
                 (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
@@ -36,6 +42,9 @@ class EnableLocationViewController: UIViewController {
                         print("Save geopoint")
                         if(error == nil){
                             print("No error saving geopoint")
+                            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "FirstTime")
+                            NSUserDefaults.standardUserDefaults().synchronize()
+                            self.performSegueWithIdentifier("showNearbySegue", sender: self)
                         }else{
                             let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
                             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
@@ -43,7 +52,10 @@ class EnableLocationViewController: UIViewController {
                         }
                     })
                 }else{
-                    print("\(error)")
+                    let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't save your location. Please make sure you're connected to the internet.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+
                 }
             }
         }else{

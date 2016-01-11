@@ -51,7 +51,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        PFPush.handlePush(userInfo)
+        if let window = self.window {
+            if let presentedViewController = window.rootViewController!.presentedViewController{
+                print("Presented view controller")
+                if (presentedViewController.isKindOfClass(ChillDetailsViewController))
+                {
+                        print("chill details class")
+                }else{
+                    PFPush.handlePush(userInfo)
+                }
+            }else{
+                print("Not presented view controller")
+                PFPush.handlePush(userInfo)
+            }
+        }else{
+            PFPush.handlePush(userInfo)
+        }
     }
     
     func applicationWillResignActive(application: UIApplication) {

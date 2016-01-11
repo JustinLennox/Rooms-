@@ -60,7 +60,11 @@ class LandingViewController: UIViewController {
         titleLabel.frame = CGRectMake(0, view.frame.height * 0.06, view.frame.size.width, view.frame.size.height * 0.08)
         titleLabel.textColor = UIColor.icyBlue()
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.font = UIFont.systemFontOfSize(35.0, weight: 0.1)
+        if #available(iOS 8.2, *) {
+            titleLabel.font = UIFont.systemFontOfSize(35.0, weight: 0.1)
+        } else {
+            titleLabel.font = UIFont.systemFontOfSize(35.0)
+        }
         view.addSubview(titleLabel)
         
         descriptionLabel.text = "Find Other Chill People Near You To Do Chill Things With"
@@ -69,7 +73,12 @@ class LandingViewController: UIViewController {
         descriptionLabel.adjustsFontSizeToFitWidth = true;
         descriptionLabel.textAlignment = NSTextAlignment.Center
         descriptionLabel.numberOfLines = 2;
-        descriptionLabel.font = UIFont.systemFontOfSize(25.0, weight: 0.1)
+        if #available(iOS 8.2, *) {
+            descriptionLabel.font = UIFont.systemFontOfSize(25.0, weight: 0.1)
+        } else {
+            descriptionLabel.font = UIFont.systemFontOfSize(25.0)
+
+        }
         view.addSubview(descriptionLabel)
         
         assuranceLabel.text = "We'll never post to your Facebook or send invites or spam."

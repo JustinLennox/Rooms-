@@ -123,7 +123,11 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         sendButton.frame = CGRectMake(CGRectGetMaxX(messageTextField.frame) + 5, messageTextField.frame.origin.y, 50, messageTextField.frame.size.height)
         sendButton.setTitle("Send", forState: .Normal)
         sendButton.setTitleColor(UIColor.icyBlue(), forState: .Normal)
-        sendButton.titleLabel?.font = UIFont.systemFontOfSize(18.0, weight: 0.35)
+        if #available(iOS 8.2, *) {
+            sendButton.titleLabel?.font = UIFont.systemFontOfSize(18.0, weight: 0.35)
+        } else {
+            sendButton.titleLabel?.font = UIFont.systemFontOfSize(18.0)
+        }
         sendButton.addTarget(self, action: "sendButtonPressed", forControlEvents: .TouchUpInside)
         scrollView.addSubview(sendButton)
         
@@ -148,7 +152,25 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
             let newMessage = ["text":messageText, "sender":facebookID, "senderName": PFUser.currentUser()?.objectForKey("name") as! String]
             currentChat.addObject(newMessage, forKey: "messageArray")
             currentChat.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
+                self.sendMessagePushNotification(messageText)
                 self.loadMessages()
+            }
+        }
+    }
+    
+    func sendMessagePushNotification(messageText: String){
+        if let userName = PFUser.currentUser()?.objectForKey("name"){
+            for user in currentChat.objectForKey("participants") as! [String]{
+                    if(user != PFUser.currentUser()?.objectForKey("facebookID") as! String){
+                    let pushQuery = PFInstallation.query()
+                    pushQuery!.whereKey("facebookID", equalTo: user)
+                    
+                    // Send push notification to query
+                    let push = PFPush()
+                    push.setQuery(pushQuery) // Set our Installation query
+                    push.setMessage("\(userName): \(messageText)")
+                    push.sendPushInBackground()
+                }
             }
         }
     }

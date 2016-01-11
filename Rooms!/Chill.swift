@@ -19,8 +19,13 @@ class Chill {
     var overview : String
     var privateDetails : String
     var chillers : [String]
-    var requestedChillers : [String]
+    var requestedChillers : [[String:String]]
+    var invitedChillers : [String]
     var flipped : Bool = false
+    var hostName : String
+    var currentRequestedChiller : [String:String] = [String:String]()
+    var invitation : Bool = false
+    
     
     init(){
         id = ""
@@ -30,11 +35,13 @@ class Chill {
         privateDetails = ""
         host = ""
         profilePic = ""
+        hostName = ""
         chillers = []
         requestedChillers = []
+        invitedChillers = []
     }
     
-    init(idString: String, typeString : String, overviewString : String, detailsString: String, privateDetailsString : String, hostString : String, profileString : String, chillerArray : [String], chillRequests : [String]){
+    init(idString: String, typeString : String, overviewString : String, detailsString: String, privateDetailsString : String, hostString : String, profileString : String, chillerArray : [String], chillRequests : [[String:String]], chillInvitations :[String], hostFirstName : String){
         id = idString
         type = typeString
         overview = overviewString
@@ -44,6 +51,8 @@ class Chill {
         profilePic = profileString
         chillers = chillerArray
         requestedChillers = chillRequests
+        invitedChillers = chillInvitations
+        hostName = hostFirstName
     }
     
     class func parseDictionaryIntoChill(chillDictionary : PFObject) -> Chill{
@@ -55,6 +64,8 @@ class Chill {
             hostString: String(chillDictionary["host"]),
             profileString:String(chillDictionary["profilePic"]),
             chillerArray: chillDictionary["chillers"] as! [String],
-            chillRequests: chillDictionary["requestedChillers"] as! [String])
+            chillRequests: chillDictionary["requestedChillers"] as! [[String:String]],
+            chillInvitations: chillDictionary["invitedChillers"] as! [String],
+            hostFirstName: chillDictionary["hostName"] as! String)
     }
 }

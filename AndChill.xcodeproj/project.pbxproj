@@ -94,6 +94,7 @@
 		D0E22C8A1C3F3306002FC68E /* LocationPenguin.png in Resources */ = {isa = PBXBuildFile; fileRef = D0E22C881C3F3306002FC68E /* LocationPenguin.png */; };
 		D0E22C8C1C3F3316002FC68E /* Enable.png in Resources */ = {isa = PBXBuildFile; fileRef = D0E22C8B1C3F3316002FC68E /* Enable.png */; };
 		D0E22C901C3F953D002FC68E /* settingsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D0E22C8F1C3F953D002FC68E /* settingsIcon.png */; };
+		D0E22C941C42F40C002FC68E /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E22C931C42F40C002FC68E /* NotificationTableViewCell.swift */; };
 		D0F8A0B01C2F46C3008126E3 /* prof.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0F8A0AF1C2F46C3008126E3 /* prof.jpg */; };
 /* End PBXBuildFile section */
 
@@ -230,6 +231,7 @@
 		D0E22C881C3F3306002FC68E /* LocationPenguin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationPenguin.png; sourceTree = "<group>"; };
 		D0E22C8B1C3F3316002FC68E /* Enable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enable.png; sourceTree = "<group>"; };
 		D0E22C8F1C3F953D002FC68E /* settingsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settingsIcon.png; sourceTree = "<group>"; };
+		D0E22C931C42F40C002FC68E /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		D0F8A0AF1C2F46C3008126E3 /* prof.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = prof.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -376,19 +378,19 @@
 			children = (
 				D0A1BE001BBCA38900B510A7 /* Main.storyboard */,
 				D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */,
-				D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */,
 				D0E22C7D1C3F3255002FC68E /* EnableLocationViewController.swift */,
+				D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */,
 				D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */,
 				D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */,
 				D0AF11D01BFCF472006B5034 /* FriendsChillsViewController.swift */,
 				D0AF11CE1BFCF1AD006B5034 /* MyChillsViewController.swift */,
+				D0E22C961C431C8F002FC68E /* Model */,
 				D04129A61C391C0700A7D900 /* AddChillTabViewController.swift */,
 				D097389B1BF86C47005C1A39 /* AddChillViewController.swift */,
 				D04129BC1C39DB5000A7D900 /* ChillDetailsViewController.swift */,
+				D0E22C951C431808002FC68E /* TableViewCells */,
 				D0E22C791C3CB36C002FC68E /* SettingsViewController.swift */,
-				D0AF11CC1BFCF061006B5034 /* ChillTableViewCell.swift */,
 				D0869FC81BCF267200B607FF /* UIColor+CustomColors.swift */,
-				D08FE87B1BF4123200450998 /* Chill.swift */,
 				D0A1BE031BBCA38900B510A7 /* Assets.xcassets */,
 				D09738A91BF8740A005C1A39 /* AndChill-Bridging-Header.h */,
 				D0E22C7F1C3F32F3002FC68E /* EnableLocationView.swift */,
@@ -447,6 +449,23 @@
 				D0B88F001C0F9EE500A7AEAD /* Party.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		D0E22C951C431808002FC68E /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				D0AF11CC1BFCF061006B5034 /* ChillTableViewCell.swift */,
+				D0E22C931C42F40C002FC68E /* NotificationTableViewCell.swift */,
+			);
+			name = TableViewCells;
+			sourceTree = "<group>";
+		};
+		D0E22C961C431C8F002FC68E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D08FE87B1BF4123200450998 /* Chill.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -637,6 +656,7 @@
 				D0AF117F1BFC2A43006B5034 /* SDWebImageDecoder.m in Sources */,
 				D0A1BDFD1BBCA38900B510A7 /* AppDelegate.swift in Sources */,
 				D04129A41C391A3700A7D900 /* TPKeyboardAvoidingTableView.m in Sources */,
+				D0E22C941C42F40C002FC68E /* NotificationTableViewCell.swift in Sources */,
 				D0AF11D11BFCF472006B5034 /* FriendsChillsViewController.swift in Sources */,
 				D0AF117B1BFC2A43006B5034 /* MKAnnotationView+WebCache.m in Sources */,
 				D0AF117E1BFC2A43006B5034 /* SDWebImageCompat.m in Sources */,
@@ -795,6 +815,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Rooms!/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JustinLennox.AndChill;
 				PRODUCT_NAME = AndChill;
@@ -814,6 +835,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Rooms!/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JustinLennox.AndChill;
 				PRODUCT_NAME = AndChill;

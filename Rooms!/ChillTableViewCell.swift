@@ -9,7 +9,7 @@
 class ChillTableViewCell: UITableViewCell {
     
     let containerView = UIView()
-    let profileImage = UIImageView()
+    let profileImage = UIButton(type: UIButtonType.System)
     let chillButton = UIButton(type: UIButtonType.System)
     let detailsButton = UIButton(type: UIButtonType.System)
     let chillOverviewLabel = UILabel()
@@ -34,7 +34,6 @@ class ChillTableViewCell: UITableViewCell {
         containerView.layer.masksToBounds = true
         addSubview(containerView)
         
-        profileImage.image = UIImage(named: "prof.jpg")
         profileImage.layer.masksToBounds = true
         containerView.addSubview(profileImage)
         
@@ -86,6 +85,7 @@ class ChillTableViewCell: UITableViewCell {
         reportButton.setTitleColor(UIColor.redColor(), forState: .Normal)
         reportButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
         containerView.addSubview(reportButton)
+    
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -114,7 +114,7 @@ class ChillTableViewCell: UITableViewCell {
         chillOverviewLabel.text = currentChill.overview
         chillDetailsLabel.text = currentChill.details
         let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(currentChill.host)/picture?type=square&width=200&height=200&return_ssl_resources=1")
-        profileImage.sd_setImageWithURL(profilePictureURL)
+        profileImage.sd_setBackgroundImageWithURL(profilePictureURL, forState: .Normal)
         if(currentChill.flipped == true){   //SHOW BACK
             showBackUI()
             hideFrontUI()
@@ -165,18 +165,19 @@ class ChillTableViewCell: UITableViewCell {
         self.chillDetailsLabel.alpha = 1.0
 
         if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
-            if(currentChill.chillers.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String) || currentChill.host == PFUser.currentUser()?.objectForKey("facebookID") as! String){
+            for requestDictionary in currentChill.requestedChillers{
+                if(requestDictionary["facebookID"] == facebookID as? String){
+                    self.chillButton.setTitle("Request\nSent", forState: .Normal)
+                    self.chillButton.alpha = 1.0
+                    self.chillButton.backgroundColor = UIColor.flatGray()
+                    self.chillButton.enabled = false
+                }
+            }
+            if(currentChill.chillers.contains((facebookID as? String)!) || currentChill.host == (facebookID as? String)!){
                 //THE USER IS ALREADY IN THE CHILL, EITHER AS HOST OR CHILLER
                 self.detailsButton.alpha = 1.0
                 self.chillButton.alpha = 0.0
                 
-            }else if(currentChill.requestedChillers.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String)){
-                //THE USER HAS REQUESTED TO CHILL
-                self.chillButton.setTitle("Request\nSent", forState: .Normal)
-                self.chillButton.alpha = 1.0
-                self.chillButton.backgroundColor = UIColor.flatGray()
-                self.chillButton.enabled = false
-            
             }else{
                 //THE HASN'T REQUESTED TO CHILL NOR IS ALREADY CHILLING
                 self.chillButton.alpha = 1.0
@@ -196,7 +197,8 @@ class ChillTableViewCell: UITableViewCell {
     func joinChill(){
         
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
-        parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "requestedChillers")
+        let request = ["facebookID" : PFUser.currentUser()?.objectForKey("facebookID") as! String, "name":PFUser.currentUser()?.objectForKey("name") as! String]
+        parseChill.addObject(request, forKey: "requestedChillers")
         parseChill.incrementKey("chillersCount")
         parseChill.saveInBackground()
         chillButton.setTitle("Request\nSent", forState: .Normal)
@@ -237,7 +239,7 @@ class ChillTableViewCell: UITableViewCell {
             // Send push notification to query
             let push = PFPush()
             push.setQuery(pushQuery) // Set our Installation query
-            push.setMessage("\(userName) wants to join your \(currentChill.type)&Chill.")
+            push.setMessage("\(userName) wants to join your \(currentChill.type)&chill.")
             push.sendPushInBackground()
         }
     }

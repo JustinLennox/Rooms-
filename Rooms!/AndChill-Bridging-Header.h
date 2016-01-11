@@ -17,6 +17,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIImage+WebP.h"
 #import "UIImage+MultiFormat.h"
+#import "UIButton+WebCache.h"
 #import "SDWebImageDownloader.h"
 #import "SDWebImageManager.h"
 #import <Parse/PFObject+Subclass.h>

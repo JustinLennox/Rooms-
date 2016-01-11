@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nWk-IP-qQY">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
@@ -38,6 +39,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="nWk-IP-qQY" kind="show" identifier="showNearbySegue" id="Swe-8a-DOr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lbq-ra-GYr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -252,6 +256,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="vZK-dR-o3Z"/>
+        <segue reference="Swe-8a-DOr"/>
         <segue reference="Xkq-QW-01d"/>
     </inferredMetricsTieBreakers>
 </document>

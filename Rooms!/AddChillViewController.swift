@@ -209,6 +209,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chill["type"] = chillType
             chill["reportCount"] = 0
             chill["overview"] = publicChillOverview.text
+            chill["hostName"] = PFUser.currentUser()?.objectForKey("name")
             if(publicChillDetails.text == publicDetailsPlaceholderText){
                 chill["details"] = "❄️"
             }else{
@@ -223,6 +224,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chill["host"] = PFUser.currentUser()?.objectForKey("facebookID")
             chill["chillers"] = []
             chill["requestedChillers"] = []
+            chill["invitedChillers"] = []
             chill["chillersCount"] = 0
             PFGeoPoint.geoPointForCurrentLocationInBackground {
                 (geoPoint: PFGeoPoint?, error: NSError?) -> Void in

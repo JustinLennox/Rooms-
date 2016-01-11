@@ -17,8 +17,19 @@ class AddChillTabViewController: UIViewController, addChillDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        performSegueWithIdentifier("showAddChillSegue", sender: self)
-        self.tabBarController?.tabBar.hidden = true
+        if(PFUser.currentUser() == nil || PFUser.currentUser()?.objectForKey("facebookID") == nil){
+            let alert = UIAlertController(title: "Sorry!", message: "You have to be connected to Facebook to post a chill", preferredStyle: .ActionSheet)
+            alert.addAction(UIAlertAction(title: "Connect to Facebook", style: .Default, handler: { (handle: UIAlertAction) -> Void in
+                self.performSegueWithIdentifier("showLandingSegue", sender: self)
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .Destructive, handler: { (handle: UIAlertAction) -> Void in
+                self.tabBarController?.selectedIndex = 0
+            }))
+            presentViewController(alert, animated: true, completion: nil)
+        }else{
+            performSegueWithIdentifier("showAddChillSegue", sender: self)
+            self.tabBarController?.tabBar.hidden = true
+        }
     }
     
     func finishedAddingChill() {
@@ -26,9 +37,11 @@ class AddChillTabViewController: UIViewController, addChillDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let vc : AddChillViewController = segue.destinationViewController as! AddChillViewController
-        vc.modalPresentationStyle = .OverCurrentContext
-        vc.delegate = self
+        if(segue.identifier == "showAddChillSegue"){
+            let vc : AddChillViewController = segue.destinationViewController as! AddChillViewController
+            vc.modalPresentationStyle = .OverCurrentContext
+            vc.delegate = self
+        }
     }
 
 }

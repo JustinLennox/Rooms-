@@ -190,9 +190,17 @@ class ChillTableViewCell: UITableViewCell {
                 print("ENABLED")
                 self.chillButton.enabled = true
             }
-            self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
-
+        }else{
+            //THE USER HASN'T LOGGED IN WITH FACEBOOK
+            print("THE USER HASN'T LOGGED IN WITH FACEBOOK")
+            self.chillButton.alpha = 1.0
+            self.chillButton.setTitle("Chill", forState: .Normal)
+            self.chillButton.backgroundColor = UIColor.icyBlue()
+            self.detailsButton.alpha = 0.0
+            self.chillButton.enabled = false
         }
+        self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
+
     }
     
     //MARK: - Button Actions
@@ -246,6 +254,10 @@ class ChillTableViewCell: UITableViewCell {
             
             // Send push notification to query
             let push = PFPush()
+            let data = [
+                "badge" : "Increment",
+            ]
+            push.setData(data)
             push.setQuery(pushQuery) // Set our Installation query
             push.setMessage("\(userName) wants to join your \(currentChill.type)&chill.")
             push.sendPushInBackground()

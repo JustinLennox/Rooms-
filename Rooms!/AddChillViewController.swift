@@ -10,7 +10,7 @@ import UIKit
 import Parse
 import CoreLocation
 
-class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate {
+class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var delegate: addChillDelegate! = nil
     
@@ -18,6 +18,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
     let addChillTitle : UITextField = UITextField()
     let doneAddingChillButton : UIButton = UIButton(type: UIButtonType.System)
     let backArrow = UIButton(type: .System)
+    let nextArrow = UIButton(type: .System)
     let scrollView : TPKeyboardAvoidingScrollView = TPKeyboardAvoidingScrollView()
     
     //MARK: - Public Overview Cell
@@ -47,6 +48,13 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         addFrontCellUI()
         addPublicDetailsUI()
         addBackCellUI()
+        addFacebookUI()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        showStepOne()
+        getFacebookFriends()
+        invitedFriends = []
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -55,6 +63,40 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             NSUserDefaults.standardUserDefaults().setObject("NO", forKey: "AgreedToRules")
             performSegueWithIdentifier("showRulesSegue", sender: self)
         }
+    }
+    
+    //MARK: - Facebook
+    
+    let facebookContainerView = UIView()
+    let facebookLabel = UILabel()
+    let facebookTableView = UITableView()
+    var invitedFriends : [String] = []
+    var friendsArray : [AnyObject] = []
+    var currentChillType: String = ""
+    
+    func addFacebookUI(){
+        
+        facebookContainerView.frame = CGRectMake(view.frame.width * 0.025, CGRectGetMidY(view.frame) - 200, view.frame.width * 0.95, 300)
+        facebookContainerView.layer.cornerRadius = 8.0
+        facebookContainerView.layer.masksToBounds = true
+        view.addSubview(facebookContainerView)
+        
+        facebookLabel.frame = CGRectMake(0, 0, facebookContainerView.frame.width, 50)
+        facebookLabel.text = "Chill With Friends"
+        facebookLabel.backgroundColor = UIColor(red: 59.0/255.0, green: 89.0/255.0, blue: 152.0/255.0, alpha: 1.0)
+        facebookLabel.textAlignment = .Center
+        facebookLabel.textColor = UIColor.whiteColor()
+        facebookLabel.font = UIFont.systemFontOfSize(20.0)
+        facebookContainerView.addSubview(facebookLabel)
+        
+        facebookTableView.frame = CGRectMake(0, 50, facebookContainerView.frame.width, 250)
+        facebookTableView.backgroundColor = UIColor.backgroundGray()
+        facebookTableView.dataSource = self
+        facebookTableView.delegate = self
+        facebookTableView.layer.borderColor = UIColor.whiteColor().CGColor
+        facebookTableView.layer.borderWidth = 1.0
+        facebookTableView.allowsMultipleSelection = true
+        facebookContainerView.addSubview(facebookTableView)
     }
     
     func addUI(){
@@ -87,7 +129,35 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         doneAddingChillButton.setBackgroundImage(UIImage(named: "ChillSnowflakeSmall.png"), forState: UIControlState.Normal)
         doneAddingChillButton.addTarget(self, action: "doneAddingChill", forControlEvents: UIControlEvents.TouchUpInside)
         scrollView.addSubview(doneAddingChillButton)
+        
+        nextArrow.frame = doneAddingChillButton.frame
+        nextArrow.contentMode = .ScaleAspectFit
+        nextArrow.imageView?.contentMode = .ScaleAspectFit
+        nextArrow.setBackgroundImage(UIImage(named: "rightArrow.png"), forState: .Normal)
+        nextArrow.addTarget(self, action: "showStepTwo", forControlEvents: .TouchUpInside)
+        scrollView.addSubview(nextArrow)
     
+    }
+    
+    func showStepOne(){
+        nextArrow.alpha = 1.0
+        addChillTitle.alpha = 1.0
+        frontContainerView.alpha = 1.0
+        publicDetailsContainerView.alpha = 1.0
+        backContainerView.alpha = 1.0
+        facebookContainerView.alpha = 0.0
+        doneAddingChillButton.alpha = 0.0
+    }
+    
+    func showStepTwo(){
+        nextArrow.alpha = 0.0
+        addChillTitle.alpha = 0.0
+        frontContainerView.alpha = 0.0
+        publicDetailsContainerView.alpha = 0.0
+        backContainerView.alpha = 0.0
+        facebookContainerView.alpha = 1.0
+        doneAddingChillButton.alpha = 1.0
+        view.bringSubviewToFront(backArrow)
     }
 
     /**
@@ -195,7 +265,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
     */
      
     func doneAddingChill(){
-        if(publicChillOverview.text != publicOverviewPlaceholderText && publicChillOverview.text.characters.count >= 1){
+        if(publicChillOverview.text != publicOverviewPlaceholderText && publicChillOverview.text.characters.count >= 1 && PFUser.currentUser() != nil && PFUser.currentUser()?.objectForKey("facebookID") != nil){
             addChill()
         }else{
             let noOverviewAlert = UIAlertController(title: "Sorry!", message: "You must add a Public Overview for your Chill.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -208,6 +278,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
      * Adds a new 'Chill' to the backend and then hides the Add-Chill views
      */
     func addChill(){
+        doneAddingChillButton.enabled = false
         if let currentUser = PFUser.currentUser(){
             let chill = PFObject(className: "Chill")
             var chillType = addChillTitle.text!.lowercaseString
@@ -215,9 +286,10 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chillType = chillType.stringByReplacingOccurrencesOfString("chill", withString: "")
             chillType = chillType.stringByReplacingOccurrencesOfString(" ", withString: "")
             chill["type"] = chillType
+            currentChillType = chillType
             chill["reportCount"] = 0
             chill["overview"] = publicChillOverview.text
-            chill["hostName"] = PFUser.currentUser()?.objectForKey("name")
+            chill["hostName"] = PFUser.currentUser()?.objectForKey("name") == nil ? "Guest" : PFUser.currentUser()?.objectForKey("name")
             if(publicChillDetails.text == publicDetailsPlaceholderText){
                 chill["details"] = "❄️"
             }else{
@@ -232,7 +304,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chill["host"] = PFUser.currentUser()?.objectForKey("facebookID")
             chill["chillers"] = []
             chill["requestedChillers"] = []
-            chill["invitedChillers"] = []
+            chill["invitedChillers"] = invitedFriends
             chill["chillersCount"] = 0
             PFGeoPoint.geoPointForCurrentLocationInBackground {
                 (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
@@ -247,6 +319,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
                             self.presentViewController(failureAlert, animated: true, completion: nil)
 
                         }else{
+                            self.sendInvitePushes()
                             self.createChat(chill.objectId!)
                         }
                     })
@@ -266,12 +339,30 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         
     }
     
+    func sendInvitePushes(){
+        for facebookID in invitedFriends {
+            let pushQuery = PFInstallation.query()
+            pushQuery!.whereKey("facebookID", equalTo: facebookID)
+            
+            // Send push notification to query
+            let push = PFPush()
+            let data = [
+                "badge" : "Increment",
+            ]
+            push.setData(data)
+            push.setQuery(pushQuery) // Set our Installation query
+            push.setMessage("\(PFUser.currentUser()!.objectForKey("name")!) has invited you to \(currentChillType)&chill.")
+            push.sendPushInBackground()
+        }
+    }
+    
     func createChat(chillID: String){
         let chat = PFObject(className: "Message")
         chat["Chill"] = chillID
         chat["messageArray"] = []
         chat["participants"] = [PFUser.currentUser()?.objectForKey("facebookID") as! String]
         chat.saveInBackground()
+        doneAddingChillButton.enabled = true
         self.dismissViewControllerAnimated(true, completion: nil)
         self.delegate!.finishedAddingChill()
         
@@ -279,8 +370,12 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
     }
     
     func backPressed(){
-        self.dismissViewControllerAnimated(true, completion: nil)
-        self.delegate!.finishedAddingChill()
+        if(nextArrow.alpha == 0.0){
+            showStepOne()
+        }else{
+            self.dismissViewControllerAnimated(true, completion: nil)
+            self.delegate!.finishedAddingChill()
+        }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -381,6 +476,71 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         xMid.backgroundColor = UIColor.blueColor()
         view.addSubview(xMid)
     }
+    
+    //MARK: - Table View Methods
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .Default, reuseIdentifier: "cell")
+        cell.backgroundColor = UIColor.backgroundGray()
+        cell.selectionStyle = .None
+        
+        let nameLabel = UILabel(frame: CGRectMake(40, 0, cell.frame.width - 30, cell.frame.height))
+        nameLabel.text = friendsArray[indexPath.row].objectForKey("name") as? String
+        nameLabel.backgroundColor = UIColor.clearColor()
+        cell.addSubview(nameLabel)
+        
+        let profileImage = UIImageView(frame: CGRectMake(5, 5, 30, 30))
+        profileImage.layer.cornerRadius = profileImage.frame.width/2
+        profileImage.layer.masksToBounds = true
+        let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(friendsArray[indexPath.row].objectForKey("id") as! String)/picture?type=square&width=60&height=60&return_ssl_resources=1")
+        profileImage.sd_setImageWithURL(profilePictureURL)
+        cell.addSubview(profileImage)
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return friendsArray.count
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.backgroundColor = UIColor.icyBlue()
+        invitedFriends.append(friendsArray[indexPath.row].objectForKey("id") as! String)
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.backgroundColor = UIColor.backgroundGray()
+        for(var i = 0; i < invitedFriends.count; i++){
+            if(invitedFriends[i] == friendsArray[indexPath.row].objectForKey("id") as! String){
+                invitedFriends.removeAtIndex(i)
+            }
+        }
+    }
+    
+    func getFacebookFriends() {
+        let fbRequest = FBSDKGraphRequest(graphPath:"/me/friends", parameters: nil);
+        print(fbRequest)
+        fbRequest.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+            
+            if error == nil {
+                let facebookFriendArray : NSArray = result.objectForKey("data") as! NSArray
+                for(index, friend) in facebookFriendArray.enumerate(){
+                    self.friendsArray.append(friend)
+                }
+                self.facebookTableView.reloadData()
+            } else {
+                print("Error Getting Friends \(error)");
+                
+            }
+        }
+    }
+
     
 }
 

@@ -22,6 +22,7 @@ class LandingViewController: UIViewController {
     let descriptionLabel = UILabel()
     let assuranceLabel = UILabel()
     let connectToFacebookButton = UIButton(type: UIButtonType.System)
+    let skipForNowButton = UIButton(type: .System)
     
     //MARK: View Methods
     override func viewDidLoad() {
@@ -39,8 +40,8 @@ class LandingViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if(PFUser.currentUser() != nil){
-            self.performSegueWithIdentifier("loginSegue", sender: self)
+        if(PFUser.currentUser() != nil && PFUser.currentUser()?.objectForKey("name") != nil && PFUser.currentUser()?.objectForKey("name") as! String == "guest"){
+            PFUser.logOut()
         }
     }
     
@@ -68,7 +69,7 @@ class LandingViewController: UIViewController {
         view.addSubview(titleLabel)
         
         descriptionLabel.text = "Find Other Chill People Near You To Do Chill Things With"
-        descriptionLabel.frame = CGRectMake(view.frame.size.width * 0.05, view.frame.size.height * 0.6, view.frame.size.width * 0.9, view.frame.size.height * 0.13)
+        descriptionLabel.frame = CGRectMake(view.frame.size.width * 0.05, view.frame.size.height * 0.55, view.frame.size.width * 0.9, view.frame.size.height * 0.13)
         descriptionLabel.textColor = UIColor(red: (236.0/255.0), green: (240.0/255.0), blue: (241.0/255.0), alpha: 1.0)
         descriptionLabel.adjustsFontSizeToFitWidth = true;
         descriptionLabel.textAlignment = NSTextAlignment.Center
@@ -98,6 +99,15 @@ class LandingViewController: UIViewController {
         connectToFacebookButton.addTarget(self, action: "facebookButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
         connectToFacebookButton.layer.cornerRadius = 4
         view.addSubview(connectToFacebookButton)
+        
+        skipForNowButton.frame = CGRectMake(CGRectGetMidX(view.frame) - 50, CGRectGetMaxY(view.frame) - 50, 100, 50)
+        skipForNowButton.titleLabel?.textAlignment = NSTextAlignment.Center
+        skipForNowButton.setTitle("Skip For Now", forState: UIControlState.Normal)
+        skipForNowButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        skipForNowButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        skipForNowButton.titleLabel!.font = UIFont.systemFontOfSize(14.0)
+        skipForNowButton.addTarget(self, action: "skipButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(skipForNowButton)
         
         backgroundImageOne.image = UIImage(named: "CampFire.png")
         backgroundImageOne.contentMode = UIViewContentMode.ScaleAspectFill
@@ -154,6 +164,26 @@ class LandingViewController: UIViewController {
                 print("Uh oh. The user cancelled the Facebook login.")
             }
         })
+    }
+    
+    func skipButtonPressed(){
+        let alert = UIAlertController(title: "Are You Sure?", message: "You will lose most of the features &Chill has to offer if you choose not to connect through Facebook. You will not be able to post or join chills. Are you sure you'd like to continue?", preferredStyle: .ActionSheet)
+        alert.addAction(UIAlertAction(title: "Nevermind", style: .Default, handler: nil))
+        alert.addAction(UIAlertAction(title: "I'm sure", style: .Default, handler: { (handle : UIAlertAction) -> Void in
+            self.signUpGuest()
+        }))
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func signUpGuest(){
+        var user = PFUser()
+        user.username = NSUUID().UUIDString
+        user.password = "guest"
+        user.setObject("guest", forKey: "name")
+        user.signUpInBackgroundWithBlock { (success : Bool, error: NSError?) -> Void in
+            self.performSegueWithIdentifier("showEnableLocationSegue", sender: self)
+        }
+        
     }
     
     

@@ -12,6 +12,7 @@
 		D008EF3D1C43A6EF00A30018 /* termsUse.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D008EF3C1C43A6EF00A30018 /* termsUse.pdf */; };
 		D008EF3F1C43A75E00A30018 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008EF3E1C43A75E00A30018 /* PrivacyPolicyViewController.swift */; };
 		D008EF411C43A93C00A30018 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D008EF401C43A93C00A30018 /* TermsOfUseViewController.swift */; };
+		D008EF431C43D8DA00A30018 /* rightArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = D008EF421C43D8DA00A30018 /* rightArrow.png */; };
 		D02EC6331C165375003C5C1D /* PopularChillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */; };
 		D04129A21C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D041299B1C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.m */; };
 		D04129A31C391A3700A7D900 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D041299D1C391A3700A7D900 /* TPKeyboardAvoidingScrollView.m */; };
@@ -126,6 +127,7 @@
 		D008EF3C1C43A6EF00A30018 /* termsUse.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = termsUse.pdf; path = ../termsUse.pdf; sourceTree = "<group>"; };
 		D008EF3E1C43A75E00A30018 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		D008EF401C43A93C00A30018 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
+		D008EF421C43D8DA00A30018 /* rightArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rightArrow.png; sourceTree = "<group>"; };
 		D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopularChillsViewController.swift; sourceTree = "<group>"; };
 		D041299A1C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TPKeyboardAvoidingCollectionView.h; path = "Rooms!/TPKeyboardAvoidingCollectionView.h"; sourceTree = "<group>"; };
 		D041299B1C391A3700A7D900 /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TPKeyboardAvoidingCollectionView.m; path = "Rooms!/TPKeyboardAvoidingCollectionView.m"; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 		D0B88F081C0F9EEE00A7AEAD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D008EF421C43D8DA00A30018 /* rightArrow.png */,
 				D0E22C8F1C3F953D002FC68E /* settingsIcon.png */,
 				D0E22C811C3F32FD002FC68E /* Floating_Ice_00.png */,
 				D0E22C821C3F32FD002FC68E /* Floating_Ice_01.png */,
@@ -628,6 +631,7 @@
 				D04129B71C39363400A7D900 /* Ampersand SnowFlake@2x.png in Resources */,
 				D0E22C891C3F3306002FC68E /* LocationBackground.png in Resources */,
 				D008EF3B1C43A6E600A30018 /* privacyPolicy.pdf in Resources */,
+				D008EF431C43D8DA00A30018 /* rightArrow.png in Resources */,
 				D0B88F021C0F9EE500A7AEAD /* Camp.png in Resources */,
 				D0AF11551BF9CD01006B5034 /* SnowflakeSmall.png in Resources */,
 				D0AF11571BF9CDCD006B5034 /* Snowflake.png in Resources */,
@@ -849,6 +853,7 @@
 				PRODUCT_NAME = AndChill;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Rooms!/AndChill-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -869,6 +874,7 @@
 				PRODUCT_NAME = AndChill;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Rooms!/AndChill-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

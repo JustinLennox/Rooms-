@@ -16,6 +16,7 @@ class NotificationTableViewCell: UITableViewCell {
     var request = false
     var invitation = false
     var currentChill = Chill()
+    var myChillsVC = MyChillsViewController()
     
     //MARK - Setup
     
@@ -151,7 +152,11 @@ class NotificationTableViewCell: UITableViewCell {
                 parseChill.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "invitedChillers")
                 parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
                 parseChill.incrementKey("chillersCount")
-                parseChill.saveInBackground()
+                parseChill.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                    if(error == nil){
+                        self.myChillsVC.getMyChills()
+                    }
+                })
                 pushChillFromTable(tableView)
                 acceptedInvitationPush()
         }
@@ -161,7 +166,11 @@ class NotificationTableViewCell: UITableViewCell {
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
         if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
             parseChill.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "invitedChillers")
-            parseChill.saveInBackground()
+            parseChill.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                if(error == nil){
+                    self.myChillsVC.getMyChills()
+                }
+            })
             removeChillFromTable(tableView)
         }
     }
@@ -173,6 +182,10 @@ class NotificationTableViewCell: UITableViewCell {
             
             // Send push notification to query
             let push = PFPush()
+            let data = [
+                "badge" : "Increment",
+            ]
+            push.setData(data)
             push.setQuery(pushQuery) // Set our Installation query
             push.setMessage("\(userName) accepted your invitation to \(currentChill.type)&chill.")
             push.sendPushInBackground()
@@ -185,7 +198,11 @@ class NotificationTableViewCell: UITableViewCell {
             parseChill.removeObject(currentChill.currentRequestedChiller, forKey: "requestedChillers")
             parseChill.addObject(facebookID, forKey: "chillers")
             parseChill.incrementKey("chillersCount")
-            parseChill.saveInBackground()
+            parseChill.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                if(error == nil){
+                    self.myChillsVC.getMyChills()
+                }
+            })
             pushChillFromTable(tableView)
             acceptedRequestPush()
         }
@@ -195,7 +212,11 @@ class NotificationTableViewCell: UITableViewCell {
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
         if let facebookID = currentChill.currentRequestedChiller["facebookID"] {
             parseChill.removeObject(currentChill.currentRequestedChiller, forKey: "requestedChillers")
-            parseChill.saveInBackground()
+            parseChill.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
+                if(error == nil){
+                    self.myChillsVC.getMyChills()
+                }
+            })
             removeChillFromTable(tableView)
         }
     }
@@ -207,6 +228,10 @@ class NotificationTableViewCell: UITableViewCell {
             
             // Send push notification to query
             let push = PFPush()
+            let data = [
+                "badge" : "Increment",
+            ]
+            push.setData(data)
             push.setQuery(pushQuery) // Set our Installation query
             push.setMessage("\(PFUser.currentUser()!.objectForKey("name")!) accepted your request to \(currentChill.type)&chill.")
             push.sendPushInBackground()

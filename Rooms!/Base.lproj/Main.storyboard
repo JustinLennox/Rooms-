@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <connections>
@@ -35,7 +35,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3zD-OB-gu4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="atD-4L-bwI">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -134,11 +134,12 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="axK-Ve-ed0" kind="presentation" identifier="showAddChillSegue" id="Hcx-n9-zee"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="showLandingSegue" id="cdD-ou-pBM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="202-6f-oQo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1013" y="-714"/>
+            <point key="canvasLocation" x="1013" y="-726"/>
         </scene>
         <!--Chill Details View Controller-->
         <scene sceneID="Tpf-L9-qoG">
@@ -317,7 +318,7 @@
         <image name="SnowflakeTabIcon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Hjr-PC-PqJ"/>
+        <segue reference="cdD-ou-pBM"/>
         <segue reference="J6T-4b-KNI"/>
         <segue reference="07h-Pc-43d"/>
         <segue reference="Xkq-QW-01d"/>

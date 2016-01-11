@@ -182,6 +182,10 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
                     
                     // Send push notification to query
                     let push = PFPush()
+                    let data = [
+                        "badge" : "Increment",
+                    ]
+                    push.setData(data)
                     push.setQuery(pushQuery) // Set our Installation query
                     push.setMessage("\(userName): \(messageText)")
                     push.sendPushInBackground()

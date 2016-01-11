@@ -104,49 +104,51 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
     * Downloads our chills from the backend that we're the host of
     */
     func getMyChills(){
-        let hostQuery = PFQuery(className:"Chill")
-        hostQuery.whereKey("host", equalTo: PFUser.currentUser()?.objectForKey("facebookID") as! String)
-        
-        let chillerQuery = PFQuery(className: "Chill")
-        chillerQuery.whereKey("chillers", equalTo: PFUser.currentUser()?.objectForKey("facebookID") as! String)
-        
-        let invitedQuery = PFQuery(className: "Chill")
-        invitedQuery.whereKey("invitedChillers", equalTo: PFUser.currentUser()?.objectForKey("facebookID") as! String)
-        
-        let query = PFQuery.orQueryWithSubqueries([hostQuery, chillerQuery, invitedQuery])
-        query.limit = 25
-        query.addDescendingOrder("createdAt")
-        
-        
-        query.findObjectsInBackgroundWithBlock {
-            (objects: [PFObject]?, error: NSError?) -> Void in
+        if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
+            let hostQuery = PFQuery(className:"Chill")
+            hostQuery.whereKey("host", equalTo: PFUser.currentUser()?.objectForKey("facebookID") as! String)
             
-            if error == nil {
+            let chillerQuery = PFQuery(className: "Chill")
+            chillerQuery.whereKey("chillers", equalTo: PFUser.currentUser()?.objectForKey("facebookID") as! String)
+            
+            let invitedQuery = PFQuery(className: "Chill")
+            invitedQuery.whereKey("invitedChillers", equalTo: PFUser.currentUser()?.objectForKey("facebookID") as! String)
+            
+            let query = PFQuery.orQueryWithSubqueries([hostQuery, chillerQuery, invitedQuery])
+            query.limit = 25
+            query.addDescendingOrder("createdAt")
+            
+            
+            query.findObjectsInBackgroundWithBlock {
+                (objects: [PFObject]?, error: NSError?) -> Void in
                 
-                // Do something with the found objects
-                if let objects = objects as [PFObject]! {
-                    self.chillArray = []
-                    for pfChill in objects {
-                        if(pfChill.objectForKey("host") as! String == PFUser.currentUser()?.objectForKey("facebookID") as! String){
-                            for requestedChiller in pfChill.objectForKey("requestedChillers") as! [[String:String]]{
-                                let requestedChill = Chill.parseDictionaryIntoChill(pfChill)
-                                requestedChill.currentRequestedChiller = requestedChiller
-                                self.chillArray.append(requestedChill)
+                if error == nil {
+                    
+                    // Do something with the found objects
+                    if let objects = objects as [PFObject]! {
+                        self.chillArray = []
+                        for pfChill in objects {
+                            if(pfChill.objectForKey("host") as! String == PFUser.currentUser()?.objectForKey("facebookID") as! String){
+                                for requestedChiller in pfChill.objectForKey("requestedChillers") as! [[String:String]]{
+                                    let requestedChill = Chill.parseDictionaryIntoChill(pfChill)
+                                    requestedChill.currentRequestedChiller = requestedChiller
+                                    self.chillArray.append(requestedChill)
+                                }
                             }
+                            self.chillArray.append(Chill.parseDictionaryIntoChill(pfChill))
                         }
-                        self.chillArray.append(Chill.parseDictionaryIntoChill(pfChill))
+                        self.chillTableView.reloadData()
+                        self.refreshControl.endRefreshing()
                     }
-                    self.chillTableView.reloadData()
+                } else {
+                    let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't load any chills. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
                     self.refreshControl.endRefreshing()
+                    // Log details of the failure
+                    print("Error: \(error!)")
                 }
-            } else {
-                let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't load any chills. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                self.refreshControl.endRefreshing()
-                // Log details of the failure
-                print("Error: \(error!)")
             }
         }
     }
@@ -194,6 +196,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
         let currentChill : Chill = chillArray[indexPath.row]
         if(getChillTypeFromPFObject(currentChill) == "Invited"){
             let cell : NotificationTableViewCell = tableView.dequeueReusableCellWithIdentifier("NotificationCell") as! NotificationTableViewCell
+            cell.myChillsVC = self
             cell.setUpWithInvitation(currentChill)
             let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "rejectInvitation:")
             swipeLeftRecognizer.direction = .Left

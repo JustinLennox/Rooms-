@@ -59,7 +59,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
         super.viewDidAppear(animated)
         
         //If there's no user logged in, send them to the Landing Screen
-        if(PFUser.currentUser() == nil || FBSDKAccessToken.currentAccessToken() == nil){
+        if(PFUser.currentUser() == nil || (PFUser.currentUser()?.objectForKey("name") as! String != "guest" && FBSDKAccessToken.currentAccessToken() == nil)){
             performSegueWithIdentifier("showLoginSegue", sender: self)
         }else{
             if(NSUserDefaults.standardUserDefaults().objectForKey("FirstTime") != nil)

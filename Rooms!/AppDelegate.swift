@@ -32,6 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         updateFacebookID()
     
         UITabBar.appearance().tintColor = UIColor.icyBlue()
+        print("did finish launching")
+        //HANDLING PUSH NOTIFICATIONS: Opens the chat when recieved
+        if let notificationPayload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary
+        {
+            print("payload")
+            handleNotifications(notificationPayload)
+        }
     
         // Override point for customization after application launch.
         return true
@@ -54,13 +61,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let chatVC = presentedViewController as! ChillDetailsViewController
                     chatVC.loadMessages()
                 }else{
+                    handleNotifications(userInfo)
                     PFPush.handlePush(userInfo)
                 }
             }else{
+                handleNotifications(userInfo)
                 print("Not presented view controller")
                 PFPush.handlePush(userInfo)
             }
         }else{
+            handleNotifications(userInfo)
             PFPush.handlePush(userInfo)
         }
     }
@@ -87,6 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        
     }
     
     func applicationDidBecomeActive(application: UIApplication) { // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -113,6 +124,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("Error Getting FB Info")
                 }
             }
+        }
+    }
+    
+    func handleNotifications(notificationPayload : NSDictionary){
+        print("Handle")
+        // Create a pointer to the Photo object
+        if let chatID = notificationPayload["chillID"]
+        {
+            print("Contains chillID")
+            let vc = ChillDetailsViewController()
+            let chillQuery = PFQuery(className: "Chill")
+            chillQuery.whereKey("objectId", equalTo: chatID as! String)
+            chillQuery.getFirstObjectInBackgroundWithBlock({ (pfChill : PFObject?, error: NSError?) -> Void in
+                if(error == nil && pfChill != nil)
+                {
+                    print("No error")
+                    let chill = Chill.parseDictionaryIntoChill(pfChill!)
+                    if let window = self.window{
+                        let navigationController = window.rootViewController as! UITabBarController
+                        vc.currentChill = chill
+                        navigationController.presentViewController(vc, animated: false, completion: nil)
+                    }
+                }
+                
+            })
         }
     }
     

@@ -116,7 +116,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
             
             let query = PFQuery.orQueryWithSubqueries([hostQuery, chillerQuery, invitedQuery])
             query.limit = 25
-            query.addDescendingOrder("createdAt")
+            query.addDescendingOrder("updatedAt")
             
             
             query.findObjectsInBackgroundWithBlock {
@@ -387,6 +387,13 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
         fbNameButton.titleLabel?.adjustsFontSizeToFitWidth = true
         fbPreviewView.addSubview(fbNameButton)
         
+        chillersLabel.frame = CGRectMake(fbNameButton.frame.origin.x, CGRectGetMaxY(fbNameButton.frame) + 10, 256, 40)
+        chillersLabel.text = "Chillers"
+        chillersLabel.textColor = UIColor.whiteColor()
+        chillersLabel.textAlignment = .Center
+        chillersLabel.font = UIFont.systemFontOfSize(17.0)
+        fbPreviewView.addSubview(chillersLabel)
+        
     }
     
     func showFBPreview(sender : UIButton){
@@ -397,11 +404,43 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
         fbProfileImage.sd_setImageWithURL(profilePictureURL)
         fbNameButton.setTitle("View \(chillCell.currentChill.hostName)'s Profile", forState: .Normal)
         fbPreviewView.alpha = 1.0
+        showChillerProfilePics(chillCell.currentChill)
+    }
+    
+    var profilePicArray = [UIImageView]()
+    let chillersLabel = UILabel()
+    
+    func showChillerProfilePics(currentChill : Chill){
+        let originalX = fbNameButton.frame.origin.x + 5
+        var currentX = originalX
+        var currentY = CGRectGetMaxY(chillersLabel.frame) + 10
+        for chillerFBID in currentChill.chillers{
+            let profilePic = UIImageView()
+            let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(chillerFBID)/picture?type=square&width=60&height=60&return_ssl_resources=1")
+            profilePic.sd_setImageWithURL(profilePictureURL)
+            profilePic.frame = CGRectMake(currentX, currentY, 30, 30)
+            profilePic.layer.cornerRadius = 8.0
+            profilePic.layer.masksToBounds = true
+            fbPreviewView.addSubview(profilePic)
+            profilePicArray.append(profilePic)
+            
+            if(currentX + 40 > CGRectGetMaxX(fbNameButton.frame) - 5){
+                currentX = originalX
+                currentY += 40
+            }else{
+                currentX += 35
+            }
+        }
     }
     
     func hideFBPreview(){
         fbPreviewView.alpha = 0.0
+        for profilePic in profilePicArray{
+            profilePic.removeFromSuperview()
+        }
+        profilePicArray = []
     }
+
     
     func openProfile(){
         UIApplication.sharedApplication().openURL(NSURL(string: "https://www.facebook.com/app_scoped_user_id/\(currentFacebookProfileID)")!)

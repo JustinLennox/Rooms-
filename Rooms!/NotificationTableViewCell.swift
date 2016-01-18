@@ -149,7 +149,9 @@ class NotificationTableViewCell: UITableViewCell {
     func acceptInviteWithTable(tableView:UITableView){
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
             if let facebookID = PFUser.currentUser()?.objectForKey("facebookID"){
+                addUserWithIDToChatWithChillID(facebookID as! String, chillID: currentChill.id)
                 parseChill.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "invitedChillers")
+                parseChill.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "requestedChillers")
                 parseChill.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
                 parseChill.incrementKey("chillersCount")
                 parseChill.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
@@ -195,7 +197,9 @@ class NotificationTableViewCell: UITableViewCell {
     func acceptRequestWithTable(tableView:UITableView){
         let parseChill : PFObject = PFObject(withoutDataWithClassName: "Chill", objectId: currentChill.id)
         if let facebookID = currentChill.currentRequestedChiller["facebookID"] {
+            addUserWithIDToChatWithChillID(facebookID, chillID: currentChill.id)
             parseChill.removeObject(currentChill.currentRequestedChiller, forKey: "requestedChillers")
+            parseChill.removeObject(currentChill.currentRequestedChiller, forKey: "invitedChillers")
             parseChill.addObject(facebookID, forKey: "chillers")
             parseChill.incrementKey("chillersCount")
             parseChill.saveInBackgroundWithBlock({ (success:Bool, error:NSError?) -> Void in
@@ -235,6 +239,19 @@ class NotificationTableViewCell: UITableViewCell {
             push.setQuery(pushQuery) // Set our Installation query
             push.setMessage("\(PFUser.currentUser()!.objectForKey("name")!) accepted your request to \(currentChill.type)&chill.")
             push.sendPushInBackground()
+        }
+    }
+    
+    func addUserWithIDToChatWithChillID(userID: String, chillID: String){
+        let chatQuery = PFQuery(className: "Message")
+        chatQuery.whereKey("Chill", equalTo: chillID)
+        chatQuery.getFirstObjectInBackgroundWithBlock { (pfChat: PFObject?, error: NSError?) -> Void in
+            if(error != nil){
+                if let chat = pfChat {
+                    chat.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "participants")
+                    chat.saveEventually()
+                }
+            }
         }
     }
     

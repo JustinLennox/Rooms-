@@ -126,8 +126,12 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         view.addSubview(backArrow)
         
         doneAddingChillButton.frame = CGRectMake(view.frame.width/2 - 25, CGRectGetMidY(view.frame) + 160, 50, 50)
-        doneAddingChillButton.setBackgroundImage(UIImage(named: "ChillSnowflakeSmall.png"), forState: UIControlState.Normal)
+        doneAddingChillButton.setBackgroundImage(UIImage(named: "rightArrow.png"), forState: UIControlState.Normal)
         doneAddingChillButton.addTarget(self, action: "doneAddingChill", forControlEvents: UIControlEvents.TouchUpInside)
+//        doneAddingChillButton.layer.borderWidth = 1.0
+//        doneAddingChillButton.layer.borderColor = UIColor.whiteColor().CGColor
+//        doneAddingChillButton.layer.cornerRadius = 8.0
+//        doneAddingChillButton.layer.masksToBounds = true
         scrollView.addSubview(doneAddingChillButton)
         
         nextArrow.frame = doneAddingChillButton.frame
@@ -265,7 +269,11 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
     */
      
     func doneAddingChill(){
-        if(publicChillOverview.text != publicOverviewPlaceholderText && publicChillOverview.text.characters.count >= 1 && PFUser.currentUser() != nil && PFUser.currentUser()?.objectForKey("facebookID") != nil){
+        if(publicChillOverview.text != publicOverviewPlaceholderText &&
+            publicChillOverview.text.characters.count >= 1 &&
+            PFUser.currentUser() != nil && PFUser.currentUser()?.objectForKey("facebookID") != nil
+            && publicChillOverview.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != ""
+            && publicOverviewPlaceholderText.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != ""){//ESA WAS HERE
             addChill()
         }else{
             let noOverviewAlert = UIAlertController(title: "Sorry!", message: "You must add a Public Overview for your Chill.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -480,8 +488,14 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
     //MARK: - Table View Methods
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "cell")
-        cell.backgroundColor = UIColor.backgroundGray()
+        let currentFBID = friendsArray[indexPath.row].objectForKey("id") as! String
+        if(invitedFriends.contains(currentFBID)){
+            cell.backgroundColor = UIColor.icyBlue()
+        }else{
+            cell.backgroundColor = UIColor.backgroundGray()
+        }
         cell.selectionStyle = .None
         
         let nameLabel = UILabel(frame: CGRectMake(40, 0, cell.frame.width - 30, cell.frame.height))
@@ -494,6 +508,7 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
         profileImage.layer.masksToBounds = true
         let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(friendsArray[indexPath.row].objectForKey("id") as! String)/picture?type=square&width=60&height=60&return_ssl_resources=1")
         profileImage.sd_setImageWithURL(profilePictureURL)
+        
         cell.addSubview(profileImage)
         
         return cell

@@ -69,6 +69,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
         }else{
             messageTimer = NSTimer.scheduledTimerWithTimeInterval(10.5, target: self, selector: "loadMessages", userInfo: nil, repeats:  true)
         }
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -77,7 +78,7 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        titleLabel.text = "\(currentChill.type)"
+        titleLabel.text = "\(currentChill.type)&chill"
         privateChillDetails.text = currentChill.privateDetails
         loadMessages()
     }
@@ -183,11 +184,12 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
                     // Send push notification to query
                     let push = PFPush()
                     let data = [
+                        "alert" : "\(userName): \(messageText)",
                         "badge" : "Increment",
+                        "chillID" : currentChill.id
                     ]
                     push.setData(data)
                     push.setQuery(pushQuery) // Set our Installation query
-                    push.setMessage("\(userName): \(messageText)")
                     push.sendPushInBackground()
                 }
             }
@@ -203,6 +205,10 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
             if(error == nil){
                 if let chat = pfChat{
                     self.currentChat = chat
+                    let participantsArray = chat.objectForKey("participants") as! [String]
+                    if(!participantsArray.contains(PFUser.currentUser()?.objectForKey("facebookID") as! String)){
+                        self.addUserToChat(chat)
+                    }
                     for view in self.temporaryMessageArray{
                         view.removeFromSuperview()
                     }
@@ -217,6 +223,11 @@ class ChillDetailsViewController: UIViewController, UITextViewDelegate {
                 print("\(error.debugDescription)")
             }
         }
+    }
+    
+    func addUserToChat(pfChat: PFObject){
+        pfChat.addObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "participants")
+        pfChat.saveInBackground()
     }
     
     func loadProfilePicDictionary(){

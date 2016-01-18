@@ -242,6 +242,17 @@ class ChillTableViewCell: UITableViewCell {
                     parseChill!.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "chillers")
                     parseChill!.incrementKey("chillersCount", byAmount: -1)
                     parseChill!.saveInBackground()
+                    let chatQuery = PFQuery(className: "Message")
+                    chatQuery.whereKey("Chill", equalTo: parseChill!.objectId!)
+                    chatQuery.getFirstObjectInBackgroundWithBlock { (pfChat: PFObject?, error: NSError?) -> Void in
+                        if(error != nil){
+                            if let chat = pfChat {
+                                chat.removeObject(PFUser.currentUser()?.objectForKey("facebookID") as! String, forKey: "participants")
+                                chat.saveEventually()
+                            }
+                        }
+                    }
+
                 }
             }
         }

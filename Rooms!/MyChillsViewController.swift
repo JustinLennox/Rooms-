@@ -51,7 +51,7 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
         }
     }
 
-    
+    let nobodyLabel = UILabel()
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
         bannerBackground.backgroundColor = UIColor.icyBlue()
@@ -83,12 +83,12 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
         snowflakeIcon.contentMode = .ScaleAspectFit
         nobodyChillingView.addSubview(snowflakeIcon)
         
-        let nobodyLabel = UILabel(frame: CGRectMake(view.frame.size.width * 0.1, CGRectGetMaxY(snowflakeIcon.frame) + 10, view.frame.size.width * 0.8, 128))
+        nobodyLabel.frame = CGRectMake(view.frame.size.width * 0.1, CGRectGetMaxY(snowflakeIcon.frame) + 10, view.frame.size.width * 0.8, 128)
         nobodyLabel.adjustsFontSizeToFitWidth = true
         nobodyLabel.textAlignment = .Center
         nobodyLabel.font = UIFont.systemFontOfSize(14.0)
         nobodyLabel.numberOfLines = -1
-        nobodyLabel.text = "You don't have any chills yet :(\nTap the snowflake tab at the bottom of the screen to start chilling! :)"
+        nobodyLabel.text = "Loading Chills..."
         nobodyLabel.textColor = UIColor.flatGray()
         nobodyChillingView.addSubview(nobodyLabel)
         
@@ -139,6 +139,11 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
                         }
                         self.chillTableView.reloadData()
                         self.refreshControl.endRefreshing()
+                    }
+                    if(self.chillArray.count < 1){
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.nobodyLabel.text = "You don't have any chills yet :(\nTap the snowflake tab at the bottom of the screen to start chilling! :)"
+                        })
                     }
                 } else {
                     let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't load any chills. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -241,10 +246,10 @@ class MyChillsViewController: UIViewController, UITextFieldDelegate, UITextViewD
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(chillArray.count < 1){
-            nobodyChillingView.alpha = 1.0
-        }else{
+        if(chillArray.count > 0){
             nobodyChillingView.alpha = 0.0
+        }else{
+            nobodyChillingView.alpha = 1.0
         }
 
         return chillArray.count

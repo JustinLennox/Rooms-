@@ -29,7 +29,7 @@ class NotificationTableViewCell: UITableViewCell {
         backgroundColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
         selectionStyle = .None
         
-        containerView.backgroundColor = UIColor.whiteColor()
+        containerView.backgroundColor = UIColor.icyBlue()
         containerView.layer.cornerRadius = 8.0
         containerView.layer.masksToBounds = true
         addSubview(containerView)
@@ -43,10 +43,11 @@ class NotificationTableViewCell: UITableViewCell {
         notificationLabel.layer.masksToBounds = true
         notificationLabel.font = UIFont.systemFontOfSize(14.0)
         notificationLabel.numberOfLines = -1
+        notificationLabel.textColor = UIColor.whiteColor()
         containerView.addSubview(notificationLabel)
         
         instructionsLabel.text = "(Swipe left to reject, swipe right to accept)"
-        instructionsLabel.textColor = UIColor.flatGray()
+        instructionsLabel.textColor = UIColor.whiteColor()
         instructionsLabel.alpha = 0.0
         instructionsLabel.textAlignment = .Center
         instructionsLabel.adjustsFontSizeToFitWidth = true
@@ -57,6 +58,7 @@ class NotificationTableViewCell: UITableViewCell {
         
         chillOverviewLabel.text = ""
         chillOverviewLabel.alpha = 0.0
+        chillOverviewLabel.textColor = UIColor.whiteColor()
         chillOverviewLabel.textAlignment = .Center
         chillOverviewLabel.adjustsFontSizeToFitWidth = true
         chillOverviewLabel.layer.masksToBounds = true

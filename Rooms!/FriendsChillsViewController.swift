@@ -50,6 +50,8 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         }
     }
     
+    let nobodyLabel = UILabel()
+    
     func addMainUI(){
         bannerBackground.frame = CGRectMake(0, 0, view.frame.width, 64)
         bannerBackground.backgroundColor = UIColor.icyBlue()
@@ -74,12 +76,12 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
         snowflakeIcon.contentMode = .ScaleAspectFit
         nobodyChillingView.addSubview(snowflakeIcon)
         
-        let nobodyLabel = UILabel(frame: CGRectMake(view.frame.size.width * 0.1, CGRectGetMaxY(snowflakeIcon.frame) + 10, view.frame.size.width * 0.8, 128))
+        nobodyLabel.frame = CGRectMake(view.frame.size.width * 0.1, CGRectGetMaxY(snowflakeIcon.frame) + 10, view.frame.size.width * 0.8, 128)
         nobodyLabel.adjustsFontSizeToFitWidth = true
         nobodyLabel.textAlignment = .Center
         nobodyLabel.font = UIFont.systemFontOfSize(14.0)
         nobodyLabel.numberOfLines = -1
-        nobodyLabel.text = "None of your friends are chilling :(\nI'm sorry. Your friends have no chill."
+        nobodyLabel.text = "Loading Chills..."
         nobodyLabel.textColor = UIColor.flatGray()
         nobodyChillingView.addSubview(nobodyLabel)
         
@@ -113,6 +115,11 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
 
                     }
                     self.chillTableView.reloadData()
+                }
+                if(self.chillArray.count < 1){
+                    dispatch_async(dispatch_get_main_queue(),{
+                        self.nobodyLabel.text = "None of your friends are chilling :(\nI'm sorry. Your friends have no chill."
+                    })
                 }
             } else {
                 self.refreshControl.endRefreshing()
@@ -215,10 +222,10 @@ class FriendsChillsViewController: UIViewController, UITextFieldDelegate, UIText
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(chillArray.count < 1){
-            nobodyChillingView.alpha = 1.0
-        }else{
+        if(chillArray.count > 0){
             nobodyChillingView.alpha = 0.0
+        }else{
+            nobodyChillingView.alpha = 1.0
         }
         return chillArray.count
     }

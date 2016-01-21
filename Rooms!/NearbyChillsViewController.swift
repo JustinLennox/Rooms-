@@ -238,43 +238,45 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
      */
     func getChills(){
         let query = PFQuery(className:"Chill")
-        let userLocation : PFGeoPoint = PFUser.currentUser()?.objectForKey("location") as! PFGeoPoint
-        query.whereKey("location", nearGeoPoint: userLocation, withinMiles: 5.0)
-        query.limit = 25
+        if let location = PFUser.currentUser()?.objectForKey("location"){
+            let userLocation : PFGeoPoint = PFUser.currentUser()?.objectForKey("location") as! PFGeoPoint
+            query.whereKey("location", nearGeoPoint: userLocation, withinMiles: 5.0)
+            query.limit = 25
 
-        var chillType : String = blankTextField.text!
-        if(chillType.characters.count > 6 && chillType != "Tap Here to Search!"){
-            chillType = chillType.lowercaseString
-            chillType = chillType.stringByReplacingOccurrencesOfString("&chill", withString: "")
-            query.whereKey("type", containsString:chillType)
-        }
-        query.addDescendingOrder("createdAt")
+            var chillType : String = blankTextField.text!
+            if(chillType.characters.count > 6 && chillType != "Tap Here to Search!"){
+                chillType = chillType.lowercaseString
+                chillType = chillType.stringByReplacingOccurrencesOfString("&chill", withString: "")
+                query.whereKey("type", containsString:chillType)
+            }
+            query.addDescendingOrder("createdAt")
 
-        
-        query.findObjectsInBackgroundWithBlock {
-            (objects: [PFObject]?, error: NSError?) -> Void in
             
-            if error == nil {
-                print("no error getting chills")
-                // Do something with the found objects
-                if let objects = objects as [PFObject]! {
-                    self.chillArray = []
-                    for chillDictionary in objects {
-                        
-                        let chill = Chill.parseDictionaryIntoChill(chillDictionary)
-                        self.chillArray.append(chill)
+            query.findObjectsInBackgroundWithBlock {
+                (objects: [PFObject]?, error: NSError?) -> Void in
+                
+                if error == nil {
+                    print("no error getting chills")
+                    // Do something with the found objects
+                    if let objects = objects as [PFObject]! {
+                        self.chillArray = []
+                        for chillDictionary in objects {
+                            
+                            let chill = Chill.parseDictionaryIntoChill(chillDictionary)
+                            self.chillArray.append(chill)
+                        }
+                        self.chillTableView.reloadData()
+                        self.refreshControl.endRefreshing()
                     }
-                    self.chillTableView.reloadData()
+                } else {
+                    print("GET CHILL ERROR: \(error!)")
+                    let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't load any chills. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+
+                    // Log details of the failure
                     self.refreshControl.endRefreshing()
                 }
-            } else {
-                print("GET CHILL ERROR: \(error!)")
-                let alert = UIAlertController(title: "Oops!", message: "&Chill couldn't load any chills. Please make sure you're connected to the internet and have enabled access to your location under Settings > &Chill > Location.", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-
-                // Log details of the failure
-                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -480,9 +482,7 @@ class NearbyChillsViewController: UIViewController, UITextFieldDelegate, UITextV
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(tableView == chillTableView){    //chill table view count
-            if(chillArray.count < 1){
-                nobodyChillingView.alpha = 1.0
-            }else{
+            if(chillArray.count > 0){
                 nobodyChillingView.alpha = 0.0
             }
             return chillArray.count

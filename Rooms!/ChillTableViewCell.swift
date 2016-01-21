@@ -193,11 +193,12 @@ class ChillTableViewCell: UITableViewCell {
         }else{
             //THE USER HASN'T LOGGED IN WITH FACEBOOK
             print("THE USER HASN'T LOGGED IN WITH FACEBOOK")
+            self.chillButton.removeTarget(self, action: "joinChill", forControlEvents: .TouchUpInside)
+            self.chillButton.addTarget(self, action:"presentFacebookPrompt", forControlEvents: .TouchUpInside)
             self.chillButton.alpha = 1.0
             self.chillButton.setTitle("Chill", forState: .Normal)
             self.chillButton.backgroundColor = UIColor.icyBlue()
             self.detailsButton.alpha = 0.0
-            self.chillButton.enabled = false
         }
         self.containerView.layer.transform = CATransform3DMakeRotation(3.14, 0.0, 0.0, 0.0)
 
@@ -221,6 +222,17 @@ class ChillTableViewCell: UITableViewCell {
         chillButton.enabled = false
         joinChillPush()
         
+    }
+    
+    func presentFacebookPrompt(){
+        let alertWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+        alertWindow.rootViewController = UIViewController()
+        alertWindow.windowLevel = UIWindowLevelAlert + 1;
+        alertWindow .makeKeyAndVisible()
+        let navigationController = alertWindow.rootViewController
+        let alert = UIAlertController(title: "Connect to Facebook", message: "You must connect to Facebook to join or post chills. You can access your connection via the Settings screen under My Chills.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        alert.addAction(UIAlertAction(title: "Chill.", style: .Default, handler: nil))
+        navigationController!.presentViewController(alert, animated: true, completion: nil)
     }
     
     /**

@@ -295,6 +295,11 @@ class AddChillViewController: UIViewController, UITextFieldDelegate, UITextViewD
             chillType = chillType.stringByReplacingOccurrencesOfString(" ", withString: "")
             chill["type"] = chillType
             currentChillType = chillType
+            let date = NSDate()
+            let formatter  = NSDateFormatter()
+            formatter.dateFormat = "EEE, h:mmaaa"
+            chill["timestamp"] = formatter.stringFromDate(date)
+            
             chill["reportCount"] = 0
             chill["overview"] = publicChillOverview.text
             chill["hostName"] = PFUser.currentUser()?.objectForKey("name") == nil ? "Guest" : PFUser.currentUser()?.objectForKey("name")

@@ -17,6 +17,7 @@ class ChillTableViewCell: UITableViewCell {
     let chillTypeLabel = UILabel()
     var currentChill = Chill()
     let reportButton = UIButton(type: UIButtonType.System)
+    let timestampLabel = UILabel()
     
     //MARK - Setup
     
@@ -57,6 +58,11 @@ class ChillTableViewCell: UITableViewCell {
         chillTypeLabel.textColor = UIColor.icyBlue()
         chillTypeLabel.font = UIFont.systemFontOfSize(14.0)
         containerView.addSubview(chillTypeLabel)
+        
+        timestampLabel.text = ""
+        timestampLabel.textColor = UIColor.flatGray()
+        timestampLabel.font = UIFont.systemFontOfSize(14.0)
+        containerView.addSubview(timestampLabel)
         
         chillButton.setTitle("Chill", forState: .Normal)
         chillButton.backgroundColor = UIColor.icyBlue()
@@ -104,6 +110,7 @@ class ChillTableViewCell: UITableViewCell {
         chillTypeLabel.frame = CGRectMake(profileImage.frame.width + 10, chillDetailsLabel.frame.height + 5, containerView.frame.width - profileImage.frame.width - 20, containerView.frame.height * 0.2)
         chillButton.frame = profileImage.frame
         reportButton.frame = CGRectMake(containerView.frame.width * 0.725, chillDetailsLabel.frame.height + 5, containerView.frame.width * 0.25, containerView.frame.height * 0.2)
+        timestampLabel.frame = CGRectMake(chillDetailsLabel.frame.origin.x, reportButton.frame.origin.y, containerView.frame.width * 0.5, containerView.frame.height * 0.2)
         detailsButton.frame = chillButton.frame
 
     }
@@ -112,6 +119,7 @@ class ChillTableViewCell: UITableViewCell {
         self.currentChill = cellChill
         chillOverviewLabel.text = currentChill.overview
         chillDetailsLabel.text = currentChill.details
+        timestampLabel.text = currentChill.timestamp
         let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(currentChill.host)/picture?type=square&width=200&height=200&return_ssl_resources=1")
         profileImage.sd_setBackgroundImageWithURL(profilePictureURL, forState: .Normal)
         if(currentChill.flipped == true){   //SHOW BACK
@@ -293,12 +301,14 @@ class ChillTableViewCell: UITableViewCell {
         profileImage.alpha = 1.0
         chillOverviewLabel.alpha = 1.0
         chillTypeLabel.alpha = 1.0
+        timestampLabel.alpha = 1.0
     }
     
     func hideFrontUI(){
         profileImage.alpha = 0.0
         chillOverviewLabel.alpha = 0.0
         chillTypeLabel.alpha = 0.0
+        timestampLabel.alpha = 0.0
     }
     
     func hideBackUI(){

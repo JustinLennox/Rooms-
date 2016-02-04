@@ -401,8 +401,8 @@
 			children = (
 				D0A1BE001BBCA38900B510A7 /* Main.storyboard */,
 				D0A1BDFC1BBCA38900B510A7 /* AppDelegate.swift */,
-				D0E22C7D1C3F3255002FC68E /* EnableLocationViewController.swift */,
 				D0A1BDFE1BBCA38900B510A7 /* LandingViewController.swift */,
+				D0E22C7D1C3F3255002FC68E /* EnableLocationViewController.swift */,
 				D0869FCC1BCF26FF00B607FF /* NearbyChillsViewController.swift */,
 				D02EC6321C165375003C5C1D /* PopularChillsViewController.swift */,
 				D0AF11CE1BFCF1AD006B5034 /* MyChillsViewController.swift */,

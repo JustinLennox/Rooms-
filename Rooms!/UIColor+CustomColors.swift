@@ -11,6 +11,7 @@ import UIKit
 extension UIColor{
     
     //The color from the penguin landing screen photo, MAIN BLUE COLOR
+    //Hex code: #78CCCF
     class func icyBlue() -> UIColor {
         return UIColor(red: 120.0/255.0, green: 204.0/255.0, blue: 207.0/255.0, alpha: 1.0)
     }

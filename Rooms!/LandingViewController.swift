@@ -102,7 +102,7 @@ class LandingViewController: UIViewController {
         
         skipForNowButton.frame = CGRectMake(CGRectGetMidX(view.frame) - 50, CGRectGetMaxY(view.frame) - 50, 100, 50)
         skipForNowButton.titleLabel?.textAlignment = NSTextAlignment.Center
-        skipForNowButton.setTitle("Skip For Now", forState: UIControlState.Normal)
+        skipForNowButton.setTitle("Other Options", forState: UIControlState.Normal)
         skipForNowButton.titleLabel?.adjustsFontSizeToFitWidth = true
         skipForNowButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         skipForNowButton.titleLabel!.font = UIFont.systemFontOfSize(14.0)
@@ -167,7 +167,7 @@ class LandingViewController: UIViewController {
     }
     
     func skipButtonPressed(){
-        let alert = UIAlertController(title: "Are You Sure?", message: "You will lose most of the features &Chill has to offer if you choose not to connect through Facebook. You will not be able to post or join chills. Are you sure you'd like to continue?", preferredStyle: .ActionSheet)
+        let alert = UIAlertController(title: "Connect Without Facebook", message: "You may choose to use &Chill without Facebook. However, you will lose most of the features &Chill has to offer if you choose not to connect through Facebook. You will not be able to post or join chills. Are you sure you'd like to continue?", preferredStyle: .ActionSheet)
         alert.addAction(UIAlertAction(title: "Nevermind", style: .Default, handler: nil))
         alert.addAction(UIAlertAction(title: "I'm sure", style: .Default, handler: { (handle : UIAlertAction) -> Void in
             self.signUpGuest()
